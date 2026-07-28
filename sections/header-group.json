@@ -1,0 +1,67 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "name": "t:sections.header.name",
+  "type": "header",
+  "sections": {
+    "announcement-bar": {
+      "type": "announcement-bar",
+      "blocks": {
+        "announcement-bar-0": {
+          "type": "announcement",
+          "settings": {
+            "text": "📢 Order Your Favorite Products Now! Call us at 📞 +8809611900245 Or message us on WhatsApp ✆ +8801317460801 right away! 🚀",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "announcement-bar-0"
+      ],
+      "settings": {
+        "auto_rotate": false,
+        "change_slides_speed": 5,
+        "color_scheme": "scheme-0cf51524-8dce-424e-820f-f1ec30af93d1",
+        "show_line_separator": true,
+        "show_social": false,
+        "enable_country_selector": false,
+        "enable_language_selector": false
+      }
+    },
+    "header": {
+      "type": "header",
+      "custom_css": [
+        "/* header container */.header-wrapper .page-width,.header {max-width: 100% !important; padding-left: 3rem !important; padding-right: 3rem !important;}",
+        " /* Mobile viewport support */@media screen and (max-width: 749px) {.header-wrapper .page-width, .header {padding-left: 1.5rem !important; padding-right: 1.5rem !important; }}",
+        ".header__menu-item span {font-size: 16px; font-weight: 500;}"
+      ],
+      "settings": {
+        "logo_position": "middle-left",
+        "mobile_logo_position": "center",
+        "menu": "main-menu",
+        "menu_type_desktop": "mega",
+        "sticky_header_type": "on-scroll-up",
+        "show_line_separator": true,
+        "color_scheme": "scheme-f6669edd-8300-491f-a8b5-3f8efbf0f33a",
+        "menu_color_scheme": "scheme-f6669edd-8300-491f-a8b5-3f8efbf0f33a",
+        "enable_country_selector": true,
+        "enable_language_selector": true,
+        "enable_customer_avatar": true,
+        "margin_bottom": 0,
+        "padding_top": 20,
+        "padding_bottom": 20
+      }
+    }
+  },
+  "order": [
+    "announcement-bar",
+    "header"
+  ]
+}
