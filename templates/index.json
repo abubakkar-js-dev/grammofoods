@@ -257,8 +257,8 @@
             "show_video": true,
             "video": "shopify://files/videos/1.mp4",
             "video_url": "",
-            "autoplay_video": true,
-            "loop_video": true,
+            "autoplay_video": false,
+            "loop_video": false,
             "mute_video": true
           }
         },
@@ -269,8 +269,8 @@
             "show_video": true,
             "video": "shopify://files/videos/2.mp4",
             "video_url": "",
-            "autoplay_video": true,
-            "loop_video": true,
+            "autoplay_video": false,
+            "loop_video": false,
             "mute_video": true
           }
         },
@@ -281,8 +281,8 @@
             "show_video": true,
             "video": "shopify://files/videos/3.mp4",
             "video_url": "",
-            "autoplay_video": true,
-            "loop_video": true,
+            "autoplay_video": false,
+            "loop_video": false,
             "mute_video": true
           }
         },
