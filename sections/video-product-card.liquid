@@ -39,6 +39,9 @@
       {% for block in section.blocks %}
         {%- assign product = block.settings.product -%}
         {%- assign hide_controls = section.settings.hide_video_controls -%}
+        {%- if block.settings.hide_video_controls -%}
+          {%- assign hide_controls = true -%}
+        {%- endif -%}
         {%- assign block_aspect = block.settings.aspect_ratio | default: '1/1' -%}
         {%- case block_aspect -%}
           {%- when '9/16' -%}
@@ -358,6 +361,13 @@
           "id": "mute_video",
           "label": "Muted",
           "default": true
+        },
+        {
+          "type": "checkbox",
+          "id": "hide_video_controls",
+          "label": "Hide video controls",
+          "default": false,
+          "info": "Overrides section setting to hide controls for this specific video"
         }
       ]
     }
