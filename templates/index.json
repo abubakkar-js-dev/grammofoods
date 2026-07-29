@@ -230,6 +230,7 @@
         "video_item_VarfDz",
         "video_item_LATLNq"
       ],
+      "disabled": true,
       "name": "Product Videos",
       "settings": {
         "title": "Product Videos",
@@ -245,11 +246,115 @@
         "padding_top": 48,
         "padding_bottom": 48
       }
+    },
+    "video_product_card_fbh4cR": {
+      "type": "video-product-card",
+      "blocks": {
+        "video_product_MnyUWX": {
+          "type": "video_product",
+          "settings": {
+            "product": "",
+            "show_video": true,
+            "video": "shopify://files/videos/1.mp4",
+            "video_url": "",
+            "autoplay_video": true,
+            "loop_video": true,
+            "mute_video": true
+          }
+        },
+        "video_product_VPtgwD": {
+          "type": "video_product",
+          "settings": {
+            "product": "",
+            "show_video": true,
+            "video": "shopify://files/videos/2.mp4",
+            "video_url": "",
+            "autoplay_video": true,
+            "loop_video": true,
+            "mute_video": true
+          }
+        },
+        "video_product_kMxMhC": {
+          "type": "video_product",
+          "settings": {
+            "product": "",
+            "show_video": true,
+            "video": "shopify://files/videos/3.mp4",
+            "video_url": "",
+            "autoplay_video": true,
+            "loop_video": true,
+            "mute_video": true
+          }
+        },
+        "video_product_jb7HUp": {
+          "type": "video_product",
+          "settings": {
+            "product": "7-bahar-honey-with-comb-500gm",
+            "show_video": true,
+            "video": "shopify://files/videos/pv-1.mp4",
+            "video_url": "",
+            "autoplay_video": true,
+            "loop_video": true,
+            "mute_video": true
+          }
+        },
+        "video_product_x9JbKh": {
+          "type": "video_product",
+          "settings": {
+            "product": "desi-ghee",
+            "show_video": true,
+            "video": "shopify://files/videos/pv-2.mp4",
+            "video_url": "",
+            "autoplay_video": true,
+            "loop_video": true,
+            "mute_video": true
+          }
+        },
+        "video_product_EWyTwp": {
+          "type": "video_product",
+          "settings": {
+            "product": "dhc-korean-ginseng-extract-japan",
+            "show_video": true,
+            "video": "shopify://files/videos/pv-3.mp4",
+            "video_url": "",
+            "autoplay_video": true,
+            "loop_video": true,
+            "mute_video": true
+          }
+        }
+      },
+      "block_order": [
+        "video_product_MnyUWX",
+        "video_product_VPtgwD",
+        "video_product_kMxMhC",
+        "video_product_jb7HUp",
+        "video_product_x9JbKh",
+        "video_product_EWyTwp"
+      ],
+      "name": "Video Product Card",
+      "settings": {
+        "heading": "Video Product Cards",
+        "heading_align": "center",
+        "heading_color": "#000000",
+        "heading_size": 28,
+        "bg_color": "#ffffff",
+        "page_width": 1200,
+        "columns_desktop": 3,
+        "columns_tablet": 2,
+        "columns_mobile": 1,
+        "grid_gap": 15,
+        "card_radius": 8,
+        "hide_video_controls": true,
+        "show_product_info": true,
+        "padding_top": 40,
+        "padding_bottom": 40
+      }
     }
   },
   "order": [
     "slideshow_aY7tXL",
     "featured_collection",
-    "product_videos_8RCM8T"
+    "product_videos_8RCM8T",
+    "video_product_card_fbh4cR"
   ]
 }
