@@ -163,8 +163,7 @@
             "video_url": "",
             "loop_video": false,
             "autoplay_video": false,
-            "mute_video": true,
-            "product": ""
+            "mute_video": true
           }
         },
         "video_item_nzzY7t": {
@@ -175,8 +174,7 @@
             "video_url": "",
             "loop_video": false,
             "autoplay_video": false,
-            "mute_video": true,
-            "product": ""
+            "mute_video": true
           }
         },
         "video_item_Vh8Xw8": {
@@ -187,8 +185,7 @@
             "video_url": "",
             "loop_video": false,
             "autoplay_video": false,
-            "mute_video": true,
-            "product": ""
+            "mute_video": true
           }
         },
         "video_item_M9WnXW": {
@@ -197,34 +194,31 @@
             "show_video": true,
             "video": "shopify://files/videos/pv-1.mp4",
             "video_url": "",
-            "loop_video": false,
-            "autoplay_video": false,
-            "mute_video": true,
-            "product": "maca-powder"
+            "loop_video": true,
+            "autoplay_video": true,
+            "mute_video": true
           }
         },
         "video_item_VarfDz": {
           "type": "video_item",
           "settings": {
             "show_video": true,
-            "video": "",
+            "video": "shopify://files/videos/pv-2.mp4",
             "video_url": "",
-            "loop_video": false,
-            "autoplay_video": false,
-            "mute_video": true,
-            "product": "desi-ghee"
+            "loop_video": true,
+            "autoplay_video": true,
+            "mute_video": true
           }
         },
         "video_item_LATLNq": {
           "type": "video_item",
           "settings": {
             "show_video": true,
-            "video": "",
+            "video": "shopify://files/videos/pv-3.mp4",
             "video_url": "",
-            "loop_video": false,
-            "autoplay_video": false,
-            "mute_video": true,
-            "product": "rosella-tea"
+            "loop_video": true,
+            "autoplay_video": true,
+            "mute_video": true
           }
         }
       },
@@ -238,23 +232,24 @@
       ],
       "name": "Product Videos",
       "settings": {
+        "title": "Product Videos",
+        "title_align": "center",
+        "title_color": "#000000",
+        "title_size": 32,
         "bg_color": "#f8f9fa",
-        "bg_image": "",
-        "enable_parallax": false,
-        "padding_top": 48,
-        "padding_bottom": 48,
-        "heading": "Product Videos",
-        "heading_alignment": "center",
-        "heading_color": "#000000",
-        "heading_font_size": 36,
+        "page_width": 1200,
         "columns_desktop": 3,
         "grid_gap": 30,
-        "page_width": 1200,
-        "card_bg_color": "#ffffff",
-        "card_border_radius": 12,
-        "card_shadow": "medium"
+        "video_aspect": "9/16",
+        "video_radius": 8,
+        "padding_top": 48,
+        "padding_bottom": 48
       }
     }
   },
-  "order": ["slideshow_aY7tXL", "featured_collection", "product_videos_8RCM8T"]
+  "order": [
+    "slideshow_aY7tXL",
+    "featured_collection",
+    "product_videos_8RCM8T"
+  ]
 }
