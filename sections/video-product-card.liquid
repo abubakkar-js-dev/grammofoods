@@ -3,123 +3,116 @@
 {%- style -%}
   #shopify-section-{{ section.id }} {
     --section-bg: {{ section.settings.bg_color }};
-    --card-bg: {{ section.settings.card_bg }};
     --card-radius: {{ section.settings.card_radius }}px;
     --grid-gap: {{ section.settings.grid_gap }}px;
-    --aspect-ratio: {{ section.settings.video_aspect }};
     --columns-mobile: {{ section.settings.columns_mobile }};
     --columns-tablet: {{ section.settings.columns_tablet }};
     --columns-desktop: {{ section.settings.columns_desktop }};
-    --qv-bg: {{ section.settings.quick_view_bg }};
-    --qv-color: {{ section.settings.quick_view_color }};
-    --heading-color: {{ section.settings.heading_color }};
-    --heading-size: {{ section.settings.heading_size }}px;
   }
 
-  #shopify-section-{{ section.id }} .video-product-card-section {
+  #shopify-section-{{ section.id }} .t4s-video-product-section {
     background: var(--section-bg);
     padding-top: {{ section.settings.padding_top }}px;
     padding-bottom: {{ section.settings.padding_bottom }}px;
   }
 
-  #shopify-section-{{ section.id }} .video-product-card-section .page-width {
+  #shopify-section-{{ section.id }} .t4s-video-product-section .page-width {
     max-width: {{ section.settings.page_width }}px;
     margin: 0 auto;
     padding: 0 20px;
   }
 
-  #shopify-section-{{ section.id }} .video-product-card-section .section-heading {
-    color: var(--heading-color);
-    font-size: var(--heading-size);
+  #shopify-section-{{ section.id }} .t4s-section-heading {
+    color: {{ section.settings.heading_color }};
+    font-size: {{ section.settings.heading_size }}px;
     text-align: {{ section.settings.heading_align }};
   }
 {%- endstyle -%}
 
-<div class="video-product-card-section">
+<div class="t4s-video-product-section">
   <div class="page-width">
     {% if section.settings.heading != blank %}
-      <h2 class="section-heading">{{ section.settings.heading }}</h2>
+      <h2 class="t4s-section-heading">{{ section.settings.heading }}</h2>
     {% endif %}
 
-    <div class="video-product-card-section__grid">
+    <div class="t4s-video-product-grid">
       {% for block in section.blocks %}
         {%- assign product = block.settings.product -%}
-        <div class="video-product-card" {{ block.shopify_attributes }}>
-          <div class="video-product-card__video-wrapper">
+        {%- assign hide_controls = section.settings.hide_video_controls -%}
+        <div class="t4s-product-video-inner t4s-d-flex t4s-flex-column t4s-col-item" style="--aspect-ratio: 100%" {{ block.shopify_attributes }}>
+          <div class="t4s-video">
             {% if block.settings.show_video == false %}
               {% if product.featured_media != blank %}
-                {{ product.featured_media | image_url: width: 600 | image_tag: class: 'video-product-card__poster-fallback', loading: 'lazy' }}
+                {{ product.featured_media | image_url: width: 600 | image_tag: loading: 'lazy' }}
               {% else %}
-                {{ 'product-apparel-2' | placeholder_svg_tag: 'video-product-card__poster-fallback placeholder-svg' }}
+                {{ 'product-apparel-2' | placeholder_svg_tag: 'placeholder-svg' }}
               {% endif %}
             {% elsif block.settings.video != blank %}
-              {{ block.settings.video | video_tag: controls: section.settings.show_video_controls, image_size: '600x', autoplay: block.settings.autoplay_video, loop: block.settings.loop_video, muted: block.settings.mute_video, playsinline: true, loading: 'lazy' }}
+              {{ block.settings.video | video_tag: controls: hide_controls, image_size: '600x', autoplay: block.settings.autoplay_video, loop: block.settings.loop_video, muted: block.settings.mute_video, playsinline: true, loading: 'lazy' }}
             {% elsif block.settings.video_url != blank %}
-              <video class="video-product-card__video" playsinline muted loop preload="metadata" autoplay{% if section.settings.show_video_controls %} controls{% endif %}>
+              <video playsinline muted loop preload="metadata" autoplay{% unless hide_controls %} controls{% endunless %}>
                 <source src="{{ block.settings.video_url }}" type="video/mp4">
               </video>
             {% else %}
               {% if product.featured_media != blank %}
-                {{ product.featured_media | image_url: width: 600 | image_tag: class: 'video-product-card__poster-fallback', loading: 'lazy' }}
+                {{ product.featured_media | image_url: width: 600 | image_tag: loading: 'lazy' }}
               {% else %}
-                {{ 'product-apparel-2' | placeholder_svg_tag: 'video-product-card__poster-fallback placeholder-svg' }}
+                {{ 'product-apparel-2' | placeholder_svg_tag: 'placeholder-svg' }}
               {% endif %}
             {% endif %}
           </div>
 
           {% if product != blank and section.settings.show_product_info %}
-            <div class="video-product-card__info">
-              <div class="video-product-card__info-thumbnail">
-                {% if product.featured_media != blank %}
-                  <img src="{{ product.featured_media | image_url: width: 100 }}" alt="{{ product.title | escape }}" loading="lazy">
-                {% else %}
-                  {{ 'product-apparel-2' | placeholder_svg_tag: 'placeholder-svg' }}
-                {% endif %}
-              </div>
-              <div class="video-product-card__info-details">
-                <div class="video-product-card__info-title">
-                  <a href="{{ product.url }}">{{ product.title | escape }}</a>
+            <div class="t4s-w-100 t4s-product-info-bar">
+              <div class="t4s-video-label t4s-d-flex t4s-align-items-center t4s-w-100">
+                <div class="t4s-image-product">
+                  {% if product.featured_media != blank %}
+                    <img src="{{ product.featured_media | image_url: width: 100 }}" alt="{{ product.title | escape }}" loading="lazy">
+                  {% else %}
+                    {{ 'product-apparel-2' | placeholder_svg_tag: 'placeholder-svg' }}
+                  {% endif %}
                 </div>
-                <div class="video-product-card__info-price">{{ product.price | money }}</div>
-              </div>
-              <div class="video-product-card__info-action">
-                <button
-                  class="video-product-card__quick-view"
-                  type="button"
-                  data-product-id="{{ product.id }}"
-                  data-product-url="{{ product.url }}"
-                  aria-label="{{ 'products.product.quick_view' | t | default: 'Quick view' }}"
-                >
-                  <svg xmlns="http://www.w3.org/2000/svg" width="19" height="12" viewBox="0 0 19 12" fill="currentColor">
-                    <path d="M18.7079 5.6338C18.5397 5.40371 14.5321 0 9.4137 0C4.29527 0 0.287485 5.40371 0.119471 5.63358C0.041836 5.73994 0 5.86821 0 5.99989C0 6.13157 0.041836 6.25984 0.119471 6.3662C0.287485 6.59629 4.29527 12 9.4137 12C14.5321 12 18.5397 6.59625 18.7079 6.36638C18.7857 6.26008 18.8276 6.13179 18.8276 6.00009C18.8276 5.86839 18.7857 5.74011 18.7079 5.6338ZM9.4137 10.7586C5.64343 10.7586 2.37798 7.17207 1.41133 5.99958C2.37673 4.82605 5.63534 1.24137 9.4137 1.24137C13.1838 1.24137 16.449 4.8273 17.4161 6.00042C16.4507 7.17391 13.1921 10.7586 9.4137 10.7586Z"/>
-                    <path d="M9.4137 2.27586C7.36024 2.27586 5.68954 3.94656 5.68954 6.00002C5.68954 8.05348 7.36024 9.72417 9.4137 9.72417C11.4672 9.72417 13.1379 8.05348 13.1379 6.00002C13.1379 3.94656 11.4672 2.27586 9.4137 2.27586ZM9.4137 8.48276C8.04465 8.48276 6.93095 7.36903 6.93095 6.00002C6.93095 4.63101 8.04469 3.51727 9.4137 3.51727C10.7827 3.51727 11.8964 4.63101 11.8964 6.00002C11.8964 7.36903 10.7827 8.48276 9.4137 8.48276Z"/>
-                  </svg>
-                </button>
+                <div class="t4s-product-meta">
+                  <div class="t4s-truncate">
+                    <a href="{{ product.url }}">{{ product.title | escape }}</a>
+                  </div>
+                  <div class="t4s-price">{{ product.price | money }}</div>
+                </div>
+                <div class="t4s-button-product">
+                  <a class="t4s-button-product-item t4s-quickview-btn" href="{{ product.url }}" data-action-quickview="">
+                    <svg class="t4s-icon-view" width="18" height="12" viewBox="0 0 19 12" fill="currentColor">
+                      <path d="M18.7079 5.6338C18.5397 5.40371 14.5321 0 9.4137 0C4.29527 0 0.287485 5.40371 0.119471 5.63358C0.041836 5.73994 0 5.86821 0 5.99989C0 6.13157 0.041836 6.25984 0.119471 6.3662C0.287485 6.59629 4.29527 12 9.4137 12C14.5321 12 18.5397 6.59625 18.7079 6.36638C18.7857 6.26008 18.8276 6.13179 18.8276 6.00009C18.8276 5.86839 18.7857 5.74011 18.7079 5.6338ZM9.4137 10.7586C5.64343 10.7586 2.37798 7.17207 1.41133 5.99958C2.37673 4.82605 5.63534 1.24137 9.4137 1.24137C13.1838 1.24137 16.449 4.8273 17.4161 6.00042C16.4507 7.17391 13.1921 10.7586 9.4137 10.7586Z"></path>
+                      <path d="M9.4137 2.27586C7.36024 2.27586 5.68954 3.94656 5.68954 6.00002C5.68954 8.05348 7.36024 9.72417 9.4137 9.72417C11.4672 9.72417 13.1379 8.05348 13.1379 6.00002C13.1379 3.94656 11.4672 2.27586 9.4137 2.27586ZM9.4137 8.48276C8.04465 8.48276 6.93095 7.36903 6.93095 6.00002C6.93095 4.63101 8.04469 3.51727 9.4137 3.51727C10.7827 3.51727 11.8964 4.63101 11.8964 6.00002C11.8964 7.36903 10.7827 8.48276 9.4137 8.48276Z"></path>
+                    </svg>
+                  </a>
+                </div>
               </div>
             </div>
           {% endif %}
         </div>
       {% else %}
         {% for i in (1..section.settings.columns_desktop) %}
-          <div class="video-product-card">
-            <div class="video-product-card__video-wrapper">
-              {{ 'product-apparel-2' | placeholder_svg_tag: 'video-product-card__poster-fallback placeholder-svg' }}
+          <div class="t4s-product-video-inner t4s-d-flex t4s-flex-column t4s-col-item" style="--aspect-ratio: 100%">
+            <div class="t4s-video">
+              {{ 'product-apparel-2' | placeholder_svg_tag: 'placeholder-svg' }}
             </div>
-            <div class="video-product-card__info">
-              <div class="video-product-card__info-thumbnail">
-                {{ 'product-apparel-2' | placeholder_svg_tag: 'placeholder-svg' }}
-              </div>
-              <div class="video-product-card__info-details">
-                <div class="video-product-card__info-title">{{ 'products.product.title' | t }}</div>
-                <div class="video-product-card__info-price">{{ 1999 | money }}</div>
-              </div>
-              <div class="video-product-card__info-action">
-                <button class="video-product-card__quick-view" type="button" aria-label="{{ 'products.product.quick_view' | t | default: 'Quick view' }}">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="19" height="12" viewBox="0 0 19 12" fill="currentColor">
-                    <path d="M18.7079 5.6338C18.5397 5.40371 14.5321 0 9.4137 0C4.29527 0 0.287485 5.40371 0.119471 5.63358C0.041836 5.73994 0 5.86821 0 5.99989C0 6.13157 0.041836 6.25984 0.119471 6.3662C0.287485 6.59629 4.29527 12 9.4137 12C14.5321 12 18.5397 6.59625 18.7079 6.36638C18.7857 6.26008 18.8276 6.13179 18.8276 6.00009C18.8276 5.86839 18.7857 5.74011 18.7079 5.6338ZM9.4137 10.7586C5.64343 10.7586 2.37798 7.17207 1.41133 5.99958C2.37673 4.82605 5.63534 1.24137 9.4137 1.24137C13.1838 1.24137 16.449 4.8273 17.4161 6.00042C16.4507 7.17391 13.1921 10.7586 9.4137 10.7586Z"/>
-                    <path d="M9.4137 2.27586C7.36024 2.27586 5.68954 3.94656 5.68954 6.00002C5.68954 8.05348 7.36024 9.72417 9.4137 9.72417C11.4672 9.72417 13.1379 8.05348 13.1379 6.00002C13.1379 3.94656 11.4672 2.27586 9.4137 2.27586ZM9.4137 8.48276C8.04465 8.48276 6.93095 7.36903 6.93095 6.00002C6.93095 4.63101 8.04469 3.51727 9.4137 3.51727C10.7827 3.51727 11.8964 4.63101 11.8964 6.00002C11.8964 7.36903 10.7827 8.48276 9.4137 8.48276Z"/>
-                  </svg>
-                </button>
+            <div class="t4s-w-100 t4s-product-info-bar">
+              <div class="t4s-video-label t4s-d-flex t4s-align-items-center t4s-w-100">
+                <div class="t4s-image-product">
+                  {{ 'product-apparel-2' | placeholder_svg_tag: 'placeholder-svg' }}
+                </div>
+                <div class="t4s-product-meta">
+                  <div class="t4s-truncate">{{ 'products.product.title' | t }}</div>
+                  <div class="t4s-price">{{ 1999 | money }}</div>
+                </div>
+                <div class="t4s-button-product">
+                  <a class="t4s-button-product-item t4s-quickview-btn" href="#">
+                    <svg class="t4s-icon-view" width="18" height="12" viewBox="0 0 19 12" fill="currentColor">
+                      <path d="M18.7079 5.6338C18.5397 5.40371 14.5321 0 9.4137 0C4.29527 0 0.287485 5.40371 0.119471 5.63358C0.041836 5.73994 0 5.86821 0 5.99989C0 6.13157 0.041836 6.25984 0.119471 6.3662C0.287485 6.59629 4.29527 12 9.4137 12C14.5321 12 18.5397 6.59625 18.7079 6.36638C18.7857 6.26008 18.8276 6.13179 18.8276 6.00009C18.8276 5.86839 18.7857 5.74011 18.7079 5.6338ZM9.4137 10.7586C5.64343 10.7586 2.37798 7.17207 1.41133 5.99958C2.37673 4.82605 5.63534 1.24137 9.4137 1.24137C13.1838 1.24137 16.449 4.8273 17.4161 6.00042C16.4507 7.17391 13.1921 10.7586 9.4137 10.7586Z"></path>
+                      <path d="M9.4137 2.27586C7.36024 2.27586 5.68954 3.94656 5.68954 6.00002C5.68954 8.05348 7.36024 9.72417 9.4137 9.72417C11.4672 9.72417 13.1379 8.05348 13.1379 6.00002C13.1379 3.94656 11.4672 2.27586 9.4137 2.27586ZM9.4137 8.48276C8.04465 8.48276 6.93095 7.36903 6.93095 6.00002C6.93095 4.63101 8.04469 3.51727 9.4137 3.51727C10.7827 3.51727 11.8964 4.63101 11.8964 6.00002C11.8964 7.36903 10.7827 8.48276 9.4137 8.48276Z"></path>
+                    </svg>
+                  </a>
+                </div>
               </div>
             </div>
           </div>
@@ -186,12 +179,6 @@
       "default": "#ffffff"
     },
     {
-      "type": "color",
-      "id": "card_bg",
-      "label": "Card background",
-      "default": "#ffffff"
-    },
-    {
       "type": "range",
       "id": "page_width",
       "label": "Page width",
@@ -253,24 +240,11 @@
       "content": "Video"
     },
     {
-      "type": "select",
-      "id": "video_aspect",
-      "label": "Video aspect ratio",
-      "options": [
-        { "value": "9/16", "label": "Portrait (9:16)" },
-        { "value": "3/4", "label": "Portrait (3:4)" },
-        { "value": "1/1", "label": "Square (1:1)" },
-        { "value": "4/3", "label": "Landscape (4:3)" },
-        { "value": "16/9", "label": "Landscape (16:9)" }
-      ],
-      "default": "1/1"
-    },
-    {
       "type": "checkbox",
-      "id": "show_video_controls",
-      "label": "Show video controls",
-      "default": false,
-      "info": "Shows native play/pause/volume controls on videos"
+      "id": "hide_video_controls",
+      "label": "Hide video controls",
+      "default": true,
+      "info": "When enabled, hides native play/pause/volume controls on videos"
     },
     {
       "type": "header",
@@ -282,22 +256,6 @@
       "label": "Show product info bar",
       "default": true,
       "info": "Displays product thumbnail, title, price, and quick view button below the video"
-    },
-    {
-      "type": "header",
-      "content": "Colors"
-    },
-    {
-      "type": "color",
-      "id": "quick_view_bg",
-      "label": "Quick view button background",
-      "default": "#000000"
-    },
-    {
-      "type": "color",
-      "id": "quick_view_color",
-      "label": "Quick view button icon color",
-      "default": "#ffffff"
     },
     {
       "type": "header",
