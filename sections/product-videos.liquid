@@ -87,6 +87,7 @@
     padding: 20px;
     display: flex;
     flex-direction: column;
+    flex: 1;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     position: relative;
   }
@@ -196,6 +197,408 @@
     margin-right: 8px;
     text-decoration: line-through;
   }
+
+  .qv-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.7);
+    z-index: 9999;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    overflow-y: auto;
+  }
+
+  .qv-overlay.active {
+    display: flex;
+  }
+
+  .qv-modal {
+    background: #fff;
+    border-radius: 12px;
+    max-width: 900px;
+    width: 100%;
+    position: relative;
+    animation: qvFadeIn 0.25s ease;
+    margin: auto;
+  }
+
+  @keyframes qvFadeIn {
+    from { opacity: 0; transform: scale(0.95) translateY(10px); }
+    to   { opacity: 1; transform: scale(1) translateY(0); }
+  }
+
+  .qv-close {
+    position: absolute;
+    top: -14px;
+    right: -14px;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: #10b981;
+    border: none;
+    color: #fff;
+    font-size: 18px;
+    cursor: pointer;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+    padding: 0;
+    transition: transform 0.2s ease;
+  }
+
+  .qv-close:hover {
+    transform: scale(1.1);
+  }
+
+  .qv-body {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    max-height: 85vh;
+    overflow-y: auto;
+  }
+
+  @media screen and (max-width: 767px) {
+    .qv-body {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .qv-gallery {
+    position: relative;
+    padding: 24px;
+    background: #f9fafb;
+    border-radius: 12px 0 0 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  @media screen and (max-width: 767px) {
+    .qv-gallery {
+      border-radius: 12px 12px 0 0;
+    }
+  }
+
+  .qv-main-image-wrap {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+    border-radius: 8px;
+    background: #fff;
+  }
+
+  .qv-main-image-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .qv-nav-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #fff;
+    border: none;
+    cursor: pointer;
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+    transition: background 0.2s ease, color 0.2s ease;
+    color: #333;
+    line-height: 1;
+    padding: 0;
+  }
+
+  .qv-nav-btn:hover {
+    background: #10b981;
+    color: #fff;
+  }
+
+  .qv-nav-prev {
+    left: 8px;
+  }
+
+  .qv-nav-next {
+    right: 8px;
+  }
+
+  .qv-thumbnails {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .qv-thumb {
+    width: 80px;
+    height: 80px;
+    flex-shrink: 0;
+    border-radius: 6px;
+    overflow: hidden;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: border-color 0.2s ease;
+    background: #fff;
+  }
+
+  .qv-thumb:hover {
+    border-color: #10b981;
+  }
+
+  .qv-thumb.active {
+    border-color: #10b981;
+  }
+
+  .qv-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .qv-details {
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    overflow-y: auto;
+  }
+
+  .qv-details-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: #111;
+    margin: 0;
+    line-height: 1.3;
+  }
+
+  .qv-price-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .qv-current-price {
+    font-size: 22px;
+    font-weight: 700;
+    color: #10b981;
+  }
+
+  .qv-compare-price {
+    font-size: 16px;
+    color: #999;
+    text-decoration: line-through;
+  }
+
+  .qv-description {
+    font-size: 14px;
+    color: #666;
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  .qv-variant-section {}
+  .qv-variant-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #111;
+    margin: 0 0 8px;
+  }
+  .qv-variant-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .qv-variant-btn {
+    padding: 8px 16px;
+    border-radius: 6px;
+    border: 1.5px solid #d1d5db;
+    background: #fff;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    color: #333;
+  }
+  .qv-variant-btn:hover {
+    border-color: #10b981;
+    color: #10b981;
+  }
+  .qv-variant-btn.active {
+    background: #10b981;
+    color: #fff;
+    border-color: #10b981;
+  }
+
+  .qv-qty-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .qv-qty-btn {
+    width: 40px;
+    height: 40px;
+    border: 1.5px solid #d1d5db;
+    border-radius: 6px;
+    background: #fff;
+    font-size: 18px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #333;
+    transition: border-color 0.2s ease;
+    padding: 0;
+    line-height: 1;
+  }
+  .qv-qty-btn:hover {
+    border-color: #10b981;
+  }
+  .qv-qty-input {
+    width: 60px;
+    height: 40px;
+    text-align: center;
+    font-weight: 600;
+    font-size: 16px;
+    border: 1.5px solid #d1d5db;
+    border-radius: 6px;
+    outline: none;
+    -moz-appearance: textfield;
+  }
+  .qv-qty-input::-webkit-inner-spin-button,
+  .qv-qty-input::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  .qv-actions {
+    display: flex;
+    gap: 8px;
+  }
+  .qv-atc {
+    flex: 1;
+    padding: 14px;
+    border-radius: 8px;
+    border: none;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    background: #10b981;
+    color: #fff;
+  }
+  .qv-atc:hover {
+    background: #059669;
+    transform: translateY(-2px);
+  }
+  .qv-buy {
+    flex: 1;
+    padding: 14px;
+    border-radius: 8px;
+    border: none;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    background: #1f2937;
+    color: #fff;
+  }
+  .qv-buy:hover {
+    background: #111827;
+    transform: translateY(-2px);
+  }
+  .qv-wishlist {
+    width: 50px;
+    height: 50px;
+    border-radius: 8px;
+    border: 1.5px solid #d1d5db;
+    background: #fff;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    transition: all 0.2s ease;
+    color: #666;
+    flex-shrink: 0;
+    padding: 0;
+  }
+  .qv-wishlist:hover {
+    border-color: #10b981;
+    color: #10b981;
+  }
+
+  .qv-meta {
+    border-top: 1px solid #e5e7eb;
+    padding-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .qv-meta p {
+    font-size: 14px;
+    color: #666;
+    margin: 0;
+  }
+  .qv-meta strong {
+    color: #111;
+    font-weight: 600;
+  }
+
+  .qv-ask {
+    font-size: 14px;
+    font-weight: 600;
+    color: #10b981;
+    text-decoration: underline;
+    cursor: pointer;
+    background: none;
+    border: none;
+    padding: 0;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .qv-ask:hover {
+    color: #059669;
+  }
+
+  .qv-share {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .qv-share-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 6px;
+    border: none;
+    background: #f3f4f6;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    color: #333;
+    padding: 0;
+  }
+  .qv-share-btn:hover {
+    background: #10b981;
+    color: #fff;
+  }
 {%- endstyle -%}
 
 <div class="product-videos-{{ section.id }}">
@@ -290,39 +693,410 @@
 
 </div>
 
+<div class="qv-overlay" id="qv-overlay-{{ section.id }}">
+  <div class="qv-modal" id="qv-modal-{{ section.id }}">
+    <button class="qv-close" id="qv-close-{{ section.id }}" aria-label="Close quick view">&times;</button>
+    <div class="qv-body">
+      <div class="qv-gallery">
+        <div class="qv-main-image-wrap">
+          <img id="qv-main-image-{{ section.id }}" src="" alt="">
+          <button class="qv-nav-btn qv-nav-prev" id="qv-prev-{{ section.id }}" aria-label="Previous image">&#8249;</button>
+          <button class="qv-nav-btn qv-nav-next" id="qv-next-{{ section.id }}" aria-label="Next image">&#8250;</button>
+        </div>
+        <div class="qv-thumbnails" id="qv-thumbnails-{{ section.id }}"></div>
+      </div>
+      <div class="qv-details" id="qv-details-{{ section.id }}">
+        <h3 class="qv-details-title" id="qv-title-{{ section.id }}"></h3>
+        <div class="qv-price-row">
+          <span class="qv-current-price" id="qv-price-{{ section.id }}"></span>
+          <span class="qv-compare-price" id="qv-compare-{{ section.id }}"></span>
+        </div>
+        <p class="qv-description" id="qv-desc-{{ section.id }}"></p>
+        <div class="qv-variant-section" id="qv-variant-section-{{ section.id }}">
+          <p class="qv-variant-label" id="qv-variant-label-{{ section.id }}"></p>
+          <div class="qv-variant-options" id="qv-variant-options-{{ section.id }}"></div>
+        </div>
+        <div class="qv-qty-row">
+          <button class="qv-qty-btn" id="qv-qty-minus-{{ section.id }}" aria-label="Decrease quantity">&minus;</button>
+          <input class="qv-qty-input" id="qv-qty-input-{{ section.id }}" type="number" value="1" min="1" aria-label="Quantity">
+          <button class="qv-qty-btn" id="qv-qty-plus-{{ section.id }}" aria-label="Increase quantity">+</button>
+        </div>
+        <div class="qv-actions">
+          <button class="qv-atc" id="qv-atc-{{ section.id }}">ADD TO CART</button>
+          <button class="qv-buy" id="qv-buy-{{ section.id }}">BUY IT NOW</button>
+          <button class="qv-wishlist" id="qv-wishlist-{{ section.id }}" aria-label="Add to wishlist">&hearts;</button>
+        </div>
+        <div class="qv-meta" id="qv-meta-{{ section.id }}"></div>
+        <button class="qv-ask" id="qv-ask-{{ section.id }}">Ask a Question</button>
+        <div class="qv-share" id="qv-share-{{ section.id }}">
+          <button class="qv-share-btn" data-share="facebook" aria-label="Share on Facebook">f</button>
+          <button class="qv-share-btn" data-share="twitter" aria-label="Share on Twitter">𝕏</button>
+          <button class="qv-share-btn" data-share="pinterest" aria-label="Share on Pinterest">P</button>
+          <button class="qv-share-btn" data-share="tumblr" aria-label="Share on Tumblr">t</button>
+          <button class="qv-share-btn" data-share="telegram" aria-label="Share on Telegram">✈</button>
+          <button class="qv-share-btn" data-share="email" aria-label="Share via Email">✉</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{%- liquid
+  assign block_count = section.blocks | where: 'type', 'video_product' | size
+%}
+
 <script>
-  (function() {
-    const section = document.querySelector('.product-videos-{{ section.id }}');
-    if (!section) return;
+var qvProductData = {};
+{% for block in section.blocks %}
+  {% if block.settings.product != blank %}
+    qvProductData['{{ block.id }}'] = {
+      id: '{{ block.settings.product.id }}',
+      title: '{{ block.settings.product.title | escape }}',
+      price: '{{ block.settings.product.price | money }}',
+      comparePrice: '{{ block.settings.product.compare_at_price | money }}',
+      description: '{{ block.settings.product.description | strip_html | escape | truncate: 200 }}',
+      available: {{ block.settings.product.available }},
+      images: [{% for img in block.settings.product.images %}'{{ img | img_url: '800x800' }}'{% unless forloop.last %},{% endunless %}{% endfor %}],
+      variants: [{% for v in block.settings.product.variants %}{id:'{{ v.id }}',title:'{{ v.title | escape }}',price:'{{ v.price | money }}',available:{{ v.available }}}{% unless forloop.last %},{% endunless %}{% endfor %}],
+      url: '{{ block.settings.product.url }}',
+      vendor: '{{ block.settings.product.vendor | escape }}',
+      type: '{{ block.settings.product.type | escape }}'
+    };
+  {% endif %}
+{% endfor %}
 
-    const productData = {};
+(function() {
+  var section = document.querySelector('.product-videos-{{ section.id }}');
+  if (!section) return;
 
-    section.querySelectorAll('.product-card').forEach(function(card) {
-      const blockId = card.dataset.blockId;
-      const productId = card.dataset.productId;
-      const title = card.dataset.productTitle;
-      const price = card.dataset.productPrice;
-      const image = card.dataset.productImage;
+  var overlay = document.getElementById('qv-overlay-{{ section.id }}');
+  var modal = document.getElementById('qv-modal-{{ section.id }}');
+  var mainImage = document.getElementById('qv-main-image-{{ section.id }}');
+  var thumbnails = document.getElementById('qv-thumbnails-{{ section.id }}');
+  var titleEl = document.getElementById('qv-title-{{ section.id }}');
+  var priceEl = document.getElementById('qv-price-{{ section.id }}');
+  var compareEl = document.getElementById('qv-compare-{{ section.id }}');
+  var descEl = document.getElementById('qv-desc-{{ section.id }}');
+  var variantLabel = document.getElementById('qv-variant-label-{{ section.id }}');
+  var variantOptions = document.getElementById('qv-variant-options-{{ section.id }}');
+  var variantSection = document.getElementById('qv-variant-section-{{ section.id }}');
+  var qtyInput = document.getElementById('qv-qty-input-{{ section.id }}');
+  var metaEl = document.getElementById('qv-meta-{{ section.id }}');
+  var prevBtn = document.getElementById('qv-prev-{{ section.id }}');
+  var nextBtn = document.getElementById('qv-next-{{ section.id }}');
 
-      productData[blockId] = {
-        id: productId,
-        title: title,
-        price: price,
-        image: image
-      };
-    });
+  var currentBlockId = null;
+  var currentImages = [];
+  var currentImageIndex = 0;
+  var selectedVariantId = null;
 
-    section.querySelectorAll('.eye-btn').forEach(function(btn) {
-      btn.addEventListener('click', function(e) {
-        e.preventDefault();
-        const blockId = this.dataset.blockId;
-        const data = productData[blockId];
-        if (data) {
-          console.log('[Product Videos] Quick view triggered:', data);
+  function openQuickView(blockId) {
+    var data = qvProductData[blockId];
+    if (!data) return;
+
+    currentBlockId = blockId;
+    currentImages = data.images.length ? data.images : [];
+    currentImageIndex = 0;
+
+    titleEl.textContent = data.title;
+    priceEl.textContent = data.price;
+
+    if (data.comparePrice && data.comparePrice !== data.price) {
+      compareEl.textContent = data.comparePrice;
+      compareEl.style.display = 'inline';
+    } else {
+      compareEl.style.display = 'none';
+    }
+
+    descEl.textContent = data.description || 'No description available.';
+
+    if (currentImages.length) {
+      mainImage.src = currentImages[0];
+      renderThumbnails();
+    } else {
+      mainImage.src = '';
+      thumbnails.innerHTML = '';
+    }
+
+    prevBtn.style.display = currentImages.length > 1 ? 'flex' : 'none';
+    nextBtn.style.display = currentImages.length > 1 ? 'flex' : 'none';
+
+    if (data.variants && data.variants.length > 1) {
+      var firstOptionName = '';
+      if (data.variants[0].title && data.variants[0].title.indexOf(' / ') !== -1) {
+        firstOptionName = data.variants[0].title.split(' / ')[0];
+      } else {
+        firstOptionName = data.variants[0].title;
+      }
+      variantLabel.textContent = firstOptionName.toUpperCase();
+      variantSection.style.display = 'block';
+      renderVariants(data.variants);
+      selectVariant(variantOptions.querySelector('.qv-variant-btn'), blockId);
+    } else if (data.variants && data.variants.length === 1) {
+      variantSection.style.display = 'none';
+      selectedVariantId = data.variants[0].id;
+    } else {
+      variantSection.style.display = 'none';
+      selectedVariantId = data.id;
+    }
+
+    qtyInput.value = 1;
+
+    var metaHtml = '';
+    metaHtml += '<p><strong>Availability:</strong> ' + (data.available ? 'In Stock' : 'Out of Stock') + '</p>';
+    if (data.vendor) metaHtml += '<p><strong>Vendor:</strong> ' + data.vendor + '</p>';
+    if (data.type) metaHtml += '<p><strong>Categories:</strong> ' + data.type + '</p>';
+    metaEl.innerHTML = metaHtml;
+
+    overlay.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+
+  
+  function closeQuickView() {
+    if (!overlay) return;
+    overlay.classList.remove('active');
+    document.body.style.overflow = '';
+    currentBlockId = null;
+    currentImages = [];
+    currentImageIndex = 0;
+  }
+
+  function renderThumbnails() {
+    if (!thumbnails) return;
+    var html = '';
+    for (var i = 0; i < currentImages.length; i++) {
+      html += '<div class="qv-thumb' + (i === 0 ? ' active' : '') + '" data-index="' + i + '">';
+      html += '<img src="' + currentImages[i] + '" alt="" loading="lazy">';
+      html += '</div>';
+    }
+    thumbnails.innerHTML = html;
+
+    thumbnails.querySelectorAll('.qv-thumb').forEach(function(el) {
+      el.addEventListener('click', function(e) {
+        var index = parseInt(this.getAttribute('data-index'));
+        if (!isNaN(index)) {
+          currentImageIndex = index;
+          mainImage.src = currentImages[index];
+          thumbnails.querySelectorAll('.qv-thumb').forEach(function(t) { t.classList.remove('active'); });
+          this.classList.add('active');
         }
       });
     });
-  })();
+  }
+
+  function renderVariants(variants) {
+    if (!variantOptions) return;
+    var html = '';
+    for (var i = 0; i < variants.length; i++) {
+      html += '<button class="qv-variant-btn' + (i === 0 ? ' active' : '') + '" data-variant-id="' + variants[i].id + '" data-available="' + variants[i].available + '">' + variants[i].title + '</button>';
+    }
+    variantOptions.innerHTML = html;
+
+    variantOptions.querySelectorAll('.qv-variant-btn').forEach(function(el) {
+      el.addEventListener('click', function(e) {
+        selectVariant(this, currentBlockId);
+      });
+    });
+  }
+
+  function selectVariant(btn, blockId) {
+    if (!btn) return;
+    var data = qvProductData[blockId];
+    if (!data) return;
+
+    variantOptions.querySelectorAll('.qv-variant-btn').forEach(function(el) {
+      el.classList.remove('active');
+    });
+    btn.classList.add('active');
+
+    var vid = btn.getAttribute('data-variant-id');
+    selectedVariantId = vid;
+
+    var variant = null;
+    for (var i = 0; i < data.variants.length; i++) {
+      if (String(data.variants[i].id) === String(vid)) {
+        variant = data.variants[i];
+        break;
+      }
+    }
+
+    if (variant) {
+      priceEl.textContent = variant.price;
+      if (variant.available) {
+        document.getElementById('qv-atc-{{ section.id }}').disabled = false;
+        document.getElementById('qv-atc-{{ section.id }}').textContent = 'ADD TO CART';
+      } else {
+        document.getElementById('qv-atc-{{ section.id }}').disabled = true;
+        document.getElementById('qv-atc-{{ section.id }}').textContent = 'SOLD OUT';
+      }
+    }
+  }
+
+  document.querySelectorAll('.product-videos-' + '{{ section.id }}' + ' .eye-btn').forEach(function(btn) {
+    btn.addEventListener('click', function(e) {
+      e.preventDefault();
+      var blockId = this.getAttribute('data-block-id');
+      if (blockId && qvProductData[blockId]) {
+        openQuickView(blockId);
+      }
+    });
+  });
+
+  if (prevBtn) {
+    prevBtn.addEventListener('click', function(e) {
+      e.preventDefault();
+      if (currentImages.length === 0) return;
+      currentImageIndex = (currentImageIndex - 1 + currentImages.length) % currentImages.length;
+      mainImage.src = currentImages[currentImageIndex];
+      thumbnails.querySelectorAll('.qv-thumb').forEach(function(t) { t.classList.remove('active'); });
+      var thumbs = thumbnails.querySelectorAll('.qv-thumb');
+      if (thumbs[currentImageIndex]) thumbs[currentImageIndex].classList.add('active');
+    });
+  }
+
+  if (nextBtn) {
+    nextBtn.addEventListener('click', function(e) {
+      e.preventDefault();
+      if (currentImages.length === 0) return;
+      currentImageIndex = (currentImageIndex + 1) % currentImages.length;
+      mainImage.src = currentImages[currentImageIndex];
+      thumbnails.querySelectorAll('.qv-thumb').forEach(function(t) { t.classList.remove('active'); });
+      var thumbs = thumbnails.querySelectorAll('.qv-thumb');
+      if (thumbs[currentImageIndex]) thumbs[currentImageIndex].classList.add('active');
+    });
+  }
+
+  var qv_close = document.getElementById('qv-close-{{ section.id }}');
+  if (qv_close) {
+    qv_close.addEventListener('click', function(e) {
+      e.preventDefault();
+      closeQuickView();
+    });
+  }
+
+  if (overlay) {
+    overlay.addEventListener('click', function(e) {
+      if (e.target === overlay) {
+        closeQuickView();
+      }
+    });
+  }
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' && overlay && overlay.classList.contains('active')) {
+      closeQuickView();
+    }
+  });
+
+  var qtyMinus = document.getElementById('qv-qty-minus-{{ section.id }}');
+  var qtyPlus = document.getElementById('qv-qty-plus-{{ section.id }}');
+  if (qtyMinus) {
+    qtyMinus.addEventListener('click', function(e) {
+      e.preventDefault();
+      var val = parseInt(qtyInput.value) || 1;
+      if (val > 1) qtyInput.value = val - 1;
+    });
+  }
+  if (qtyPlus) {
+    qtyPlus.addEventListener('click', function(e) {
+      e.preventDefault();
+      var val = parseInt(qtyInput.value) || 1;
+      qtyInput.value = val + 1;
+    });
+  }
+
+  var atcBtn = document.getElementById('qv-atc-{{ section.id }}');
+  if (atcBtn) {
+    atcBtn.addEventListener('click', function(e) {
+      e.preventDefault();
+      if (!currentBlockId) return;
+      var data = qvProductData[currentBlockId];
+      if (!data) return;
+      var id = selectedVariantId || data.id;
+      var qty = parseInt(qtyInput.value) || 1;
+
+      fetch(window.Shopify?.routes?.cart_add_url || "/cart/add.js", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({id: id, quantity: qty})
+      })
+      .then(function(r) { return r.json(); })
+      .then(function(json) {
+        atcBtn.textContent = "ADDED!";
+        setTimeout(function() { atcBtn.textContent = "ADD TO CART"; }, 2000);
+        if (typeof window.StandardEvents !== 'undefined') {
+          document.dispatchEvent(new CustomEvent("cart:updated"));
+        }
+      })
+      .catch(function(err) {
+        console.error("Add to cart error:", err);
+        atcBtn.textContent = "ERROR";
+        setTimeout(function() { atcBtn.textContent = "ADD TO CART"; }, 2000);
+      });
+    });
+  }
+
+  var buyBtn = document.getElementById('qv-buy-{{ section.id }}');
+  if (buyBtn) {
+    buyBtn.addEventListener('click', function(e) {
+      e.preventDefault();
+      if (!currentBlockId) return;
+      var data = qvProductData[currentBlockId];
+      if (!data) return;
+      var id = selectedVariantId || data.id;
+      var qty = parseInt(qtyInput.value) || 1;
+      window.location.href = "/cart/" + id + ":" + qty;
+    });
+  }
+
+  var wishlistBtn = document.getElementById('qv-wishlist-{{ section.id }}');
+  if (wishlistBtn) {
+    wishlistBtn.addEventListener('click', function(e) {
+      e.preventDefault();
+      wishlistBtn.style.color = '#10b981';
+      wishlistBtn.textContent = '♥';
+      setTimeout(function() {
+        wishlistBtn.style.color = '';
+      }, 500);
+    });
+  }
+
+  document.querySelectorAll('#qv-share-{{ section.id }} .qv-share-btn').forEach(function(btn) {
+    btn.addEventListener('click', function(e) {
+      e.preventDefault();
+      if (!currentBlockId) return;
+      var data = qvProductData[currentBlockId];
+      if (!data) return;
+      var url = data.url || window.location.href;
+      var text = data.title || '';
+      var platform = this.getAttribute('data-share');
+      var shareUrl = '';
+      switch (platform) {
+        case 'facebook': shareUrl = 'https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(url); break;
+        case 'twitter': shareUrl = 'https://twitter.com/intent/tweet?text=' + encodeURIComponent(text) + '&url=' + encodeURIComponent(url); break;
+        case 'pinterest': shareUrl = 'https://pinterest.com/pin/create/button/?url=' + encodeURIComponent(url) + '&description=' + encodeURIComponent(text); break;
+        case 'tumblr': shareUrl = 'https://www.tumblr.com/share/link?url=' + encodeURIComponent(url) + '&name=' + encodeURIComponent(text); break;
+        case 'telegram': shareUrl = 'https://t.me/share/url?url=' + encodeURIComponent(url) + '&text=' + encodeURIComponent(text); break;
+        case 'email': shareUrl = 'mailto:?subject=' + encodeURIComponent(text) + '&body=' + encodeURIComponent(url); break;
+      }
+      if (shareUrl) window.open(shareUrl, '_blank', 'width=600,height=400');
+    });
+  });
+
+  var askBtn = document.getElementById('qv-ask-{{ section.id }}');
+  if (askBtn) {
+    askBtn.addEventListener('click', function(e) {
+      e.preventDefault();
+      if (!currentBlockId) return;
+      var data = qvProductData[currentBlockId];
+      if (!data) return;
+      var subject = 'Question about: ' + data.title;
+      var body = 'I have a question about ' + data.title + ' (' + data.url + '):\n\n';
+      window.location.href = 'mailto:?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+    });
+  }
+})();
 </script>
 
 {% schema %}
@@ -336,49 +1110,28 @@
   "settings": [
     {
       "type": "header",
-      "content": "Background"
+      "content": "Section Background"
     },
     {
       "type": "color",
       "id": "bg_color",
-      "label": "Background color",
+      "label": "Background Color",
       "default": "#f8f9fa"
     },
     {
       "type": "image_picker",
       "id": "bg_image",
-      "label": "Background image"
+      "label": "Background Image"
     },
     {
       "type": "checkbox",
       "id": "enable_parallax",
-      "label": "Enable parallax effect",
-      "default": false,
-      "info": "Background image will scroll at a different speed."
-    },
-    {
-      "type": "range",
-      "id": "padding_top",
-      "min": 0,
-      "max": 100,
-      "step": 5,
-      "unit": "px",
-      "label": "Padding top",
-      "default": 50
-    },
-    {
-      "type": "range",
-      "id": "padding_bottom",
-      "min": 0,
-      "max": 100,
-      "step": 5,
-      "unit": "px",
-      "label": "Padding bottom",
-      "default": 50
+      "label": "Enable Parallax Background",
+      "default": false
     },
     {
       "type": "header",
-      "content": "Heading"
+      "content": "Section Heading"
     },
     {
       "type": "text",
@@ -389,29 +1142,29 @@
     {
       "type": "select",
       "id": "heading_alignment",
-      "label": "Heading alignment",
+      "label": "Heading Alignment",
       "options": [
-        { "value": "left", "label": "Left" },
-        { "value": "center", "label": "Center" },
-        { "value": "right", "label": "Right" }
+        {"value": "left", "label": "Left"},
+        {"value": "center", "label": "Center"},
+        {"value": "right", "label": "Right"}
       ],
       "default": "center"
     },
     {
       "type": "color",
       "id": "heading_color",
-      "label": "Heading color",
+      "label": "Heading Color",
       "default": "#000000"
     },
     {
       "type": "range",
       "id": "heading_font_size",
-      "min": 20,
-      "max": 72,
+      "label": "Heading Font Size",
+      "min": 16,
+      "max": 60,
       "step": 2,
-      "unit": "px",
-      "label": "Heading font size",
-      "default": 36
+      "default": 36,
+      "unit": "px"
     },
     {
       "type": "header",
@@ -419,101 +1172,129 @@
     },
     {
       "type": "range",
-      "id": "grid_gap",
-      "min": 10,
-      "max": 60,
-      "step": 5,
-      "unit": "px",
-      "label": "Grid gap",
-      "default": 30
+      "id": "page_width",
+      "label": "Page Width",
+      "min": 800,
+      "max": 1600,
+      "step": 20,
+      "default": 1200,
+      "unit": "px"
     },
     {
       "type": "range",
-      "id": "page_width",
-      "min": 800,
-      "max": 1600,
-      "step": 50,
-      "unit": "px",
-      "label": "Page width",
-      "default": 1200
+      "id": "columns_desktop",
+      "label": "Columns on Desktop",
+      "min": 1,
+      "max": 6,
+      "step": 1,
+      "default": 3
+    },
+    {
+      "type": "range",
+      "id": "grid_gap",
+      "label": "Grid Gap",
+      "min": 0,
+      "max": 60,
+      "step": 5,
+      "default": 30,
+      "unit": "px"
     },
     {
       "type": "header",
-      "content": "Card"
+      "content": "Card Design"
     },
     {
       "type": "color",
       "id": "card_bg_color",
-      "label": "Card background color",
+      "label": "Card Background Color",
       "default": "#ffffff"
     },
     {
       "type": "range",
       "id": "card_border_radius",
+      "label": "Card Border Radius",
       "min": 0,
-      "max": 20,
+      "max": 30,
       "step": 2,
-      "unit": "px",
-      "label": "Card border radius",
-      "default": 12
+      "default": 12,
+      "unit": "px"
     },
     {
       "type": "select",
       "id": "card_shadow",
-      "label": "Card shadow",
+      "label": "Card Shadow",
       "options": [
-        { "value": "none", "label": "None" },
-        { "value": "small", "label": "Small" },
-        { "value": "medium", "label": "Medium" },
-        { "value": "large", "label": "Large" }
+        {"value": "none", "label": "None"},
+        {"value": "small", "label": "Small"},
+        {"value": "medium", "label": "Medium"},
+        {"value": "large", "label": "Large"}
       ],
       "default": "medium"
+    },
+    {
+      "type": "header",
+      "content": "Padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top Padding",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "default": 50,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom Padding",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "default": 50,
+      "unit": "px"
     }
   ],
   "blocks": [
     {
-      "type": "video_product",
-      "name": "Video + Product",
-      "limit": 6,
+      "type": "video_item",
+      "name": "Video Item",
       "settings": [
-        {
-          "type": "header",
-          "content": "Video"
-        },
         {
           "type": "checkbox",
           "id": "show_video",
-          "label": "Show video",
-          "default": false,
-          "info": "Videos are hidden by default until toggled."
+          "label": "Show Video",
+          "default": true
         },
         {
           "type": "video",
           "id": "video",
-          "label": "Upload video"
+          "label": "Video File"
         },
         {
           "type": "video_url",
           "id": "video_url",
-          "label": "Video URL (YouTube / Vimeo)",
+          "label": "Video URL",
           "accept": ["youtube", "vimeo"]
         },
         {
           "type": "checkbox",
           "id": "loop_video",
-          "label": "Loop video",
+          "label": "Loop Video",
           "default": false
         },
         {
           "type": "checkbox",
           "id": "autoplay_video",
-          "label": "Autoplay video (muted)",
-          "default": false,
-          "info": "Video will be muted when autoplaying."
+          "label": "Autoplay Video",
+          "default": false
         },
         {
-          "type": "header",
-          "content": "Product"
+          "type": "checkbox",
+          "id": "mute_video",
+          "label": "Mute Video",
+          "default": true
         },
         {
           "type": "product",
@@ -526,11 +1307,10 @@
   "presets": [
     {
       "name": "Product Videos",
-      "category": "Video",
       "blocks": [
-        { "type": "video_product" },
-        { "type": "video_product" },
-        { "type": "video_product" }
+        {
+          "type": "video_item"
+        }
       ]
     }
   ]

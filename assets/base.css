@@ -3106,6 +3106,10 @@ details-disclosure > details {
       padding-bottom: var(--grid-desktop-vertical-spacing);
     }
   }
+
+.product-grid .grid__item {
+  display: flex;
+}
 }
 
 .font-body-bold {
