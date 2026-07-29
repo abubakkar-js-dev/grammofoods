@@ -27,9 +27,15 @@
     font-size: {{ section.settings.heading_size }}px;
     text-align: {{ section.settings.heading_align }};
   }
+
+  @media screen and (max-width: 749px) {
+    #shopify-section-{{ section.id }} .t4s-section-heading {
+      font-size: {{ section.settings.heading_size | times: 0.75 | round: 0 }}px;
+    }
+  }
 {%- endstyle -%}
 
-<div class="t4s-video-product-section">
+<div class="t4s-video-product-section color-{{ section.settings.color_scheme }} gradient">
   <div class="page-width">
     {% if section.settings.heading != blank %}
       <h2 class="t4s-section-heading">{{ section.settings.heading }}</h2>
@@ -49,6 +55,21 @@
           {%- else -%}
             {%- assign show_video_controls = true -%}
           {%- endif -%}
+        {%- endif -%}
+        {%- if block.settings.show_video and block.settings.video != blank -%}
+          {%- assign has_video = true -%}
+        {%- else -%}
+          {%- assign has_video = false -%}
+        {%- endif -%}
+        {%- if block.settings.show_video and block.settings.video_url != blank -%}
+          {%- assign has_video_url = true -%}
+        {%- else -%}
+          {%- assign has_video_url = false -%}
+        {%- endif -%}
+        {%- if has_video or has_video_url -%}
+          {%- assign show_play_badge = true -%}
+        {%- else -%}
+          {%- assign show_play_badge = false -%}
         {%- endif -%}
         {%- assign block_aspect = block.settings.aspect_ratio | default: '1/1' -%}
         {%- case block_aspect -%}
@@ -86,6 +107,13 @@
                 {{ 'product-apparel-2' | placeholder_svg_tag: 'placeholder-svg' }}
               {% endif %}
             {% endif %}
+            {% if show_play_badge %}
+              <span class="t4s-play-badge">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+                  <path d="M6.5 4.5v11l9-5.5z"/>
+                </svg>
+              </span>
+            {% endif %}
           </div>
 
           {% if product != blank and section.settings.show_product_info %}
@@ -105,15 +133,19 @@
                   <div class="t4s-price">{{ product.price | money }}</div>
                 </div>
                 <div class="t4s-button-product">
-                  <a class="t4s-button-product-item t4s-quickview-btn" href="{{ product.url }}" data-action-quickview="">
-                    <svg class="t4s-icon-view" width="18" height="12" viewBox="0 0 19 12" fill="currentColor">
-                      <path d="M18.7079 5.6338C18.5397 5.40371 14.5321 0 9.4137 0C4.29527 0 0.287485 5.40371 0.119471 5.63358C0.041836 5.73994 0 5.86821 0 5.99989C0 6.13157 0.041836 6.25984 0.119471 6.3662C0.287485 6.59629 4.29527 12 9.4137 12C14.5321 12 18.5397 6.59625 18.7079 6.36638C18.7857 6.26008 18.8276 6.13179 18.8276 6.00009C18.8276 5.86839 18.7857 5.74011 18.7079 5.6338ZM9.4137 10.7586C5.64343 10.7586 2.37798 7.17207 1.41133 5.99958C2.37673 4.82605 5.63534 1.24137 9.4137 1.24137C13.1838 1.24137 16.449 4.8273 17.4161 6.00042C16.4507 7.17391 13.1921 10.7586 9.4137 10.7586Z"></path>
-                      <path d="M9.4137 2.27586C7.36024 2.27586 5.68954 3.94656 5.68954 6.00002C5.68954 8.05348 7.36024 9.72417 9.4137 9.72417C11.4672 9.72417 13.1379 8.05348 13.1379 6.00002C13.1379 3.94656 11.4672 2.27586 9.4137 2.27586ZM9.4137 8.48276C8.04465 8.48276 6.93095 7.36903 6.93095 6.00002C6.93095 4.63101 8.04469 3.51727 9.4137 3.51727C10.7827 3.51727 11.8964 4.63101 11.8964 6.00002C11.8964 7.36903 10.7827 8.48276 9.4137 8.48276Z"></path>
-                    </svg>
-                  </a>
+                  <modal-opener data-modal="#QuickView-{{ product.id }}">
+                    <button class="t4s-button-product-item t4s-quickview-btn" data-product-url="{{ product.url }}" title="{{ 'products.product.quick_view' | t | default: 'Quick view' }}">
+                      <svg class="t4s-icon-view" width="18" height="12" viewBox="0 0 19 12" fill="currentColor">
+                        <path d="M18.7079 5.6338C18.5397 5.40371 14.5321 0 9.4137 0C4.29527 0 0.287485 5.40371 0.119471 5.63358C0.041836 5.73994 0 5.86821 0 5.99989C0 6.13157 0.041836 6.25984 0.119471 6.3662C0.287485 6.59629 4.29527 12 9.4137 12C14.5321 12 18.5397 6.59625 18.7079 6.36638C18.7857 6.26008 18.8276 6.13179 18.8276 6.00009C18.8276 5.86839 18.7857 5.74011 18.7079 5.6338ZM9.4137 10.7586C5.64343 10.7586 2.37798 7.17207 1.41133 5.99958C2.37673 4.82605 5.63534 1.24137 9.4137 1.24137C13.1838 1.24137 16.449 4.8273 17.4161 6.00042C16.4507 7.17391 13.1921 10.7586 9.4137 10.7586Z"></path>
+                        <path d="M9.4137 2.27586C7.36024 2.27586 5.68954 3.94656 5.68954 6.00002C5.68954 8.05348 7.36024 9.72417 9.4137 9.72417C11.4672 9.72417 13.1379 8.05348 13.1379 6.00002C13.1379 3.94656 11.4672 2.27586 9.4137 2.27586ZM9.4137 8.48276C8.04465 8.48276 6.93095 7.36903 6.93095 6.00002C6.93095 4.63101 8.04469 3.51727 9.4137 3.51727C10.7827 3.51727 11.8964 4.63101 11.8964 6.00002C11.8964 7.36903 10.7827 8.48276 9.4137 8.48276Z"></path>
+                      </svg>
+                      {%- render 'loading-spinner' -%}
+                    </button>
+                  </modal-opener>
                 </div>
               </div>
             </div>
+            {% render 'quick-view-modal', product_id: product.id, product_title: product.title %}
           {% endif %}
         </div>
       {% else %}
@@ -132,12 +164,12 @@
                   <div class="t4s-price">{{ 1999 | money }}</div>
                 </div>
                 <div class="t4s-button-product">
-                  <a class="t4s-button-product-item t4s-quickview-btn" href="#">
+                  <span class="t4s-button-product-item t4s-quickview-btn" style="cursor: default; opacity: 0.4;">
                     <svg class="t4s-icon-view" width="18" height="12" viewBox="0 0 19 12" fill="currentColor">
                       <path d="M18.7079 5.6338C18.5397 5.40371 14.5321 0 9.4137 0C4.29527 0 0.287485 5.40371 0.119471 5.63358C0.041836 5.73994 0 5.86821 0 5.99989C0 6.13157 0.041836 6.25984 0.119471 6.3662C0.287485 6.59629 4.29527 12 9.4137 12C14.5321 12 18.5397 6.59625 18.7079 6.36638C18.7857 6.26008 18.8276 6.13179 18.8276 6.00009C18.8276 5.86839 18.7857 5.74011 18.7079 5.6338ZM9.4137 10.7586C5.64343 10.7586 2.37798 7.17207 1.41133 5.99958C2.37673 4.82605 5.63534 1.24137 9.4137 1.24137C13.1838 1.24137 16.449 4.8273 17.4161 6.00042C16.4507 7.17391 13.1921 10.7586 9.4137 10.7586Z"></path>
                       <path d="M9.4137 2.27586C7.36024 2.27586 5.68954 3.94656 5.68954 6.00002C5.68954 8.05348 7.36024 9.72417 9.4137 9.72417C11.4672 9.72417 13.1379 8.05348 13.1379 6.00002C13.1379 3.94656 11.4672 2.27586 9.4137 2.27586ZM9.4137 8.48276C8.04465 8.48276 6.93095 7.36903 6.93095 6.00002C6.93095 4.63101 8.04469 3.51727 9.4137 3.51727C10.7827 3.51727 11.8964 4.63101 11.8964 6.00002C11.8964 7.36903 10.7827 8.48276 9.4137 8.48276Z"></path>
                     </svg>
-                  </a>
+                  </span>
                 </div>
               </div>
             </div>
@@ -199,10 +231,17 @@
       "content": "Layout"
     },
     {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    },
+    {
       "type": "color",
       "id": "bg_color",
       "label": "Section background",
-      "default": "#ffffff"
+      "default": "#ffffff",
+      "info": "Uses color scheme above as default. Set a custom color to override."
     },
     {
       "type": "range",
@@ -211,7 +250,7 @@
       "min": 800,
       "max": 1600,
       "step": 20,
-      "default": 1200,
+      "default": 1400,
       "unit": "px"
     },
     {
@@ -248,7 +287,7 @@
       "min": 0,
       "max": 60,
       "step": 5,
-      "default": 15,
+      "default": 20,
       "unit": "px"
     },
     {
@@ -258,7 +297,7 @@
       "min": 0,
       "max": 30,
       "step": 2,
-      "default": 8,
+      "default": 12,
       "unit": "px"
     },
     {
