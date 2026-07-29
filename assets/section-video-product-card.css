@@ -76,14 +76,28 @@
   height: 100%;
 }
 
-.t4s-product-info-bar {
+.t4s-product-info-card {
   line-height: 1.2;
+  margin-top: 12px;
+  border-radius: var(--card-radius);
+  overflow: hidden;
+  border: 1px solid #e8e8e8;
+  background: #ffffff;
 }
 
 .t4s-video-label {
   justify-content: space-between;
-  padding: 10px 12px;
+  padding: 14px 16px;
   background: #ffffff;
+}
+
+@media screen and (max-width: 749px) {
+  .t4s-product-info-card {
+    margin-top: 8px;
+  }
+  .t4s-video-label {
+    padding: 10px 12px;
+  }
 }
 
 .t4s-image-product {

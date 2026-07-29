@@ -39,7 +39,22 @@
       {% for block in section.blocks %}
         {%- assign product = block.settings.product -%}
         {%- assign hide_controls = section.settings.hide_video_controls -%}
-        <div class="t4s-product-video-inner t4s-d-flex t4s-flex-column t4s-col-item" style="--aspect-ratio: 100%" {{ block.shopify_attributes }}>
+        {%- assign block_aspect = block.settings.aspect_ratio | default: '1/1' -%}
+        {%- case block_aspect -%}
+          {%- when '9/16' -%}
+            {%- assign aspect_padding = '177.78%' -%}
+          {%- when '3/4' -%}
+            {%- assign aspect_padding = '133.33%' -%}
+          {%- when '1/1' -%}
+            {%- assign aspect_padding = '100%' -%}
+          {%- when '4/3' -%}
+            {%- assign aspect_padding = '75%' -%}
+          {%- when '16/9' -%}
+            {%- assign aspect_padding = '56.25%' -%}
+          {%- else -%}
+            {%- assign aspect_padding = '100%' -%}
+        {%- endcase -%}
+        <div class="t4s-product-video-inner t4s-d-flex t4s-flex-column t4s-col-item" style="--aspect-ratio: {{ aspect_padding }}" {{ block.shopify_attributes }}>
           <div class="t4s-video">
             {% if block.settings.show_video == false %}
               {% if product.featured_media != blank %}
@@ -63,7 +78,7 @@
           </div>
 
           {% if product != blank and section.settings.show_product_info %}
-            <div class="t4s-w-100 t4s-product-info-bar">
+            <div class="t4s-w-100 t4s-product-info-card">
               <div class="t4s-video-label t4s-d-flex t4s-align-items-center t4s-w-100">
                 <div class="t4s-image-product">
                   {% if product.featured_media != blank %}
@@ -96,7 +111,7 @@
             <div class="t4s-video">
               {{ 'product-apparel-2' | placeholder_svg_tag: 'placeholder-svg' }}
             </div>
-            <div class="t4s-w-100 t4s-product-info-bar">
+            <div class="t4s-w-100 t4s-product-info-card">
               <div class="t4s-video-label t4s-d-flex t4s-align-items-center t4s-w-100">
                 <div class="t4s-image-product">
                   {{ 'product-apparel-2' | placeholder_svg_tag: 'placeholder-svg' }}
@@ -295,6 +310,19 @@
         {
           "type": "header",
           "content": "Video"
+        },
+        {
+          "type": "select",
+          "id": "aspect_ratio",
+          "label": "Video aspect ratio",
+          "options": [
+            { "value": "9/16", "label": "Portrait (9:16)" },
+            { "value": "3/4", "label": "Portrait (3:4)" },
+            { "value": "1/1", "label": "Square (1:1)" },
+            { "value": "4/3", "label": "Landscape (4:3)" },
+            { "value": "16/9", "label": "Landscape (16:9)" }
+          ],
+          "default": "1/1"
         },
         {
           "type": "checkbox",
