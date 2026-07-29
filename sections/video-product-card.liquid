@@ -42,6 +42,11 @@
         {%- if block.settings.hide_video_controls -%}
           {%- assign hide_controls = true -%}
         {%- endif -%}
+        {%- if hide_controls -%}
+  {%- assign show_video_controls = false -%}
+{%- else -%}
+  {%- assign show_video_controls = true -%}
+{%- endif -%}
         {%- assign block_aspect = block.settings.aspect_ratio | default: '1/1' -%}
         {%- case block_aspect -%}
           {%- when '9/16' -%}
@@ -66,7 +71,7 @@
                 {{ 'product-apparel-2' | placeholder_svg_tag: 'placeholder-svg' }}
               {% endif %}
             {% elsif block.settings.video != blank %}
-              {{ block.settings.video | video_tag: controls: hide_controls, image_size: '600x', autoplay: block.settings.autoplay_video, loop: block.settings.loop_video, muted: block.settings.mute_video, playsinline: true, loading: 'lazy' }}
+              {{ block.settings.video | video_tag: controls: show_video_controls, image_size: '600x', autoplay: block.settings.autoplay_video, loop: block.settings.loop_video, muted: block.settings.mute_video, playsinline: true, loading: 'lazy' }}
             {% elsif block.settings.video_url != blank %}
               <video playsinline muted loop preload="metadata" autoplay{% unless hide_controls %} controls{% endunless %}>
                 <source src="{{ block.settings.video_url }}" type="video/mp4">
