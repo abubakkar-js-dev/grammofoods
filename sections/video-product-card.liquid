@@ -56,21 +56,6 @@
             {%- assign show_video_controls = true -%}
           {%- endif -%}
         {%- endif -%}
-        {%- if block.settings.show_video and block.settings.video != blank -%}
-          {%- assign has_video = true -%}
-        {%- else -%}
-          {%- assign has_video = false -%}
-        {%- endif -%}
-        {%- if block.settings.show_video and block.settings.video_url != blank -%}
-          {%- assign has_video_url = true -%}
-        {%- else -%}
-          {%- assign has_video_url = false -%}
-        {%- endif -%}
-        {%- if has_video or has_video_url -%}
-          {%- assign show_play_badge = true -%}
-        {%- else -%}
-          {%- assign show_play_badge = false -%}
-        {%- endif -%}
         {%- assign block_aspect = block.settings.aspect_ratio | default: '1/1' -%}
         {%- case block_aspect -%}
           {%- when '9/16' -%}
@@ -106,13 +91,6 @@
               {% else %}
                 {{ 'product-apparel-2' | placeholder_svg_tag: 'placeholder-svg' }}
               {% endif %}
-            {% endif %}
-            {% if show_play_badge %}
-              <span class="t4s-play-badge">
-                <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
-                  <path d="M6.5 4.5v11l9-5.5z"/>
-                </svg>
-              </span>
             {% endif %}
           </div>
 
