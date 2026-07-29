@@ -839,10 +839,7 @@ class SlideshowComponent extends SliderComponent {
     this.sliderDotButtons = Array.from(this.querySelectorAll('.slideshow__dot'));
     this.sliderDotButtons.forEach((dot) => dot.addEventListener('click', this.linkToSlide.bind(this)));
 
-    this.numericCurrent = this.querySelector('.slideshow__numeric-current');
-    this.numericTotal = this.querySelector('.slideshow__numeric-total');
-
-    this.playButton = this.querySelector('.slideshow__ctrl--play');
+    this.playButton = this.querySelector('.slideshow__autoplay-btn');
 
     this.slider.addEventListener('scroll', this.setSlideVisibility.bind(this));
     this.setSlideVisibility();
@@ -929,10 +926,6 @@ class SlideshowComponent extends SliderComponent {
       dot.setAttribute('aria-selected', isActive);
     });
 
-    if (this.numericCurrent) {
-      this.numericCurrent.textContent = this.currentPage;
-    }
-
     if (this.sliderItemsToShow.length > 1) {
       this.prevButton?.removeAttribute('disabled');
       this.nextButton?.removeAttribute('disabled');
@@ -979,10 +972,10 @@ class SlideshowComponent extends SliderComponent {
 
   togglePlayButtonState(pauseAutoplay) {
     if (pauseAutoplay) {
-      this.playButton?.classList.add('slideshow__ctrl--paused');
+      this.playButton?.classList.add('slideshow__autoplay--paused');
       this.playButton?.setAttribute('aria-label', window.accessibilityStrings?.playSlideshow || 'Play slideshow');
     } else {
-      this.playButton?.classList.remove('slideshow__ctrl--paused');
+      this.playButton?.classList.remove('slideshow__autoplay--paused');
       this.playButton?.setAttribute('aria-label', window.accessibilityStrings?.pauseSlideshow || 'Pause slideshow');
     }
   }
