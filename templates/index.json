@@ -81,7 +81,7 @@
             "box_align": "middle-center",
             "text_alignment": "center",
             "text_alignment_mobile": "center",
-            "color_scheme": ""
+            "color_scheme": "scheme-1"
           }
         },
         "slide_kLhmhY": {
@@ -99,7 +99,7 @@
             "box_align": "middle-center",
             "text_alignment": "center",
             "text_alignment_mobile": "center",
-            "color_scheme": ""
+            "color_scheme": "scheme-1"
           }
         }
       },
@@ -158,89 +158,73 @@
         "video_item_UaGGjC": {
           "type": "video_item",
           "settings": {
+            "show_video": true,
             "video": "shopify://files/videos/1.mp4",
             "video_url": "",
             "loop_video": false,
             "autoplay_video": false,
             "mute_video": true,
-            "product": "",
-            "show_quick_view": true,
-            "show_badges": true,
-            "show_vendor": false,
-            "show_add_to_cart": true
+            "product": ""
           }
         },
         "video_item_nzzY7t": {
           "type": "video_item",
           "settings": {
+            "show_video": true,
             "video": "shopify://files/videos/2.mp4",
             "video_url": "",
             "loop_video": false,
             "autoplay_video": false,
             "mute_video": true,
-            "product": "",
-            "show_quick_view": true,
-            "show_badges": true,
-            "show_vendor": false,
-            "show_add_to_cart": true
+            "product": ""
           }
         },
         "video_item_Vh8Xw8": {
           "type": "video_item",
           "settings": {
+            "show_video": true,
             "video": "shopify://files/videos/3.mp4",
             "video_url": "",
             "loop_video": false,
             "autoplay_video": false,
             "mute_video": true,
-            "product": "",
-            "show_quick_view": true,
-            "show_badges": true,
-            "show_vendor": false,
-            "show_add_to_cart": true
+            "product": ""
           }
         },
         "video_item_M9WnXW": {
           "type": "video_item",
           "settings": {
+            "show_video": true,
             "video": "shopify://files/videos/pv-1.mp4",
             "video_url": "",
             "loop_video": false,
             "autoplay_video": false,
             "mute_video": true,
-            "product": "maca-powder",
-            "show_quick_view": true,
-            "show_badges": true,
-            "show_vendor": false,
-            "show_add_to_cart": true
+            "product": "maca-powder"
           }
         },
         "video_item_VarfDz": {
           "type": "video_item",
           "settings": {
+            "show_video": true,
+            "video": "",
             "video_url": "",
             "loop_video": false,
             "autoplay_video": false,
             "mute_video": true,
-            "product": "desi-ghee",
-            "show_quick_view": true,
-            "show_badges": true,
-            "show_vendor": false,
-            "show_add_to_cart": true
+            "product": "desi-ghee"
           }
         },
         "video_item_LATLNq": {
           "type": "video_item",
           "settings": {
+            "show_video": true,
+            "video": "",
             "video_url": "",
             "loop_video": false,
             "autoplay_video": false,
             "mute_video": true,
-            "product": "rosella-tea",
-            "show_quick_view": true,
-            "show_badges": true,
-            "show_vendor": false,
-            "show_add_to_cart": true
+            "product": "rosella-tea"
           }
         }
       },
@@ -254,58 +238,23 @@
       ],
       "name": "Product Videos",
       "settings": {
-        "section_bg_color": "#f8f9fa",
-        "bg_attachment": "scroll",
-        "padding_top": 50,
-        "padding_bottom": 50,
+        "bg_color": "#f8f9fa",
+        "bg_image": "",
+        "enable_parallax": false,
+        "padding_top": 48,
+        "padding_bottom": 48,
         "heading": "Product Videos",
-        "subtitle": "",
         "heading_alignment": "center",
         "heading_color": "#000000",
         "heading_font_size": 36,
-        "heading_font_weight": "700",
-        "heading_space": 40,
-        "subtitle_color": "#666666",
-        "subtitle_font_size": 16,
         "columns_desktop": 3,
         "grid_gap": 30,
         "page_width": 1200,
-        "page_padding": 20,
         "card_bg_color": "#ffffff",
         "card_border_radius": 12,
-        "card_padding": 20,
-        "card_shadow": "0 4px 20px rgba(0,0,0,0.1)",
-        "card_hover_lift": 8,
-        "image_bg_color": "#f5f5f5",
-        "image_border_radius": 8,
-        "title_color": "#333333",
-        "title_hover_color": "#000000",
-        "title_font_size": 16,
-        "title_font_weight": "600",
-        "title_max_length": 50,
-        "price_color": "#000000",
-        "price_font_size": 18,
-        "price_font_weight": "700",
-        "show_compare_price": true,
-        "vendor_color": "#999999",
-        "quick_view_bg": "#000000",
-        "quick_view_color": "#ffffff",
-        "quick_view_hover_bg": "#333333",
-        "add_to_cart_text": "Add to Cart",
-        "button_bg_color": "#000000",
-        "button_text_color": "#ffffff",
-        "button_hover_color": "#333333",
-        "button_border_radius": 6,
-        "sale_badge_color": "#ff4444",
-        "sale_badge_text_color": "#ffffff",
-        "sold_out_badge_color": "#666666",
-        "sold_out_badge_text_color": "#ffffff"
+        "card_shadow": "medium"
       }
     }
   },
-  "order": [
-    "slideshow_aY7tXL",
-    "featured_collection",
-    "product_videos_8RCM8T"
-  ]
+  "order": ["slideshow_aY7tXL", "featured_collection", "product_videos_8RCM8T"]
 }

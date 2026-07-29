@@ -742,7 +742,7 @@
 </div>
 
 {%- liquid
-  assign block_count = section.blocks | where: 'type', 'video_product' | size
+  assign block_count = section.blocks | where: 'type', 'video_item' | size
 %}
 
 <script>
@@ -1242,7 +1242,7 @@ var qvProductData = {};
       "min": 0,
       "max": 100,
       "step": 4,
-      "default": 50,
+      "default": 48,
       "unit": "px"
     },
     {
@@ -1252,7 +1252,7 @@ var qvProductData = {};
       "min": 0,
       "max": 100,
       "step": 4,
-      "default": 50,
+      "default": 48,
       "unit": "px"
     }
   ],
