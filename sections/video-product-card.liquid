@@ -1,0 +1,391 @@
+{{ 'section-video-product-card.css' | asset_url | stylesheet_tag }}
+
+{%- style -%}
+  #shopify-section-{{ section.id }} {
+    --section-bg: {{ section.settings.bg_color }};
+    --card-bg: {{ section.settings.card_bg }};
+    --card-radius: {{ section.settings.card_radius }}px;
+    --grid-gap: {{ section.settings.grid_gap }}px;
+    --aspect-ratio: {{ section.settings.video_aspect }};
+    --columns-mobile: {{ section.settings.columns_mobile }};
+    --columns-tablet: {{ section.settings.columns_tablet }};
+    --columns-desktop: {{ section.settings.columns_desktop }};
+    --qv-bg: {{ section.settings.quick_view_bg }};
+    --qv-color: {{ section.settings.quick_view_color }};
+    --heading-color: {{ section.settings.heading_color }};
+    --heading-size: {{ section.settings.heading_size }}px;
+  }
+
+  #shopify-section-{{ section.id }} .video-product-card-section {
+    background: var(--section-bg);
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+  }
+
+  #shopify-section-{{ section.id }} .video-product-card-section .page-width {
+    max-width: {{ section.settings.page_width }}px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+
+  #shopify-section-{{ section.id }} .video-product-card-section .section-heading {
+    color: var(--heading-color);
+    font-size: var(--heading-size);
+    text-align: {{ section.settings.heading_align }};
+  }
+{%- endstyle -%}
+
+<div class="video-product-card-section">
+  <div class="page-width">
+    {% if section.settings.heading != blank %}
+      <h2 class="section-heading">{{ section.settings.heading }}</h2>
+    {% endif %}
+
+    <div class="video-product-card-section__grid">
+      {% for block in section.blocks %}
+        {%- assign product = block.settings.product -%}
+        <div class="video-product-card" {{ block.shopify_attributes }}>
+          <div class="video-product-card__video-wrapper">
+            {% if block.settings.show_video == false %}
+              {% if product.featured_media != blank %}
+                {{ product.featured_media | image_url: width: 600 | image_tag: class: 'video-product-card__poster-fallback', loading: 'lazy' }}
+              {% else %}
+                {{ 'product-apparel-2' | placeholder_svg_tag: 'video-product-card__poster-fallback placeholder-svg' }}
+              {% endif %}
+            {% elsif block.settings.video != blank %}
+              {{ block.settings.video | video_tag: controls: section.settings.show_video_controls, image_size: '600x', autoplay: block.settings.autoplay_video, loop: block.settings.loop_video, muted: block.settings.mute_video, playsinline: true, loading: 'lazy' }}
+            {% elsif block.settings.video_url != blank %}
+              <video class="video-product-card__video" playsinline muted loop preload="metadata" autoplay{% if section.settings.show_video_controls %} controls{% endif %}>
+                <source src="{{ block.settings.video_url }}" type="video/mp4">
+              </video>
+            {% else %}
+              {% if product.featured_media != blank %}
+                {{ product.featured_media | image_url: width: 600 | image_tag: class: 'video-product-card__poster-fallback', loading: 'lazy' }}
+              {% else %}
+                {{ 'product-apparel-2' | placeholder_svg_tag: 'video-product-card__poster-fallback placeholder-svg' }}
+              {% endif %}
+            {% endif %}
+          </div>
+
+          {% if product != blank and section.settings.show_product_info %}
+            <div class="video-product-card__info">
+              <div class="video-product-card__info-thumbnail">
+                {% if product.featured_media != blank %}
+                  <img src="{{ product.featured_media | image_url: width: 100 }}" alt="{{ product.title | escape }}" loading="lazy">
+                {% else %}
+                  {{ 'product-apparel-2' | placeholder_svg_tag: 'placeholder-svg' }}
+                {% endif %}
+              </div>
+              <div class="video-product-card__info-details">
+                <div class="video-product-card__info-title">
+                  <a href="{{ product.url }}">{{ product.title | escape }}</a>
+                </div>
+                <div class="video-product-card__info-price">{{ product.price | money }}</div>
+              </div>
+              <div class="video-product-card__info-action">
+                <button
+                  class="video-product-card__quick-view"
+                  type="button"
+                  data-product-id="{{ product.id }}"
+                  data-product-url="{{ product.url }}"
+                  aria-label="{{ 'products.product.quick_view' | t | default: 'Quick view' }}"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" width="19" height="12" viewBox="0 0 19 12" fill="currentColor">
+                    <path d="M18.7079 5.6338C18.5397 5.40371 14.5321 0 9.4137 0C4.29527 0 0.287485 5.40371 0.119471 5.63358C0.041836 5.73994 0 5.86821 0 5.99989C0 6.13157 0.041836 6.25984 0.119471 6.3662C0.287485 6.59629 4.29527 12 9.4137 12C14.5321 12 18.5397 6.59625 18.7079 6.36638C18.7857 6.26008 18.8276 6.13179 18.8276 6.00009C18.8276 5.86839 18.7857 5.74011 18.7079 5.6338ZM9.4137 10.7586C5.64343 10.7586 2.37798 7.17207 1.41133 5.99958C2.37673 4.82605 5.63534 1.24137 9.4137 1.24137C13.1838 1.24137 16.449 4.8273 17.4161 6.00042C16.4507 7.17391 13.1921 10.7586 9.4137 10.7586Z"/>
+                    <path d="M9.4137 2.27586C7.36024 2.27586 5.68954 3.94656 5.68954 6.00002C5.68954 8.05348 7.36024 9.72417 9.4137 9.72417C11.4672 9.72417 13.1379 8.05348 13.1379 6.00002C13.1379 3.94656 11.4672 2.27586 9.4137 2.27586ZM9.4137 8.48276C8.04465 8.48276 6.93095 7.36903 6.93095 6.00002C6.93095 4.63101 8.04469 3.51727 9.4137 3.51727C10.7827 3.51727 11.8964 4.63101 11.8964 6.00002C11.8964 7.36903 10.7827 8.48276 9.4137 8.48276Z"/>
+                  </svg>
+                </button>
+              </div>
+            </div>
+          {% endif %}
+        </div>
+      {% else %}
+        {% for i in (1..section.settings.columns_desktop) %}
+          <div class="video-product-card">
+            <div class="video-product-card__video-wrapper">
+              {{ 'product-apparel-2' | placeholder_svg_tag: 'video-product-card__poster-fallback placeholder-svg' }}
+            </div>
+            <div class="video-product-card__info">
+              <div class="video-product-card__info-thumbnail">
+                {{ 'product-apparel-2' | placeholder_svg_tag: 'placeholder-svg' }}
+              </div>
+              <div class="video-product-card__info-details">
+                <div class="video-product-card__info-title">{{ 'products.product.title' | t }}</div>
+                <div class="video-product-card__info-price">{{ 1999 | money }}</div>
+              </div>
+              <div class="video-product-card__info-action">
+                <button class="video-product-card__quick-view" type="button" aria-label="{{ 'products.product.quick_view' | t | default: 'Quick view' }}">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="19" height="12" viewBox="0 0 19 12" fill="currentColor">
+                    <path d="M18.7079 5.6338C18.5397 5.40371 14.5321 0 9.4137 0C4.29527 0 0.287485 5.40371 0.119471 5.63358C0.041836 5.73994 0 5.86821 0 5.99989C0 6.13157 0.041836 6.25984 0.119471 6.3662C0.287485 6.59629 4.29527 12 9.4137 12C14.5321 12 18.5397 6.59625 18.7079 6.36638C18.7857 6.26008 18.8276 6.13179 18.8276 6.00009C18.8276 5.86839 18.7857 5.74011 18.7079 5.6338ZM9.4137 10.7586C5.64343 10.7586 2.37798 7.17207 1.41133 5.99958C2.37673 4.82605 5.63534 1.24137 9.4137 1.24137C13.1838 1.24137 16.449 4.8273 17.4161 6.00042C16.4507 7.17391 13.1921 10.7586 9.4137 10.7586Z"/>
+                    <path d="M9.4137 2.27586C7.36024 2.27586 5.68954 3.94656 5.68954 6.00002C5.68954 8.05348 7.36024 9.72417 9.4137 9.72417C11.4672 9.72417 13.1379 8.05348 13.1379 6.00002C13.1379 3.94656 11.4672 2.27586 9.4137 2.27586ZM9.4137 8.48276C8.04465 8.48276 6.93095 7.36903 6.93095 6.00002C6.93095 4.63101 8.04469 3.51727 9.4137 3.51727C10.7827 3.51727 11.8964 4.63101 11.8964 6.00002C11.8964 7.36903 10.7827 8.48276 9.4137 8.48276Z"/>
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Video Product Card",
+  "tag": "section",
+  "class": "section",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "header",
+      "content": "Heading"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Video Product Cards"
+    },
+    {
+      "type": "select",
+      "id": "heading_align",
+      "label": "Heading alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading color",
+      "default": "#000000"
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "label": "Heading size",
+      "min": 16,
+      "max": 60,
+      "step": 2,
+      "default": 28,
+      "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Section background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "card_bg",
+      "label": "Card background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "range",
+      "id": "page_width",
+      "label": "Page width",
+      "min": 800,
+      "max": 1600,
+      "step": 20,
+      "default": 1200,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "columns_desktop",
+      "label": "Columns on desktop",
+      "min": 1,
+      "max": 6,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "columns_tablet",
+      "label": "Columns on tablet",
+      "min": 1,
+      "max": 4,
+      "step": 1,
+      "default": 2
+    },
+    {
+      "type": "range",
+      "id": "columns_mobile",
+      "label": "Columns on mobile",
+      "min": 1,
+      "max": 3,
+      "step": 1,
+      "default": 1
+    },
+    {
+      "type": "range",
+      "id": "grid_gap",
+      "label": "Grid gap",
+      "min": 0,
+      "max": 60,
+      "step": 5,
+      "default": 15,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "card_radius",
+      "label": "Card border radius",
+      "min": 0,
+      "max": 30,
+      "step": 2,
+      "default": 8,
+      "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": "Video"
+    },
+    {
+      "type": "select",
+      "id": "video_aspect",
+      "label": "Video aspect ratio",
+      "options": [
+        { "value": "9/16", "label": "Portrait (9:16)" },
+        { "value": "3/4", "label": "Portrait (3:4)" },
+        { "value": "1/1", "label": "Square (1:1)" },
+        { "value": "4/3", "label": "Landscape (4:3)" },
+        { "value": "16/9", "label": "Landscape (16:9)" }
+      ],
+      "default": "1/1"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_video_controls",
+      "label": "Show video controls",
+      "default": false,
+      "info": "Shows native play/pause/volume controls on videos"
+    },
+    {
+      "type": "header",
+      "content": "Product Info"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_product_info",
+      "label": "Show product info bar",
+      "default": true,
+      "info": "Displays product thumbnail, title, price, and quick view button below the video"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "quick_view_bg",
+      "label": "Quick view button background",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "quick_view_color",
+      "label": "Quick view button icon color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "header",
+      "content": "Padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top padding",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "default": 40,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom padding",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "default": 40,
+      "unit": "px"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "video_product",
+      "name": "Video Product",
+      "settings": [
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Product"
+        },
+        {
+          "type": "header",
+          "content": "Video"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_video",
+          "label": "Show video",
+          "default": true
+        },
+        {
+          "type": "video",
+          "id": "video",
+          "label": "Video file"
+        },
+        {
+          "type": "url",
+          "id": "video_url",
+          "label": "Video URL (fallback)",
+          "info": "Direct video URL used if no video file is uploaded"
+        },
+        {
+          "type": "checkbox",
+          "id": "autoplay_video",
+          "label": "Autoplay",
+          "default": true
+        },
+        {
+          "type": "checkbox",
+          "id": "loop_video",
+          "label": "Loop",
+          "default": true
+        },
+        {
+          "type": "checkbox",
+          "id": "mute_video",
+          "label": "Muted",
+          "default": true
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Video Product Card",
+      "blocks": [
+        { "type": "video_product" },
+        { "type": "video_product" },
+        { "type": "video_product" },
+        { "type": "video_product" }
+      ]
+    }
+  ]
+}
+{% endschema %}
