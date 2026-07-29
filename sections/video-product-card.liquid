@@ -38,15 +38,18 @@
     <div class="t4s-video-product-grid">
       {% for block in section.blocks %}
         {%- assign product = block.settings.product -%}
-        {%- assign hide_controls = section.settings.hide_video_controls -%}
-        {%- if block.settings.hide_video_controls -%}
-          {%- assign hide_controls = true -%}
+        {%- assign block_controls = block.settings.video_controls -%}
+        {%- if block_controls == 'show' -%}
+          {%- assign show_video_controls = true -%}
+        {%- elsif block_controls == 'hide' -%}
+          {%- assign show_video_controls = false -%}
+        {%- else -%}
+          {%- if section.settings.hide_video_controls -%}
+            {%- assign show_video_controls = false -%}
+          {%- else -%}
+            {%- assign show_video_controls = true -%}
+          {%- endif -%}
         {%- endif -%}
-        {%- if hide_controls -%}
-  {%- assign show_video_controls = false -%}
-{%- else -%}
-  {%- assign show_video_controls = true -%}
-{%- endif -%}
         {%- assign block_aspect = block.settings.aspect_ratio | default: '1/1' -%}
         {%- case block_aspect -%}
           {%- when '9/16' -%}
@@ -73,7 +76,7 @@
             {% elsif block.settings.video != blank %}
               {{ block.settings.video | video_tag: controls: show_video_controls, image_size: '600x', autoplay: block.settings.autoplay_video, loop: block.settings.loop_video, muted: block.settings.mute_video, playsinline: true, loading: 'lazy' }}
             {% elsif block.settings.video_url != blank %}
-              <video playsinline muted loop preload="metadata" autoplay{% unless hide_controls %} controls{% endunless %}>
+              <video playsinline muted loop preload="metadata" autoplay{% if show_video_controls %} controls{% endif %}>
                 <source src="{{ block.settings.video_url }}" type="video/mp4">
               </video>
             {% else %}
@@ -368,11 +371,15 @@
           "default": true
         },
         {
-          "type": "checkbox",
-          "id": "hide_video_controls",
-          "label": "Hide video controls",
-          "default": false,
-          "info": "Overrides section setting to hide controls for this specific video"
+          "type": "select",
+          "id": "video_controls",
+          "label": "Video controls",
+          "options": [
+            { "value": "default", "label": "Default (use section setting)" },
+            { "value": "show", "label": "Show controls" },
+            { "value": "hide", "label": "Hide controls" }
+          ],
+          "default": "default"
         }
       ]
     }
