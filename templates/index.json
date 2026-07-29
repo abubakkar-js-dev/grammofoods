@@ -254,6 +254,7 @@
           "type": "video_product",
           "settings": {
             "product": "",
+            "aspect_ratio": "9/16",
             "show_video": true,
             "video": "shopify://files/videos/1.mp4",
             "video_url": "",
@@ -266,6 +267,7 @@
           "type": "video_product",
           "settings": {
             "product": "",
+            "aspect_ratio": "9/16",
             "show_video": true,
             "video": "shopify://files/videos/2.mp4",
             "video_url": "",
@@ -278,6 +280,7 @@
           "type": "video_product",
           "settings": {
             "product": "",
+            "aspect_ratio": "9/16",
             "show_video": true,
             "video": "shopify://files/videos/3.mp4",
             "video_url": "",
@@ -290,6 +293,7 @@
           "type": "video_product",
           "settings": {
             "product": "7-bahar-honey-with-comb-500gm",
+            "aspect_ratio": "1/1",
             "show_video": true,
             "video": "shopify://files/videos/pv-1.mp4",
             "video_url": "",
@@ -302,6 +306,7 @@
           "type": "video_product",
           "settings": {
             "product": "desi-ghee",
+            "aspect_ratio": "1/1",
             "show_video": true,
             "video": "shopify://files/videos/pv-2.mp4",
             "video_url": "",
@@ -314,6 +319,7 @@
           "type": "video_product",
           "settings": {
             "product": "dhc-korean-ginseng-extract-japan",
+            "aspect_ratio": "1/1",
             "show_video": true,
             "video": "shopify://files/videos/pv-3.mp4",
             "video_url": "",
