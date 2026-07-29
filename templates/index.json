@@ -260,7 +260,8 @@
             "video_url": "",
             "autoplay_video": false,
             "loop_video": false,
-            "mute_video": false
+            "mute_video": false,
+            "video_controls": "show"
           }
         },
         "video_product_VPtgwD": {
@@ -273,7 +274,8 @@
             "video_url": "",
             "autoplay_video": false,
             "loop_video": false,
-            "mute_video": false
+            "mute_video": false,
+            "video_controls": "show"
           }
         },
         "video_product_kMxMhC": {
@@ -286,7 +288,8 @@
             "video_url": "",
             "autoplay_video": false,
             "loop_video": false,
-            "mute_video": false
+            "mute_video": false,
+            "video_controls": "show"
           }
         },
         "video_product_jb7HUp": {
@@ -299,7 +302,8 @@
             "video_url": "",
             "autoplay_video": true,
             "loop_video": true,
-            "mute_video": true
+            "mute_video": true,
+            "video_controls": "default"
           }
         },
         "video_product_x9JbKh": {
@@ -312,7 +316,8 @@
             "video_url": "",
             "autoplay_video": true,
             "loop_video": true,
-            "mute_video": true
+            "mute_video": true,
+            "video_controls": "default"
           }
         },
         "video_product_EWyTwp": {
@@ -325,7 +330,8 @@
             "video_url": "",
             "autoplay_video": true,
             "loop_video": true,
-            "mute_video": true
+            "mute_video": true,
+            "video_controls": "default"
           }
         }
       },
