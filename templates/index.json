@@ -260,7 +260,7 @@
             "video_url": "",
             "autoplay_video": false,
             "loop_video": false,
-            "mute_video": true
+            "mute_video": false
           }
         },
         "video_product_VPtgwD": {
@@ -273,7 +273,7 @@
             "video_url": "",
             "autoplay_video": false,
             "loop_video": false,
-            "mute_video": true
+            "mute_video": false
           }
         },
         "video_product_kMxMhC": {
@@ -286,7 +286,7 @@
             "video_url": "",
             "autoplay_video": false,
             "loop_video": false,
-            "mute_video": true
+            "mute_video": false
           }
         },
         "video_product_jb7HUp": {
