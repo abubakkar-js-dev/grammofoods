@@ -58,23 +58,21 @@
   height: 36px;
   padding: 0;
   background: #ffffff;
-  border: 1px solid #e0e0e0;
-  border-radius: 6px;
+  border: 2px solid #111111;
+  border-radius: 3px;
   cursor: pointer;
-  color: #bbbbbb;
+  color: #111111;
   transition: all 0.2s ease;
 }
 
 .collection-header__layout-btn:hover {
-  border-color: #cccccc;
-  color: #888888;
   background: #fafafa;
 }
 
 .collection-header__layout-btn.is--active {
-  border-color: #22c55e;
-  color: #22c55e;
-  background: #f0fdf4;
+  background: #111111;
+  color: #ffffff;
+  border-color: #111111;
 }
 
 .collection-header__layout-btn .icon {
