@@ -161,13 +161,15 @@ body:has(.section-header .drawer-menu) .announcement-bar-section .page-width {
   flex-grow: 1;
 }
 
-.section + .section {
+.section {
   margin-top: var(--spacing-sections-mobile);
+  margin-bottom: var(--spacing-sections-mobile);
 }
 
 @media screen and (min-width: 750px) {
-  .section + .section {
+  .section {
     margin-top: var(--spacing-sections-desktop);
+    margin-bottom: var(--spacing-sections-desktop);
   }
 }
 
