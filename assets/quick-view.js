@@ -473,6 +473,9 @@ if (!customElements.get('quick-view-modal')) {
               onError();
             }
           }
+        } else {
+          this._debug('Empty src — marking as error');
+          this._handleImageError(imgEl);
         }
       }
 
@@ -533,10 +536,14 @@ if (!customElements.get('quick-view-modal')) {
 
         setTimeout(() => {
           if (imgEl.classList.contains('qv-img-loading')) {
-            imgEl.classList.remove('qv-img-loading');
-            imgEl.classList.add('qv-img-loaded');
+            if (!imgEl.src) {
+              this._handleImageError(imgEl);
+            } else {
+              imgEl.classList.remove('qv-img-loading');
+              imgEl.classList.add('qv-img-loaded');
+            }
           }
-        }, 8000);
+        }, 3000);
 
         this.querySelectorAll('.quick-view-modal__dot').forEach(dot => {
           const idx = parseInt(dot.dataset.index);
