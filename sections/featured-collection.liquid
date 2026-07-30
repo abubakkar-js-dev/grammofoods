@@ -27,6 +27,9 @@
   .featured-collection__view-all:hover {
     color: #22c55e;
   }
+  .featured-collection__view-all-bottom {
+    margin-top: 3rem;
+  }
 </style>
 
 {% if section.settings.image_shape == 'blob' %}
@@ -236,6 +239,19 @@
     </slider-component>
 
 
+    {%- if section.settings.show_view_all and more_in_collection -%}
+      <div class="center featured-collection__view-all-bottom{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
+        <a
+          href="{{ section.settings.collection.url }}"
+          class="button"
+          id="ViewAllButton-{{ section.id }}"
+          aria-label="{{ 'sections.featured_collection.view_all_label' | t: collection_name: section.settings.collection.title | escape }}"
+        >
+          {{ 'sections.featured_collection.view_all' | t }}
+        </a>
+      </div>
+    {%- endif -%}
+
     {% if section.settings.image_shape == 'arch' %}
       {{ 'mask-arch.svg' | inline_asset_content }}
     {%- endif -%}
@@ -366,26 +382,7 @@
       "label": "t:sections.featured-collection.settings.show_view_all.label",
       "info": "t:sections.featured-collection.settings.show_view_all.info"
     },
-    {
-      "type": "select",
-      "id": "view_all_style",
-      "label": "t:sections.featured-collection.settings.view_all_style.label",
-      "options": [
-        {
-          "value": "link",
-          "label": "t:sections.featured-collection.settings.view_all_style.options__1.label"
-        },
-        {
-          "value": "outline",
-          "label": "t:sections.featured-collection.settings.view_all_style.options__2.label"
-        },
-        {
-          "value": "solid",
-          "label": "t:sections.featured-collection.settings.view_all_style.options__3.label"
-        }
-      ],
-      "default": "solid"
-    }, 
+
     {
       "type": "color_scheme",
       "id": "color_scheme",
