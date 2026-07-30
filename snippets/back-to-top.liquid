@@ -1,0 +1,132 @@
+<style>
+  .back-to-top {
+    position: fixed;
+    bottom: 55px;
+    right: 40px;
+    z-index: 193;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    background: #fff;
+    box-shadow: 0 0 3px rgba(0,0,0,0.2);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.4s ease, visibility 0.4s ease, transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.35s ease;
+    transform: translateY(10px);
+    border: none;
+    pointer-events: none;
+    border-radius: 4px;
+    overflow: visible;
+  }
+  .back-to-top.is-visible {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+  .back-to-top:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 6px 20px rgba(23, 169, 83, 0.15);
+  }
+  .back-to-top__progress {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+  .back-to-top__progress-bg {
+    fill: none;
+    stroke: #f5f5f5;
+    stroke-width: 3;
+  }
+  .back-to-top__progress-fill {
+    fill: none;
+    stroke: #17a953;
+    stroke-width: 3;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    transition: stroke-dashoffset 0.08s ease;
+  }
+  .back-to-top__icon {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), color 0.3s ease;
+    color: #17a953;
+  }
+  .back-to-top:hover .back-to-top__icon {
+    transform: translateY(-3px);
+    color: #0e6632;
+  }
+  .back-to-top__icon svg {
+    display: block;
+    width: 18px;
+    height: 18px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .back-to-top::after {
+    content: '';
+    position: absolute;
+    inset: -4px;
+    border-radius: 8px;
+    background: radial-gradient(ellipse at center, rgba(23, 169, 83, 0.15), transparent 70%);
+    opacity: 0;
+    transition: opacity 0.35s ease;
+    pointer-events: none;
+  }
+  .back-to-top:hover::after {
+    opacity: 1;
+  }
+</style>
+
+<button class="back-to-top" id="backToTop" aria-label="Back to the top">
+  <svg class="back-to-top__progress" viewBox="0 0 50 50">
+    <path class="back-to-top__progress-bg" d="M 25 0 L 46 0 A 4 4 0 0 1 50 4 L 50 46 A 4 4 0 0 1 46 50 L 4 50 A 4 4 0 0 1 0 46 L 0 4 A 4 4 0 0 1 4 0 L 25 0" />
+    <path class="back-to-top__progress-fill" d="M 25 0 L 46 0 A 4 4 0 0 1 50 4 L 50 46 A 4 4 0 0 1 46 50 L 4 50 A 4 4 0 0 1 0 46 L 0 4 A 4 4 0 0 1 4 0 L 25 0" />
+  </svg>
+  <span class="back-to-top__icon">
+    <svg viewBox="0 0 24 24">
+      <path d="M18 15L12 9L6 15" />
+    </svg>
+  </span>
+</button>
+
+<script>
+  (function() {
+    const btn = document.getElementById('backToTop');
+    if (!btn) return;
+
+    const pathEl = btn.querySelector('.back-to-top__progress-fill');
+    if (!pathEl) return;
+
+    const length = pathEl.getTotalLength();
+    pathEl.setAttribute('stroke-dasharray', length);
+    pathEl.setAttribute('stroke-dashoffset', length);
+
+    const updateProgress = () => {
+      const scrollTop = window.scrollY;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const progress = docHeight > 0 ? Math.min(scrollTop / docHeight, 1) : 0;
+
+      pathEl.setAttribute('stroke-dashoffset', length * (1 - progress));
+      btn.classList.toggle('is-visible', scrollTop > 100);
+    };
+
+    btn.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    window.addEventListener('scroll', updateProgress, { passive: true });
+    window.addEventListener('resize', updateProgress, { passive: true });
+    updateProgress();
+  })();
+</script>
