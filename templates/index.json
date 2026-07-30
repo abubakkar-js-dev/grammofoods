@@ -415,7 +415,7 @@
       ],
       "name": "t:sections.multicolumn.presets.name",
       "settings": {
-        "title": "Award-winning & Certified <span><em>BSTI, BCSIR & Kuet Lab test</span></em>",
+        "title": "Award-winning & Certified <em>BSTI, BCSIR & Kuet Lab test</em>",
         "heading_size": "h2",
         "image_width": "full",
         "image_ratio": "adapt",
@@ -427,8 +427,8 @@
         "color_scheme": "",
         "columns_mobile": "1",
         "swipe_on_mobile": false,
-        "padding_top": 36,
-        "padding_bottom": 36
+        "padding_top": 72,
+        "padding_bottom": 72
       }
     }
   },
