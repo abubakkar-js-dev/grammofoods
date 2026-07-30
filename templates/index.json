@@ -268,6 +268,67 @@
         "padding_bottom": 40
       }
     },
+    "customer_reviews_JGYtwb": {
+      "type": "customer-reviews",
+      "blocks": {
+        "testimonial_nrCXbH": {
+          "type": "testimonial",
+          "settings": {
+            "name": "Md Milon Miah",
+            "location": "Dhaka, Bangladesh",
+            "rating": 5,
+            "verified": true,
+            "review_text": "আমি গত ৩ মাস ধরে খাইতেছি তবে অন্য পেজ থেকে তাদের প্রোডাক্ট এর মান ভালো ছিলো না। আমি গ্রাম্য ফুড থেকে প্রোডাক্ট নিয়ে চেক করে দেখলাম তাদের গুনগত মান আলহামদুলিল্লাহ অনেক ভালো। শুভকামনা রইলো গ্রাম্য ফুড জন্য।",
+            "proof_image": "shopify://shop_images/review1.webp"
+          }
+        },
+        "testimonial_npcee6": {
+          "type": "testimonial",
+          "settings": {
+            "name": "Fahmida Khandaker Bithi",
+            "location": "Dhaka, Bangladesh",
+            "rating": 5,
+            "verified": true,
+            "review_text": "আলহামদুলিল্লাহ, আমার হাজবেন্ডের হাই ব্লাড প্রেশার। সব সময় মেডিসিন খেতে হতো তারপর ও তার প্রেশার নরমাল হতো না। আমি গ্রাম্য ফুডের বিটরুট জুস টা অর্ডার করি। এবং তাকে প্রতি দিন সকালে খালি পেটে খাওয়ানো শুরু করি।আলহামদুলিল্লাহ তার প্রেশার এখন নরমাল থাকে।আমিও এখন নিয়মিত খাচ্ছি। আমার ছেলেকেও দিচ্ছি। আশা করবো এর গুনগত মান আপনারা ধরে রাখবেন।",
+            "proof_image": "shopify://shop_images/review2.png"
+          }
+        },
+        "testimonial_VthThd": {
+          "type": "testimonial",
+          "settings": {
+            "name": "Abdulla Chowdhury",
+            "location": "Dhaka, Bangladesh",
+            "rating": 5,
+            "verified": true,
+            "review_text": "গ্রাম্য ফুড থেকে তুলশী মালা চাল ও অন্যান্য কিছু পণ্য নিয়েছিলাম আলহামদুলিল্লাহ সকল পণ্যই ভালো হয়েছে। ধন্যবাদ গ্রাম্য ফুড বিশুদ্ধ পণ্য সরবরাহ করার জন্য।",
+            "proof_image": "shopify://shop_images/review3.webp"
+          }
+        }
+      },
+      "block_order": [
+        "testimonial_nrCXbH",
+        "testimonial_npcee6",
+        "testimonial_VthThd"
+      ],
+      "name": "Customer Reviews",
+      "settings": {
+        "subheading": "TESTIMONIALS",
+        "heading": "Customers Love",
+        "description": "See what our happy customers have to say about their experience.",
+        "badge_text": "Verified Review",
+        "stats_enabled": true,
+        "stat_1_number": "10K+",
+        "stat_1_label": "Happy Customers",
+        "stat_2_number": "4.9/5",
+        "stat_2_label": "Average Rating",
+        "autoplay": true,
+        "autoplay_speed": 6,
+        "color_scheme": "scheme-f6669edd-8300-491f-a8b5-3f8efbf0f33a",
+        "accent_color": "#22c55e",
+        "padding_top": 80,
+        "padding_bottom": 80
+      }
+    },
     "featured_collection_WAFcgt": {
       "type": "featured-collection",
       "custom_css": [],
@@ -297,12 +358,86 @@
         "padding_top": 44,
         "padding_bottom": 36
       }
+    },
+    "multicolumn_pihNij": {
+      "type": "multicolumn",
+      "blocks": {
+        "column_Cicwgr": {
+          "type": "column",
+          "settings": {
+            "image": "shopify://shop_images/awc1.png",
+            "title": "",
+            "text": "",
+            "link_label": "",
+            "link": ""
+          }
+        },
+        "column_kkDpnQ": {
+          "type": "column",
+          "settings": {
+            "image": "shopify://shop_images/awc2.avif",
+            "title": "",
+            "text": "",
+            "link_label": "",
+            "link": ""
+          }
+        },
+        "column_cBQ78N": {
+          "type": "column",
+          "settings": {
+            "image": "shopify://shop_images/awc2.avif",
+            "title": "",
+            "text": "",
+            "link_label": "",
+            "link": ""
+          }
+        },
+        "column_V9KBKe": {
+          "type": "column",
+          "settings": {
+            "image": "shopify://shop_images/awc1.png",
+            "title": "",
+            "text": "",
+            "link_label": "",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "column_Cicwgr",
+        "column_kkDpnQ",
+        "column_cBQ78N",
+        "column_V9KBKe"
+      ],
+      "custom_css": [
+        "h2 > span {font-size: 16px; color: gray !important;}",
+        "h2::before,h2::after {display: none !important; width: 0;}"
+      ],
+      "name": "t:sections.multicolumn.presets.name",
+      "settings": {
+        "title": "Award-winning & Certified<span> <em>BSTI, BCSIR & Kuet Lab test </span></em>",
+        "heading_size": "h2",
+        "image_width": "full",
+        "image_ratio": "adapt",
+        "button_label": "",
+        "button_link": "",
+        "columns_desktop": 4,
+        "column_alignment": "center",
+        "background_style": "none",
+        "color_scheme": "",
+        "columns_mobile": "1",
+        "swipe_on_mobile": false,
+        "padding_top": 72,
+        "padding_bottom": 72
+      }
     }
   },
   "order": [
     "slideshow_aY7tXL",
     "featured_collection",
     "video_product_card_fbh4cR",
-    "featured_collection_WAFcgt"
+    "customer_reviews_JGYtwb",
+    "featured_collection_WAFcgt",
+    "multicolumn_pihNij"
   ]
 }
