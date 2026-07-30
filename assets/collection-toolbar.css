@@ -863,10 +863,9 @@ body.collection-toolbar-enabled .card--standard.card--media {
 
 body.collection-toolbar-enabled .card__inner {
   position: relative;
-  display: block;
   flex-shrink: 0;
   flex-grow: 0;
-  height: auto;
+  aspect-ratio: 1;
   border: none;
   padding: 0;
   margin: 0;
@@ -874,6 +873,10 @@ body.collection-toolbar-enabled .card__inner {
   -webkit-box-shadow: none !important;
   background: transparent;
   overflow: visible;
+}
+
+body.collection-toolbar-enabled .card__inner::before {
+  padding-bottom: 0 !important;
 }
 
 body.collection-toolbar-enabled .card--media > .card__content {
@@ -1146,6 +1149,7 @@ body.collection-toolbar-enabled .card__heading {
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
+  min-height: calc(1.9rem * var(--font-heading-scale) * 1.35 * 2);
   transition: color 0.2s ease;
 }
 

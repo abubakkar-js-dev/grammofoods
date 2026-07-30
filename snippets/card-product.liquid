@@ -130,7 +130,11 @@
                   class="full-unstyled-link"
                   aria-labelledby="StandardCardNoMediaLink-{{ section_id }}-{{ card_product.id }}{% if card_product.available == false or card_product.compare_at_price > card_product.price %} NoMediaStandardBadge-{{ section_id }}-{{ card_product.id }}{% endif %}"
                 >
-                  {{ card_product.title | escape }}
+                  {%- if max_title_words and max_title_words > 0 -%}
+                    {{ card_product.title | escape | truncatewords: max_title_words, '' }}
+                  {%- else -%}
+                    {{ card_product.title | escape }}
+                  {%- endif -%}
                 </a>
               </h3>
             </div>
@@ -167,7 +171,11 @@
                 class="full-unstyled-link"
                 aria-labelledby="CardLink-{{ section_id }}-{{ card_product.id }}{% if card_product.available == false or card_product.compare_at_price > card_product.price %} Badge-{{ section_id }}-{{ card_product.id }}{% endif %}"
               >
-                {{ card_product.title | escape }}
+                {%- if max_title_words and max_title_words > 0 -%}
+                  {{ card_product.title | escape | truncatewords: max_title_words, '' }}
+                {%- else -%}
+                  {{ card_product.title | escape }}
+                {%- endif -%}
               </a>
             </h3>
             <div class="card-information card-information--centered">
