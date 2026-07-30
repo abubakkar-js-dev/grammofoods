@@ -415,9 +415,9 @@
       ],
       "name": "t:sections.multicolumn.presets.name",
       "settings": {
-        "title": "Award-winning & Certified<span> <em>BSTI, BCSIR & Kuet Lab test </span></em>",
+        "title": "Award-winning & Certified <em>BSTI, BCSIR & Kuet Lab test </em>",
         "heading_size": "h2",
-        "image_width": "full",
+        "image_width": "half",
         "image_ratio": "adapt",
         "button_label": "",
         "button_link": "",
