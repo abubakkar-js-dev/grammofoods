@@ -190,7 +190,29 @@
     {%- endfor -%}
   </div>
 
-  {%- if section.blocks.size > 1 and section.settings.auto_rotate == false -%}
+  {%- if section.blocks.size > 1 -%}
+  <script>
+    (() => {
+      const c = document.currentScript.closest('slideshow-component');
+      if (!c) return;
+      const s = c.querySelector('.slideshow.banner');
+      const n = c.querySelector('button[name="next"]');
+      const p = c.querySelector('button[name="previous"]');
+      if (!s || !n || !p) return;
+      let t;
+      s.addEventListener('click', (e) => {
+        if (c._sliderSwiped) { c._sliderSwiped = false; return; }
+        if (e.target.closest('a, button, .banner__box, .slideshow__control-wrapper')) return;
+        clearTimeout(t);
+        const rect = s.getBoundingClientRect();
+        const isLeftSide = e.clientX - rect.left < rect.width / 2;
+        t = setTimeout(() => { (isLeftSide ? p : n).click(); }, 100);
+      });
+    })();
+  </script>
+{%- endif -%}
+
+{%- if section.blocks.size > 1 and section.settings.auto_rotate == false -%}
     <div class="slideshow__controls slider-buttons{% if section.settings.show_text_below %} slideshow__controls--border-radius-mobile{% endif %}">
       <button
         type="button"

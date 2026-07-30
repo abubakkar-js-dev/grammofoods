@@ -764,12 +764,22 @@ class SliderComponent extends HTMLElement {
   }
 
   update() {
-    // Temporarily prevents unneeded updates resulting from variant changes
-    // This should be refactored as part of https://github.com/Shopify/dawn/issues/2057
     if (!this.slider || !this.nextButton) return;
 
     const previousPage = this.currentPage;
-    this.currentPage = Math.round(this.slider.scrollLeft / this.sliderItemOffset) + 1;
+
+    const scrollCenter = this.slider.scrollLeft + this.slider.clientWidth / 2;
+    let closestPage = 1;
+    let closestDistance = Infinity;
+    for (let i = 0; i < this.sliderItemsToShow.length; i++) {
+      const itemCenter = this.sliderItemsToShow[i].offsetLeft + this.sliderItemsToShow[i].clientWidth / 2;
+      const distance = Math.abs(scrollCenter - itemCenter);
+      if (distance < closestDistance) {
+        closestDistance = distance;
+        closestPage = i + 1;
+      }
+    }
+    this.currentPage = closestPage;
 
     if (this.currentPageElement && this.pageTotalElement) {
       this.currentPageElement.textContent = this.currentPage;
@@ -809,11 +819,11 @@ class SliderComponent extends HTMLElement {
 
   onButtonClick(event) {
     event.preventDefault();
-    const step = event.currentTarget.dataset.step || 1;
-    this.slideScrollPosition =
-      event.currentTarget.name === 'next'
-        ? this.slider.scrollLeft + step * this.sliderItemOffset
-        : this.slider.scrollLeft - step * this.sliderItemOffset;
+    const step = parseInt(event.currentTarget.dataset.step || 1);
+    const targetIndex = event.currentTarget.name === 'next'
+      ? Math.min(this.currentPage - 1 + step, this.sliderItemsToShow.length - 1)
+      : Math.max(this.currentPage - 1 - step, 0);
+    this.slideScrollPosition = this.sliderItemsToShow[targetIndex].offsetLeft;
     this.setSlidePosition(this.slideScrollPosition);
   }
 
@@ -845,6 +855,38 @@ class SlideshowComponent extends SliderComponent {
     this.sliderControlLinksArray.forEach((link) => link.addEventListener('click', this.linkToSlide.bind(this)));
     this.slider.addEventListener('scroll', this.setSlideVisibility.bind(this));
     this.setSlideVisibility();
+
+    this.slider.addEventListener('pointerdown', (e) => {
+      this._sliderTouchStartX = e.clientX;
+      this._sliderTouchStartPage = this.currentPage;
+      this._sliderSwiped = false;
+      this._sliderDragging = false;
+    }, { passive: true });
+
+    this.slider.addEventListener('pointermove', (e) => {
+      if (this._sliderTouchStartX === undefined) return;
+      const deltaX = Math.abs(e.clientX - this._sliderTouchStartX);
+      if (deltaX > 10) {
+        this._sliderDragging = true;
+        this.slider.style.scrollSnapType = 'x proximity';
+      }
+    }, { passive: true });
+
+    this.slider.addEventListener('pointerup', (e) => {
+      if (!this.enableSliderLooping || !this.sliderItemsToShow) return;
+      this.slider.style.scrollSnapType = '';
+      this._sliderDragging = false;
+      const deltaX = e.clientX - this._sliderTouchStartX;
+      const threshold = 50;
+      if (Math.abs(deltaX) > threshold) {
+        this._sliderSwiped = true;
+        if (deltaX > 0) {
+          this.prevButton.click();
+        } else {
+          this.nextButton.click();
+        }
+      }
+    }, { passive: true });
 
     if (this.announcementBarSlider) {
       this.announcementBarArrowButtonWasClicked = false;
