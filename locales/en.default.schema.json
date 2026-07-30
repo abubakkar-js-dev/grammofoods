@@ -395,7 +395,8 @@
       "padding": {
         "section_padding_heading": "Padding",
         "padding_top": "Top",
-        "padding_bottom": "Bottom"
+        "padding_bottom": "Bottom",
+        "margin_bottom": "Bottom margin"
       },
       "spacing": "Spacing",
       "colors": {
@@ -1092,6 +1093,9 @@
             "label": "Middle center"
           }
         },
+        "header_layout": {
+          "content": "Layout"
+        },
         "menu": {
           "label": "Menu"
         },
@@ -1144,6 +1148,9 @@
         },
         "margin_bottom": {
           "label": "Bottom margin"
+        },
+        "header_mobile": {
+          "content": "Mobile layout"
         },
         "mobile_logo_position": {
           "label": "Mobile logo position",
