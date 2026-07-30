@@ -362,54 +362,68 @@
     "multicolumn_pihNij": {
       "type": "multicolumn",
       "blocks": {
+        "column_Cicwgr": {
+          "type": "column",
+          "settings": {
+            "image": "shopify://shop_images/awc1.png",
+            "title": "",
+            "text": "",
+            "link_label": "",
+            "link": ""
+          }
+        },
         "column_kkDpnQ": {
           "type": "column",
           "settings": {
-            "title": "Column",
-            "text": "<p>Pair text with an image to focus on your chosen product, collection, or blog post. Add details on availability, style, or even provide a review.</p>",
+            "image": "shopify://shop_images/awc2.avif",
+            "title": "",
+            "text": "",
             "link_label": "",
             "link": ""
           }
         },
-        "column_bJe6xy": {
+        "column_cBQ78N": {
           "type": "column",
           "settings": {
-            "title": "Column",
-            "text": "<p>Pair text with an image to focus on your chosen product, collection, or blog post. Add details on availability, style, or even provide a review.</p>",
+            "image": "shopify://shop_images/awc2.avif",
+            "title": "",
+            "text": "",
             "link_label": "",
             "link": ""
           }
         },
-        "column_rxYLc6": {
+        "column_V9KBKe": {
           "type": "column",
           "settings": {
-            "title": "Column",
-            "text": "<p>Pair text with an image to focus on your chosen product, collection, or blog post. Add details on availability, style, or even provide a review.</p>",
+            "image": "shopify://shop_images/awc1.png",
+            "title": "",
+            "text": "",
             "link_label": "",
             "link": ""
           }
         }
       },
       "block_order": [
+        "column_Cicwgr",
         "column_kkDpnQ",
-        "column_bJe6xy",
-        "column_rxYLc6"
+        "column_cBQ78N",
+        "column_V9KBKe"
       ],
       "custom_css": [
         "h2 > span {font-size: 16px; color: gray !important;}",
-        "h2::before,h2::after {display: none !important; width:0;}"
+        "h2::before,h2::after {display: none !important; width: 0;}"
       ],
       "name": "t:sections.multicolumn.presets.name",
       "settings": {
-        "title": "Award-winning & Certified<span><em>BSTI, BCSIR & Kuet Lab test</span</em>",
+        "title": "Award-winning & Certified<em>BSTI, BCSIR & Kuet Lab test</em>",
         "heading_size": "h2",
         "image_width": "full",
         "image_ratio": "adapt",
         "button_label": "Button label",
         "button_link": "",
-        "columns_desktop": 3,
+        "columns_desktop": 4,
         "column_alignment": "left",
-        "background_style": "primary",
+        "background_style": "none",
         "color_scheme": "",
         "columns_mobile": "1",
         "swipe_on_mobile": false,
