@@ -94,33 +94,68 @@ if (!customElements.get('quick-view-modal')) {
       }
 
       async _openModal(productUrl) {
+        // ✅ FIX: Get fresh references each time modal opens
         const loading = this.querySelector('.quick-view-modal__loading');
         const errorEl = this.querySelector('.quick-view-modal__error');
-        errorEl?.classList.remove('is-visible');
-        errorEl.textContent = '';
+
+        if (errorEl) {
+          errorEl.classList.remove('is-visible');
+          errorEl.textContent = '';
+        }
         loading?.classList.add('is-active');
 
         try {
           const handle = this._getProductHandle(productUrl);
+          this._debug('Fetching product handle:', handle);
+
           const response = await fetch(`/products/${handle}.js`);
-          if (!response.ok) throw new Error('Product not found');
+          if (!response.ok) throw new Error(`Product not found: ${response.status}`);
+
           this.productData = await response.json();
-          this._images = (this.productData.images || []).map(img => ({
-            ...img,
-            src: this._normalizeUrl(img.src)
-          }));
+          this._debug('Product data loaded:', this.productData.title);
+
+          // ✅ FIX: Properly normalize and filter valid images
+          this._images = (this.productData.images || [])
+            .map(img => {
+              // Handle both string and object image formats
+              const src = typeof img === 'string' ? img : (img.src || img);
+              return {
+                src: this._normalizeUrl(src),
+                alt: typeof img === 'object' ? (img.alt || '') : ''
+              };
+            })
+            .filter(img => img.src); // Remove empty srcs
+
+          this._debug('Images found:', this._images.length, this._images.map(i => i.src));
+
           this.currentImageIndex = 0;
-          this._debug('Rendering modal, image count:', this._images.length);
           this._render();
-          this._debug('Calling super.show()');
+
+          // ✅ FIX: Show modal AFTER render so DOM is ready
           super.show(this.openedBy);
           document.addEventListener('keydown', this._boundKeydown);
+
+          // ✅ FIX: Update image AFTER modal is shown and DOM is painted
+          requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+              if (this._images.length > 0) {
+                const selectedVariant = this.productData?.variants?.[0] || {};
+                this.currentImageIndex = this._getInitialImageIndex(selectedVariant);
+                this._updateImage();
+                this._preloadAdjacentImages();
+              }
+            });
+          });
+
         } catch (e) {
           console.error('Quick view error:', e);
-          if (errorEl) {
-            errorEl.textContent = 'Failed to load product. Please try again.';
-            errorEl.classList.add('is-visible');
+          const errEl = this.querySelector('.quick-view-modal__error');
+          if (errEl) {
+            errEl.textContent = 'Failed to load product. Please try again.';
+            errEl.classList.add('is-visible');
           }
+          // ✅ FIX: Still show modal so error is visible
+          super.show(this.openedBy);
           this.currentImageIndex = 0;
         } finally {
           loading?.classList.remove('is-active');
@@ -129,7 +164,10 @@ if (!customElements.get('quick-view-modal')) {
 
       _normalizeUrl(url) {
         if (!url) return '';
+        // ✅ FIX: Handle all URL formats including Shopify CDN
         if (url.startsWith('//')) return 'https:' + url;
+        if (url.startsWith('http')) return url;
+        if (url.startsWith('/')) return window.location.origin + url;
         return url;
       }
 
@@ -137,6 +175,11 @@ if (!customElements.get('quick-view-modal')) {
         try {
           const u = new URL(url, window.location.origin);
           const parts = u.pathname.replace(/\/+$/, '').split('/');
+          // ✅ FIX: Find 'products' segment and get the next part
+          const productsIdx = parts.indexOf('products');
+          if (productsIdx >= 0 && parts[productsIdx + 1]) {
+            return parts[productsIdx + 1];
+          }
           return parts[parts.length - 1];
         } catch {
           return url.replace(/^\/products\//, '').split('?')[0].split('#')[0];
@@ -146,25 +189,30 @@ if (!customElements.get('quick-view-modal')) {
       _render() {
         if (!this.productData) return;
         const p = this.productData;
-        const selectedVariant = p.variants[0] || {};
-        const hasSingleOption = p.options && p.options.length === 1 && p.options[0].values.length === 1 && p.options[0].values[0] === 'Default Title';
+        const selectedVariant = p.variants?.[0] || {};
+        const hasSingleOption =
+          p.options &&
+          p.options.length === 1 &&
+          p.options[0].values.length === 1 &&
+          p.options[0].values[0] === 'Default Title';
 
         const mediaHtml = this._buildMediaHtml(selectedVariant);
         const infoHtml = this._buildInfoHtml(p, selectedVariant, hasSingleOption);
 
-        if (this.modalBody) {
-          this.modalBody.innerHTML = mediaHtml + infoHtml;
+        // ✅ FIX: Always use modalBody reference, refresh if needed
+        const body = this.modalBody || this.querySelector('.quick-view-modal__body');
+        if (body) {
+          body.innerHTML = mediaHtml + infoHtml;
+        } else {
+          console.warn('[QuickView] .quick-view-modal__body not found!');
+          return;
         }
 
-        if (this._images.length > 0) {
-          this.currentImageIndex = this._getInitialImageIndex(selectedVariant);
-          this._updateImage();
-          this._preloadAdjacentImages();
-        }
         this._attachMediaEvents();
         this._attachVariantEvents(p);
         this._attachTouchEvents();
-        this.querySelector('.quick-view-modal__add-to-cart')?.addEventListener('click', this._onAddToCart.bind(this));
+        this.querySelector('.quick-view-modal__add-to-cart')
+          ?.addEventListener('click', this._onAddToCart.bind(this));
       }
 
       _attachTouchEvents() {
@@ -177,83 +225,152 @@ if (!customElements.get('quick-view-modal')) {
       }
 
       _getInitialImageIndex(selectedVariant) {
-        if (selectedVariant.featured_image?.src) {
+        if (selectedVariant?.featured_image?.src) {
           const normalized = this._normalizeUrl(selectedVariant.featured_image.src);
-          const idx = this._images.findIndex(img => img.src === normalized);
+          // ✅ FIX: More robust URL comparison
+          const idx = this._images.findIndex(img => {
+            return img.src === normalized ||
+              this._stripUrlParams(img.src) === this._stripUrlParams(normalized);
+          });
           if (idx >= 0) return idx;
         }
         return 0;
       }
 
+      // ✅ NEW: Helper to strip query params for URL comparison
+      _stripUrlParams(url) {
+        try {
+          const u = new URL(url);
+          return u.origin + u.pathname;
+        } catch {
+          return url.split('?')[0];
+        }
+      }
+
       _buildMediaHtml(selectedVariant) {
+        const hasImages = this._images.length > 0;
         const hasMultiple = this._images.length > 1;
+
         const counterHtml = hasMultiple
           ? `<span class="quick-view-modal__counter">1 / ${this._images.length}</span>`
           : '';
 
         let dotsHtml = '';
         if (hasMultiple && this._images.length <= 8) {
-          dotsHtml = '<div class="quick-view-modal__dots">' +
-            this._images.map((_, i) =>
-              `<button class="quick-view-modal__dot${i === 0 ? ' is-active' : ''}" data-index="${i}" type="button" aria-label="Go to image ${i + 1}"></button>`
-            ).join('') +
-          '</div>';
+          dotsHtml =
+            '<div class="quick-view-modal__dots">' +
+            this._images
+              .map(
+                (_, i) =>
+                  `<button class="quick-view-modal__dot${i === 0 ? ' is-active' : ''}" data-index="${i}" type="button" aria-label="Go to image ${i + 1}"></button>`
+              )
+              .join('') +
+            '</div>';
         }
 
+        // ✅ FIX: Get initial image src and set it directly on the img tag
         const initialIndex = this._getInitialImageIndex(selectedVariant);
         const initialImage = this._images[initialIndex] || this._images[0];
+        const initialSrc = initialImage ? initialImage.src : '';
+        const initialAlt = initialImage ? (initialImage.alt || '') : '';
 
         return `<div class="quick-view-modal__media">
           <div class="quick-view-modal__image-wrapper">
-            ${this._images.length
-              ? `<img alt="" width="800" height="800" loading="eager" fetchpriority="high" decoding="async" data-current-img>`
-              : '<div class="quick-view-modal__placeholder"><svg viewBox="0 0 24 24" fill="none" stroke="#ddd" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg></div>'
+            ${hasImages
+              ? `<img 
+                  src="${this._escapeAttr(initialSrc)}" 
+                  alt="${this._escapeAttr(initialAlt)}" 
+                  width="800" 
+                  height="800" 
+                  loading="eager" 
+                  fetchpriority="high" 
+                  decoding="async" 
+                  data-current-img
+                  class="qv-img-loading"
+                >`
+              : `<div class="quick-view-modal__placeholder">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="#ddd" stroke-width="1.5">
+                    <rect x="3" y="3" width="18" height="18" rx="2"/>
+                    <circle cx="8.5" cy="8.5" r="1.5"/>
+                    <path d="M21 15l-5-5L5 21"/>
+                  </svg>
+                </div>`
             }
-            ${hasMultiple ? `
-              <button class="quick-view-modal__nav quick-view-modal__nav--prev" type="button" aria-label="Previous image">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
-              </button>
-              <button class="quick-view-modal__nav quick-view-modal__nav--next" type="button" aria-label="Next image">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
-              </button>
-            ` : ''}
+            ${hasMultiple
+              ? `<button class="quick-view-modal__nav quick-view-modal__nav--prev" type="button" aria-label="Previous image">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M15 18l-6-6 6-6"/>
+                  </svg>
+                </button>
+                <button class="quick-view-modal__nav quick-view-modal__nav--next" type="button" aria-label="Next image">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M9 18l6-6-6-6"/>
+                  </svg>
+                </button>`
+              : ''
+            }
             ${counterHtml}
           </div>
           ${dotsHtml}
         </div>`;
       }
 
+      // ✅ NEW: Escape attribute helper to prevent XSS
+      _escapeAttr(str) {
+        return (str || '').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+      }
+
       _buildInfoHtml(p, selectedVariant, hasSingleOption) {
-        const currentPrice = this._parsePrice(selectedVariant.price || p.variants[0]?.price || 0);
+        const currentPrice = this._parsePrice(selectedVariant.price ?? p.variants[0]?.price ?? 0);
         const comparePrice = this._parsePrice(selectedVariant.compare_at_price);
         const formattedPrice = this._formatMoney(currentPrice);
-        const formattedCompare = comparePrice && comparePrice > currentPrice ? this._formatMoney(comparePrice) : null;
+        const formattedCompare =
+          comparePrice && comparePrice > currentPrice ? this._formatMoney(comparePrice) : null;
         const isSale = !!formattedCompare;
 
         const options = p.options || [];
-        const showVariants = !hasSingleOption && options.length > 0 && p.variants.length > 1;
+        const showVariants =
+          !hasSingleOption && options.length > 0 && p.variants.length > 1;
 
         const variantOptionsHtml = showVariants
-          ? options.map((opt, optIdx) => {
-              const values = [...new Set(p.variants.map(v => v[`option${optIdx + 1}`]).filter(Boolean))];
-              return `<div class="quick-view-modal__variants">
+          ? options
+              .map((opt, optIdx) => {
+                const values = [
+                  ...new Set(
+                    p.variants
+                      .map(v => v[`option${optIdx + 1}`])
+                      .filter(Boolean)
+                  ),
+                ];
+                return `<div class="quick-view-modal__variants">
                 <label for="qv-option-${optIdx}">${opt.name}</label>
                 <select id="qv-option-${optIdx}" data-option-index="${optIdx}">
-                  ${values.map(val => {
-                    const isSelected = selectedVariant[`option${optIdx + 1}`] === val;
-                    return `<option value="${val.replace(/"/g, '&quot;')}"${isSelected ? ' selected' : ''}>${val}</option>`;
-                  }).join('')}
+                  ${values
+                    .map(val => {
+                      const isSelected =
+                        selectedVariant[`option${optIdx + 1}`] === val;
+                      return `<option value="${this._escapeAttr(val)}"${isSelected ? ' selected' : ''}>${val}</option>`;
+                    })
+                    .join('')}
                 </select>
               </div>`;
-            }).join('')
+              })
+              .join('')
           : '';
 
         const avail = selectedVariant.available ?? true;
-        const stockStatus = selectedVariant.inventory_quantity != null && selectedVariant.inventory_management
-          ? `<span class="quick-view-modal__stock ${selectedVariant.inventory_quantity > 0 ? 'in-stock' : 'out-of-stock'}">
-              ${selectedVariant.inventory_quantity > 0 ? (selectedVariant.inventory_quantity <= 5 ? `Only ${selectedVariant.inventory_quantity} left` : 'In Stock') : 'Out of Stock'}
-            </span>`
-          : (avail ? '<span class="quick-view-modal__stock in-stock">In Stock</span>' : '<span class="quick-view-modal__stock out-of-stock">Out of Stock</span>');
+        const stockStatus =
+          selectedVariant.inventory_quantity != null && selectedVariant.inventory_management
+            ? `<span class="quick-view-modal__stock ${selectedVariant.inventory_quantity > 0 ? 'in-stock' : 'out-of-stock'}">
+                ${selectedVariant.inventory_quantity > 0
+                  ? selectedVariant.inventory_quantity <= 5
+                    ? `Only ${selectedVariant.inventory_quantity} left`
+                    : 'In Stock'
+                  : 'Out of Stock'}
+              </span>`
+            : avail
+            ? '<span class="quick-view-modal__stock in-stock">In Stock</span>'
+            : '<span class="quick-view-modal__stock out-of-stock">Out of Stock</span>';
 
         return `<div class="quick-view-modal__info">
           <h2 class="quick-view-modal__title">
@@ -267,26 +384,35 @@ if (!customElements.get('quick-view-modal')) {
             ${stockStatus}
           </div>
           ${isSale ? `<span class="quick-view-modal__badge quick-view-modal__badge--sale">Sale</span>` : ''}
-          ${p.description ? `<div class="quick-view-modal__description">${this._stripHtml(p.description)}</div>` : ''}
+          ${p.description
+            ? `<div class="quick-view-modal__description">${this._stripHtml(p.description)}</div>`
+            : ''}
           <div class="quick-view-modal__variants-wrapper">
             ${variantOptionsHtml}
           </div>
           <div class="quick-view-modal__actions">
             <div class="quick-view-modal__qty">
               <button type="button" data-qty-minus aria-label="Decrease quantity">&minus;</button>
-              <input type="number" id="qv-quantity" value="1" min="1" step="1" pattern="[0-9]*" inputmode="numeric" autocomplete="off">
+              <input type="number" id="qv-quantity" value="1" min="1" step="1" 
+                pattern="[0-9]*" inputmode="numeric" autocomplete="off">
               <button type="button" data-qty-plus aria-label="Increase quantity">+</button>
             </div>
-            <button type="button" class="quick-view-modal__add-to-cart ${!avail ? 'sold-out' : ''}"${!avail ? ' disabled' : ''}>
+            <button type="button" 
+              class="quick-view-modal__add-to-cart ${!avail ? 'sold-out' : ''}"
+              ${!avail ? 'disabled' : ''}>
               <span class="loading-spinner"></span>
               <span class="btn-text">${avail ? 'Add to Cart' : 'Sold Out'}</span>
             </button>
           </div>
-          <div class="quick-view-modal__error"></div>
+          <div class="quick-view-modal__error" role="alert"></div>
           <div class="quick-view-modal__footer">
             <a href="${p.url}" class="quick-view-modal__view-details">
               View Full Details
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" 
+                stroke-linecap="round" stroke-linejoin="round">
+                <path d="M5 12h14"/>
+                <path d="M12 5l7 7-7 7"/>
+              </svg>
             </a>
           </div>
         </div>`;
@@ -296,8 +422,12 @@ if (!customElements.get('quick-view-modal')) {
         const prevBtn = this.querySelector('.quick-view-modal__nav--prev');
         const nextBtn = this.querySelector('.quick-view-modal__nav--next');
 
-        prevBtn?.addEventListener('click', () => this._navToImage(this.currentImageIndex - 1));
-        nextBtn?.addEventListener('click', () => this._navToImage(this.currentImageIndex + 1));
+        prevBtn?.addEventListener('click', () =>
+          this._navToImage(this.currentImageIndex - 1)
+        );
+        nextBtn?.addEventListener('click', () =>
+          this._navToImage(this.currentImageIndex + 1)
+        );
 
         this.querySelectorAll('.quick-view-modal__dot').forEach(dot => {
           dot.addEventListener('click', () => {
@@ -309,24 +439,27 @@ if (!customElements.get('quick-view-modal')) {
 
       _navToImage(newIndex) {
         if (this._images.length === 0) return;
-        this.currentImageIndex = (newIndex + this._images.length) % this._images.length;
+        this.currentImageIndex =
+          ((newIndex % this._images.length) + this._images.length) % this._images.length;
         this._updateImage();
         this._preloadAdjacentImages();
       }
 
       _preloadAdjacentImages() {
+        if (this._images.length <= 1) return;
         const preloadIndices = [
           (this.currentImageIndex + 1) % this._images.length,
-          (this.currentImageIndex - 1 + this._images.length) % this._images.length
+          (this.currentImageIndex - 1 + this._images.length) % this._images.length,
         ];
         preloadIndices.forEach(idx => {
-          if (this._images[idx]) {
+          const imgSrc = this._images[idx]?.src;
+          if (imgSrc) {
             const link = document.createElement('link');
             link.rel = 'preload';
             link.as = 'image';
-            link.href = this._images[idx].src;
+            link.href = imgSrc;
             document.head.appendChild(link);
-            setTimeout(() => link.remove(), 1000);
+            setTimeout(() => link.remove(), 3000);
           }
         });
       }
@@ -339,18 +472,17 @@ if (!customElements.get('quick-view-modal')) {
           sel.addEventListener('change', () => {
             const selectedOptions = [];
             this.querySelectorAll('[data-option-index]').forEach(s => {
-              selectedOptions[s.dataset.optionIndex] = s.value;
+              selectedOptions[parseInt(s.dataset.optionIndex)] = s.value;
             });
 
-            const match = p.variants.find(v =>
-              v.option1 === selectedOptions[0] &&
-              (p.options.length < 2 || v.option2 === selectedOptions[1]) &&
-              (p.options.length < 3 || v.option3 === selectedOptions[2])
+            const match = p.variants.find(
+              v =>
+                v.option1 === selectedOptions[0] &&
+                (p.options.length < 2 || v.option2 === selectedOptions[1]) &&
+                (p.options.length < 3 || v.option3 === selectedOptions[2])
             );
 
-            if (match) {
-              this._updateVariant(p, match);
-            }
+            if (match) this._updateVariant(p, match);
           });
         });
 
@@ -379,19 +511,22 @@ if (!customElements.get('quick-view-modal')) {
         });
 
         qtyInput?.addEventListener('input', () => {
-          let val = parseInt(qtyInput.value);
+          const val = parseInt(qtyInput.value);
           if (isNaN(val) || val < 1) qtyInput.value = 1;
         });
       }
 
       _updateVariant(p, variant) {
+        // Update price
         const priceEl = this.querySelector('.quick-view-modal__price');
         if (priceEl) {
           const currentPrice = this._parsePrice(variant.price) || 0;
           const comparePrice = this._parsePrice(variant.compare_at_price);
           const formattedPrice = this._formatMoney(currentPrice);
-          const formattedCompare = comparePrice && comparePrice > currentPrice
-            ? this._formatMoney(comparePrice) : null;
+          const formattedCompare =
+            comparePrice && comparePrice > currentPrice
+              ? this._formatMoney(comparePrice)
+              : null;
           const isSale = !!formattedCompare;
           priceEl.innerHTML = `
             <span class="${isSale ? 'price--sale' : ''}">${formattedPrice}</span>
@@ -399,6 +534,7 @@ if (!customElements.get('quick-view-modal')) {
           `;
         }
 
+        // Update sale badge
         const saleBadge = this.querySelector('.quick-view-modal__badge--sale');
         if (saleBadge) {
           const cp = this._parsePrice(variant.compare_at_price);
@@ -406,13 +542,17 @@ if (!customElements.get('quick-view-modal')) {
           saleBadge.style.display = cp && cp > vp ? '' : 'none';
         }
 
+        // Update stock status
         const stockEl = this.querySelector('.quick-view-modal__stock');
         if (stockEl) {
           const avail = variant.available ?? true;
           if (variant.inventory_quantity != null && variant.inventory_management) {
             if (variant.inventory_quantity > 0) {
               stockEl.className = 'quick-view-modal__stock in-stock';
-              stockEl.textContent = variant.inventory_quantity <= 5 ? `Only ${variant.inventory_quantity} left` : 'In Stock';
+              stockEl.textContent =
+                variant.inventory_quantity <= 5
+                  ? `Only ${variant.inventory_quantity} left`
+                  : 'In Stock';
             } else {
               stockEl.className = 'quick-view-modal__stock out-of-stock';
               stockEl.textContent = 'Out of Stock';
@@ -423,136 +563,147 @@ if (!customElements.get('quick-view-modal')) {
           }
         }
 
+        // Update add to cart button
         const addBtn = this.querySelector('.quick-view-modal__add-to-cart');
         if (addBtn) {
           const avail = variant.available ?? true;
           addBtn.disabled = !avail;
           addBtn.classList.toggle('sold-out', !avail);
-          addBtn.querySelector('.btn-text').textContent = avail ? 'Add to Cart' : 'Sold Out';
+          const btnText = addBtn.querySelector('.btn-text');
+          if (btnText) btnText.textContent = avail ? 'Add to Cart' : 'Sold Out';
         }
 
-        if (variant.featured_image?.src && this._images.length) {
+        // ✅ FIX: Update image when variant changes
+        if (variant.featured_image?.src && this._images.length > 0) {
           const normalized = this._normalizeUrl(variant.featured_image.src);
-          const imgIdx = this._images.findIndex(img => img.src === normalized);
-          if (imgIdx >= 0) {
+          const imgIdx = this._images.findIndex(
+            img =>
+              img.src === normalized ||
+              this._stripUrlParams(img.src) === this._stripUrlParams(normalized)
+          );
+          if (imgIdx >= 0 && imgIdx !== this.currentImageIndex) {
             this.currentImageIndex = imgIdx;
             this._updateImage();
           }
         }
       }
 
-      _setImageListeners(imgEl, src) {
+      _updateImage() {
+        const imgEl = this.querySelector('[data-current-img]');
+
+        if (!imgEl) {
+          this._debug('_updateImage: no [data-current-img] element found');
+          return;
+        }
+
+        if (!this._images[this.currentImageIndex]) {
+          this._debug('_updateImage: no image at index', this.currentImageIndex);
+          return;
+        }
+
+        const image = this._images[this.currentImageIndex];
+        this._debug('_updateImage', {
+          index: this.currentImageIndex,
+          total: this._images.length,
+          src: image.src,
+        });
+
+        // Clean up error state
+        const wrapper = imgEl.closest('.quick-view-modal__image-wrapper');
+        wrapper?.querySelector('.quick-view-modal__img-error-msg')?.remove();
+        wrapper?.querySelector('.quick-view-modal__img-error-svg')?.remove();
+
+        imgEl.classList.remove('qv-img-error');
+        imgEl.alt = image.alt || '';
+
+        // ✅ FIX: Set src directly and handle load/error
+        this._setImageSrc(imgEl, image.src);
+
+        // Update dots
+        this.querySelectorAll('.quick-view-modal__dot').forEach(dot => {
+          const idx = parseInt(dot.dataset.index);
+          dot.classList.toggle('is-active', idx === this.currentImageIndex);
+        });
+
+        // Update counter
+        const counter = this.querySelector('.quick-view-modal__counter');
+        if (counter) {
+          counter.textContent = `${this.currentImageIndex + 1} / ${this._images.length}`;
+        }
+      }
+
+      // ✅ FIX: Simplified, reliable image src setter
+      _setImageSrc(imgEl, src) {
+        if (!src) {
+          this._handleImageError(imgEl);
+          return;
+        }
+
         imgEl.classList.remove('qv-img-loaded', 'qv-img-error');
         imgEl.classList.add('qv-img-loading');
-        this._debug('_setImageListeners', { src, completeWas: imgEl.complete, naturalWidthWas: imgEl.naturalWidth });
+
+        // ✅ KEY FIX: Remove old src first to force reload
+        imgEl.removeAttribute('src');
 
         const onLoad = () => {
-          this._debug('Image load event fired, marking loaded');
           imgEl.classList.remove('qv-img-loading');
           imgEl.classList.add('qv-img-loaded');
+          this._debug('Image loaded:', src);
         };
 
         const onError = () => {
-          this._debug('Image error event fired');
+          this._debug('Image error:', src);
           this._handleImageError(imgEl);
         };
 
-        imgEl.removeEventListener('load', onLoad);
-        imgEl.removeEventListener('error', onError);
+        // Use one-time event listeners
         imgEl.addEventListener('load', onLoad, { once: true });
         imgEl.addEventListener('error', onError, { once: true });
 
-        if (src) {
-          imgEl.src = src;
-          if (imgEl.complete) {
-            if (imgEl.naturalWidth > 0) {
-              this._debug('Cached image detected, marking loaded immediately');
-              onLoad();
-            } else {
-              this._debug('Cached error detected, marking error');
-              onError();
-            }
+        // ✅ FIX: Set src AFTER adding listeners
+        imgEl.src = src;
+
+        // ✅ FIX: Handle already-cached images
+        if (imgEl.complete) {
+          if (imgEl.naturalWidth > 0) {
+            imgEl.removeEventListener('error', onError);
+            onLoad();
+          } else if (imgEl.src) {
+            imgEl.removeEventListener('load', onLoad);
+            onError();
           }
-        } else {
-          this._debug('Empty src — marking as error');
-          this._handleImageError(imgEl);
         }
       }
 
       _handleImageError(imgEl) {
-        this._debug('_handleImageError', { src: imgEl.src, complete: imgEl.complete, naturalWidth: imgEl.naturalWidth });
+        this._debug('Image load failed, showing placeholder');
         imgEl.classList.remove('qv-img-loading');
         imgEl.classList.add('qv-img-error');
         imgEl.removeAttribute('src');
-        imgEl.alt = '';
+        imgEl.alt = 'Image unavailable';
+
         const wrapper = imgEl.closest('.quick-view-modal__image-wrapper');
-        if (wrapper && !wrapper.querySelector('.quick-view-modal__img-error-msg')) {
+        if (!wrapper) return;
+
+        if (!wrapper.querySelector('.quick-view-modal__img-error-msg')) {
           const msg = document.createElement('div');
           msg.className = 'quick-view-modal__img-error-msg';
           msg.textContent = 'Image unavailable';
           wrapper.appendChild(msg);
         }
-        const errorSvg = wrapper?.querySelector('.quick-view-modal__img-error-svg');
-        if (!errorSvg && wrapper) {
+
+        if (!wrapper.querySelector('.quick-view-modal__img-error-svg')) {
           const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
           svg.setAttribute('class', 'quick-view-modal__img-error-svg');
           svg.setAttribute('viewBox', '0 0 24 24');
           svg.setAttribute('fill', 'none');
           svg.setAttribute('stroke', '#ccc');
           svg.setAttribute('stroke-width', '1.5');
-          svg.innerHTML = '<rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/>';
+          svg.innerHTML =
+            '<rect x="3" y="3" width="18" height="18" rx="2"/>' +
+            '<circle cx="8.5" cy="8.5" r="1.5"/>' +
+            '<path d="M21 15l-5-5L5 21"/>';
           wrapper.insertBefore(svg, wrapper.firstChild);
-        }
-      }
-
-      _updateImage() {
-        const imgEl = this.querySelector('[data-current-img]');
-        if (!imgEl || !this._images[this.currentImageIndex]) {
-          this._debug('_updateImage: no img element or no images');
-          return;
-        }
-
-        const image = this._images[this.currentImageIndex];
-        this._debug('_updateImage', { index: this.currentImageIndex, total: this._images.length, src: image.src });
-
-        const wrapper = imgEl.closest('.quick-view-modal__image-wrapper');
-        wrapper?.querySelector('.quick-view-modal__img-error-msg')?.remove();
-        wrapper?.querySelector('.quick-view-modal__img-error-svg')?.remove();
-
-        imgEl.classList.remove('qv-img-error');
-        imgEl.style.opacity = '';
-        imgEl.alt = image.alt || '';
-
-        this._setImageListeners(imgEl, image.src);
-
-        if (wrapper && image.src) {
-          const preloadLink = document.createElement('link');
-          preloadLink.rel = 'preload';
-          preloadLink.as = 'image';
-          preloadLink.href = image.src;
-          document.head.appendChild(preloadLink);
-          setTimeout(() => preloadLink.remove(), 2000);
-        }
-
-        setTimeout(() => {
-          if (imgEl.classList.contains('qv-img-loading')) {
-            if (!imgEl.src) {
-              this._handleImageError(imgEl);
-            } else {
-              imgEl.classList.remove('qv-img-loading');
-              imgEl.classList.add('qv-img-loaded');
-            }
-          }
-        }, 3000);
-
-        this.querySelectorAll('.quick-view-modal__dot').forEach(dot => {
-          const idx = parseInt(dot.dataset.index);
-          dot.classList.toggle('is-active', idx === this.currentImageIndex);
-        });
-
-        const counter = this.querySelector('.quick-view-modal__counter');
-        if (counter) {
-          counter.textContent = `${this.currentImageIndex + 1} / ${this._images.length}`;
         }
       }
 
@@ -561,8 +712,10 @@ if (!customElements.get('quick-view-modal')) {
         if (btn.disabled || btn.classList.contains('loading')) return;
 
         const errorEl = this.querySelector('.quick-view-modal__error');
-        errorEl?.classList.remove('is-visible');
-        errorEl.textContent = '';
+        if (errorEl) {
+          errorEl.classList.remove('is-visible');
+          errorEl.textContent = '';
+        }
 
         const qtyInput = this.querySelector('#qv-quantity');
         const quantity = Math.max(1, parseInt(qtyInput?.value) || 1);
@@ -570,18 +723,17 @@ if (!customElements.get('quick-view-modal')) {
         const options = this.productData?.options || [];
         const selectedOptions = [];
         this.querySelectorAll('[data-option-index]').forEach(sel => {
-          selectedOptions[sel.dataset.optionIndex] = sel.value;
+          selectedOptions[parseInt(sel.dataset.optionIndex)] = sel.value;
         });
 
-        let variant = this.productData?.variants.find(v =>
-          v.option1 === selectedOptions[0] &&
-          (options.length < 2 || v.option2 === selectedOptions[1]) &&
-          (options.length < 3 || v.option3 === selectedOptions[2])
+        let variant = this.productData?.variants?.find(
+          v =>
+            v.option1 === selectedOptions[0] &&
+            (options.length < 2 || v.option2 === selectedOptions[1]) &&
+            (options.length < 3 || v.option3 === selectedOptions[2])
         );
 
-        if (!variant) {
-          variant = this.productData?.variants?.[0];
-        }
+        if (!variant) variant = this.productData?.variants?.[0];
 
         if (!variant) {
           if (errorEl) {
@@ -592,6 +744,7 @@ if (!customElements.get('quick-view-modal')) {
         }
 
         btn.classList.add('loading');
+        btn.disabled = true;
 
         try {
           const formData = new FormData();
@@ -600,30 +753,39 @@ if (!customElements.get('quick-view-modal')) {
 
           const response = await fetch('/cart/add.js', {
             method: 'POST',
-            body: formData
+            body: formData,
           });
 
           if (!response.ok) {
-            const err = await response.json();
-            throw new Error(err.message || 'Failed to add to cart');
+            const err = await response.json().catch(() => ({}));
+            throw new Error(err.message || `Failed to add to cart (${response.status})`);
           }
+
+          const data = await response.json();
 
           btn.classList.remove('loading');
           btn.classList.add('added');
-          btn.querySelector('.btn-text').textContent = 'Added!';
+          const btnText = btn.querySelector('.btn-text');
+          if (btnText) btnText.textContent = 'Added!';
 
           setTimeout(() => {
             btn.classList.remove('added');
-            btn.querySelector('.btn-text').textContent = 'Add to Cart';
+            btn.disabled = false;
+            if (btnText) btnText.textContent = 'Add to Cart';
           }, 2000);
 
-          document.body.dispatchEvent(new CustomEvent('modalClosed'));
-          window.dispatchEvent(new CustomEvent('cart-updated'));
+          // Dispatch cart update events
+          document.body.dispatchEvent(new CustomEvent('cart:updated', { bubbles: true }));
+          window.dispatchEvent(new CustomEvent('cart-updated', { detail: data }));
 
-          const cartDrawer = document.querySelector('cart-drawer') || document.querySelector('cart-notification');
+          // ✅ FIX: Update cart drawer/notification
+          const cartDrawer = document.querySelector('cart-drawer');
+          const cartNotification = document.querySelector('cart-notification');
+
           if (cartDrawer && typeof cartDrawer.renderContents === 'function') {
-            const data = await response.clone().json();
             cartDrawer.renderContents(data);
+          } else if (cartNotification && typeof cartNotification.renderContents === 'function') {
+            cartNotification.renderContents(data);
           }
 
         } catch (e) {
@@ -633,17 +795,20 @@ if (!customElements.get('quick-view-modal')) {
             errorEl.classList.add('is-visible');
           }
           btn.classList.remove('loading');
+          btn.disabled = false;
         }
       }
 
       _parsePrice(value) {
         if (value == null) return null;
-        if (typeof value === 'string') return parseFloat(value);
-        return value;
+        // ✅ FIX: Shopify returns prices in cents as integers
+        if (typeof value === 'number') return value / 100;
+        if (typeof value === 'string') return parseFloat(value) / 100;
+        return null;
       }
 
       _formatMoney(price) {
-        const val = this._parsePrice(price);
+        const val = typeof price === 'number' ? price : parseFloat(price);
         if (val == null || isNaN(val)) return 'Tk 0.00';
         const parts = val.toFixed(2).split('.');
         parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
