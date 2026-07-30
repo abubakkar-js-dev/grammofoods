@@ -106,6 +106,14 @@
                   >
                 {%- endif -%}
               </div>
+              <div class="card__media-actions">
+                <a href="{{ card_product.url }}" class="card__media-action-btn card__wishlist-btn" title="{{ 'products.general.wishlist' | t | default: 'Add to Wishlist' }}" data-label="{{ 'products.general.wishlist' | t | default: 'Add to Wishlist' }}" data-wishlist-btn data-product-id="{{ card_product.id }}">
+                  <svg class="icon icon-heart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+                </a>
+                <a href="{{ card_product.url }}" class="card__media-action-btn card__quickview-btn" title="{{ 'products.general.quick_view' | t | default: 'Quick View' }}" data-label="{{ 'products.general.quick_view' | t | default: 'Quick View' }}" data-quickview-btn data-product-id="{{ card_product.id }}">
+                  <svg class="icon icon-eye" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                </a>
+              </div>
             </div>
           {%- endif -%}
           <div class="card__content">
@@ -146,9 +154,9 @@
           </div>
         </div>
         <div class="card__content">
-          <div class="card__information">
+          <div class="card__information card__information--centered">
             <h3
-              class="card__heading{% if card_product.featured_media or settings.card_style == 'standard' %} h5{% endif %}"
+              class="card__heading card__heading--centered{% if card_product.featured_media or settings.card_style == 'standard' %} h5{% endif %}"
               {% if card_product.featured_media or settings.card_style == 'card' %}
                 id="title-{{ section_id }}-{{ card_product.id }}"
               {% endif %}
@@ -162,7 +170,7 @@
                 {{ card_product.title | escape }}
               </a>
             </h3>
-            <div class="card-information">
+            <div class="card-information card-information--centered">
               {%- if show_vendor -%}
                 <span class="visually-hidden">{{ 'accessibility.vendor' | t }}</span>
                 <div class="caption-with-letter-spacing light">{{ card_product.vendor }}</div>
@@ -206,7 +214,7 @@
                 </p>
               {%- endif -%}
 
-              {% render 'price', product: card_product, price_class: '', show_compare_at_price: true %}
+              {% render 'price', product: card_product, price_class: 'price--centered', show_compare_at_price: true %}
               {%- if card_product.quantity_price_breaks_configured? -%}
                 {% if card_product.variants_count == 1 and quick_add == 'bulk' %}
                   {% liquid
@@ -288,6 +296,12 @@
                   </quantity-popover>
                 {% endif %}
               {%- endif -%}
+            </div>
+
+            <div class="card__quickshop-wrap">
+              <a href="{{ card_product.url }}" class="card__quickshop-btn" data-quickshop-btn data-product-id="{{ card_product.id }}">
+                QUICK SHOP
+              </a>
             </div>
           </div>
           {% assign product_form_id = 'quick-add-' | append: section_id | append: card_product.id %}

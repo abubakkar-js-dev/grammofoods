@@ -1,6 +1,7 @@
 {{ 'template-collection.css' | asset_url | stylesheet_tag }}
 {{ 'component-card.css' | asset_url | stylesheet_tag }}
 {{ 'component-price.css' | asset_url | stylesheet_tag }}
+{{ 'collection-toolbar.css' | asset_url | stylesheet_tag }}
 
 {% if section.settings.image_shape == 'blob' %}
   {{ 'mask-blobs.css' | asset_url | stylesheet_tag }}
@@ -36,12 +37,112 @@
   }
 {%- endstyle -%}
 
+{%- assign sort_by = collection.sort_by | default: collection.default_sort_by -%}
+
 <collection-component
   view-event-payload="{{ collection | standard_event_data: 'view' | escape }}"
   data-collection-id="{{ collection.id }}"
 >
+  <collection-toolbar>
   <div class="section-{{ section.id }}-padding gradient color-{{ section.settings.color_scheme }}">
     {%- paginate collection.products by section.settings.products_per_page -%}
+
+      {% comment %} Collection toolbar {% endcomment %}
+      {%- if section.settings.enable_filtering or section.settings.enable_sorting -%}
+        <div class="page-width">
+          <div class="collection-header" style="position:relative">
+            {%- if section.settings.enable_filtering and section.settings.filter_type == 'drawer' -%}
+              <div class="collection-header__filter">
+                <button class="collection-header__filter-btn" data-filter-drawer-btn>
+                  {{ 'icon-filter.svg' | inline_asset_content }}
+                  <span>{{ 'products.facets.filter_button' | t }}</span>
+                </button>
+              </div>
+            {%- endif -%}
+
+            <div class="collection-header__layout-switch" data-layout-switch>
+              <button class="collection-header__layout-btn is--mobile-only" data-layout-btn data-layout-group="mobile" data-layout-val="list" title="{{ 'products.facets.list_view' | t }}">
+                <svg class="icon icon-list" viewBox="0 0 24 24" fill="none"><rect x="4" y="5" width="16" height="2.4" rx="0.5" fill="currentColor"/><rect x="4" y="10.8" width="16" height="2.4" rx="0.5" fill="currentColor"/><rect x="4" y="16.6" width="16" height="2.4" rx="0.5" fill="currentColor"/></svg>
+              </button>
+              <button class="collection-header__layout-btn is--mobile-only" data-layout-btn data-layout-group="mobile" data-layout-val="1" title="1 {{ 'products.facets.column' | t }}">
+                <svg class="icon" viewBox="0 0 24 24" fill="none"><rect x="4" y="4" width="16" height="16" rx="1" fill="currentColor"/></svg>
+              </button>
+              <button class="collection-header__layout-btn is--mobile-only" data-layout-btn data-layout-group="mobile" data-layout-val="2" title="2 {{ 'products.facets.columns' | t }}">
+                <svg class="icon" viewBox="0 0 24 24" fill="none"><rect x="4" y="4" width="6.5" height="16" rx="0.8" fill="currentColor"/><rect x="13.5" y="4" width="6.5" height="16" rx="0.8" fill="currentColor"/></svg>
+              </button>
+
+              <button class="collection-header__layout-btn is--tablet-only" data-layout-btn data-layout-group="tablet" data-layout-val="list" title="{{ 'products.facets.list_view' | t }}">
+                <svg class="icon icon-list" viewBox="0 0 24 24" fill="none"><rect x="4" y="5" width="16" height="2.4" rx="0.5" fill="currentColor"/><rect x="4" y="10.8" width="16" height="2.4" rx="0.5" fill="currentColor"/><rect x="4" y="16.6" width="16" height="2.4" rx="0.5" fill="currentColor"/></svg>
+              </button>
+              <button class="collection-header__layout-btn is--tablet-only" data-layout-btn data-layout-group="tablet" data-layout-val="2" title="2 {{ 'products.facets.columns' | t }}">
+                <svg class="icon" viewBox="0 0 24 24" fill="none"><rect x="4" y="4" width="6.5" height="16" rx="0.8" fill="currentColor"/><rect x="13.5" y="4" width="6.5" height="16" rx="0.8" fill="currentColor"/></svg>
+              </button>
+              <button class="collection-header__layout-btn is--tablet-only" data-layout-btn data-layout-group="tablet" data-layout-val="3" title="3 {{ 'products.facets.columns' | t }}">
+                <svg class="icon" viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="5" height="16" rx="0.7" fill="currentColor"/><rect x="9.5" y="4" width="5" height="16" rx="0.7" fill="currentColor"/><rect x="16" y="4" width="5" height="16" rx="0.7" fill="currentColor"/></svg>
+              </button>
+              <button class="collection-header__layout-btn is--tablet-only" data-layout-btn data-layout-group="tablet" data-layout-val="4" title="4 {{ 'products.facets.columns' | t }}">
+                <svg class="icon" viewBox="0 0 24 24" fill="none"><rect x="2.5" y="4" width="3.7" height="16" rx="0.6" fill="currentColor"/><rect x="7.6" y="4" width="3.7" height="16" rx="0.6" fill="currentColor"/><rect x="12.7" y="4" width="3.7" height="16" rx="0.6" fill="currentColor"/><rect x="17.8" y="4" width="3.7" height="16" rx="0.6" fill="currentColor"/></svg>
+              </button>
+
+              <button class="collection-header__layout-btn is--desktop-only" data-layout-btn data-layout-group="desktop" data-layout-val="list" title="{{ 'products.facets.list_view' | t }}">
+                <svg class="icon icon-list" viewBox="0 0 24 24" fill="none"><rect x="4" y="5" width="16" height="2.4" rx="0.5" fill="currentColor"/><rect x="4" y="10.8" width="16" height="2.4" rx="0.5" fill="currentColor"/><rect x="4" y="16.6" width="16" height="2.4" rx="0.5" fill="currentColor"/></svg>
+              </button>
+              <button class="collection-header__layout-btn is--desktop-only" data-layout-btn data-layout-group="desktop" data-layout-val="2" title="2 {{ 'products.facets.columns' | t }}">
+                <svg class="icon" viewBox="0 0 24 24" fill="none"><rect x="4" y="4" width="6.5" height="16" rx="0.8" fill="currentColor"/><rect x="13.5" y="4" width="6.5" height="16" rx="0.8" fill="currentColor"/></svg>
+              </button>
+              <button class="collection-header__layout-btn is--desktop-only" data-layout-btn data-layout-group="desktop" data-layout-val="3" title="3 {{ 'products.facets.columns' | t }}">
+                <svg class="icon" viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="5" height="16" rx="0.7" fill="currentColor"/><rect x="9.5" y="4" width="5" height="16" rx="0.7" fill="currentColor"/><rect x="16" y="4" width="5" height="16" rx="0.7" fill="currentColor"/></svg>
+              </button>
+              <button class="collection-header__layout-btn is--desktop-only" data-layout-btn data-layout-group="desktop" data-layout-val="4" title="4 {{ 'products.facets.columns' | t }}">
+                <svg class="icon" viewBox="0 0 24 24" fill="none"><rect x="2.5" y="4" width="3.7" height="16" rx="0.6" fill="currentColor"/><rect x="7.6" y="4" width="3.7" height="16" rx="0.6" fill="currentColor"/><rect x="12.7" y="4" width="3.7" height="16" rx="0.6" fill="currentColor"/><rect x="17.8" y="4" width="3.7" height="16" rx="0.6" fill="currentColor"/></svg>
+              </button>
+              <button class="collection-header__layout-btn is--desktop-only" data-layout-btn data-layout-group="desktop" data-layout-val="5" title="5 {{ 'products.facets.columns' | t }}">
+                <svg class="icon" viewBox="0 0 24 24" fill="none"><rect x="2" y="4" width="3" height="16" rx="0.5" fill="currentColor"/><rect x="6.2" y="4" width="3" height="16" rx="0.5" fill="currentColor"/><rect x="10.4" y="4" width="3" height="16" rx="0.5" fill="currentColor"/><rect x="14.6" y="4" width="3" height="16" rx="0.5" fill="currentColor"/><rect x="18.8" y="4" width="3.2" height="16" rx="0.5" fill="currentColor"/></svg>
+              </button>
+              <button class="collection-header__layout-btn is--desktop-only" data-layout-btn data-layout-group="desktop" data-layout-val="6" title="6 {{ 'products.facets.columns' | t }}">
+                <svg class="icon" viewBox="0 0 24 24" fill="none"><rect x="1.5" y="4" width="2.5" height="16" rx="0.4" fill="currentColor"/><rect x="5.1" y="4" width="2.5" height="16" rx="0.4" fill="currentColor"/><rect x="8.7" y="4" width="2.5" height="16" rx="0.4" fill="currentColor"/><rect x="12.3" y="4" width="2.5" height="16" rx="0.4" fill="currentColor"/><rect x="15.9" y="4" width="2.5" height="16" rx="0.4" fill="currentColor"/><rect x="19.5" y="4" width="3" height="16" rx="0.4" fill="currentColor"/></svg>
+              </button>
+            </div>
+
+            {%- if section.settings.enable_sorting -%}
+              <div class="collection-header__sortby">
+                {%- assign current_sort_label = '' -%}
+                {%- for option in collection.sort_options -%}
+                  {%- if option.value == sort_by -%}
+                    {%- assign current_sort_label = option.name -%}
+                  {%- endif -%}
+                {%- endfor -%}
+                <button class="collection-header__sortby-btn" data-sortby-btn>
+                  <span class="sort-label-desktop">{{ current_sort_label | escape }}</span>
+                  <span class="sort-label-mobile">{{ 'products.facets.sort_button' | t }}</span>
+                  <svg class="icon icon-chevron-down" viewBox="0 0 24 24" fill="none"><path d="M7 9l5 5 5-5" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
+                <div class="collection-header__sortby-dropdown" data-sortby-dropdown>
+                  {%- for option in collection.sort_options -%}
+                    <button
+                      class="collection-header__sortby-option{% if option.value == sort_by %} is--selected{% endif %}"
+                      data-sortby-option="{{ option.value | escape }}"
+                    >
+                      {{ option.name | escape }}
+                    </button>
+                  {%- endfor -%}
+                </div>
+
+                <form id="SortByToolbarForm">
+                  <select name="sort_by" id="SortByToolbar" class="visually-hidden">
+                    {%- for option in collection.sort_options -%}
+                      <option value="{{ option.value | escape }}" {% if option.value == sort_by %}selected{% endif %}>
+                        {{ option.name | escape }}
+                      </option>
+                    {%- endfor -%}
+                  </select>
+                </form>
+              </div>
+            {%- endif -%}
+          </div>
+        </div>
+      {%- endif -%}
+
       {% comment %} Sort is the first tabbable element when filter type is vertical {% endcomment %}
       {%- if section.settings.enable_sorting and section.settings.filter_type == 'vertical' -%}
         <facet-filters-form class="facets facets-vertical-sort page-width small-hide">
@@ -52,7 +153,6 @@
                   <label for="SortBy">{{ 'products.facets.sort_by_label' | t }}</label>
                 </h2>
                 <div class="select">
-                  {%- assign sort_by = collection.sort_by | default: collection.default_sort_by -%}
                   <select
                     name="sort_by"
                     class="facet-filters__sort select__select caption-large"
@@ -105,20 +205,22 @@
         {{ 'component-facets.css' | asset_url | stylesheet_tag }}
         <script src="{{ 'facets.js' | asset_url }}" defer="defer"></script>
         {%- if section.settings.enable_filtering or section.settings.enable_sorting -%}
-          <aside
-            aria-labelledby="verticalTitle"
-            class="facets-wrapper{% unless section.settings.enable_filtering %} facets-wrapper--no-filters{% endunless %}{% if section.settings.filter_type != 'vertical' %} page-width{% endif %}"
-            id="main-collection-filters"
-            data-id="{{ section.id }}"
-          >
-            {% render 'facets',
-              results: collection,
-              enable_filtering: section.settings.enable_filtering,
-              enable_sorting: section.settings.enable_sorting,
-              filter_type: section.settings.filter_type,
-              paginate: paginate
-            %}
-          </aside>
+          {%- if section.settings.filter_type != 'drawer' -%}
+            <aside
+              aria-labelledby="verticalTitle"
+              class="facets-wrapper{% unless section.settings.enable_filtering %} facets-wrapper--no-filters{% endunless %}{% if section.settings.filter_type != 'vertical' %} page-width{% endif %}"
+              id="main-collection-filters"
+              data-id="{{ section.id }}"
+            >
+              {% render 'facets',
+                results: collection,
+                enable_filtering: section.settings.enable_filtering,
+                enable_sorting: section.settings.enable_sorting,
+                filter_type: section.settings.filter_type,
+                paginate: paginate
+              %}
+            </aside>
+          {%- endif -%}
         {%- endif -%}
 
         <div
@@ -198,8 +300,37 @@
     {% if section.settings.image_shape == 'arch' %}
       {{ 'mask-arch.svg' | inline_asset_content }}
     {%- endif -%}
+
+    {% comment %} Filter drawer (only for drawer filter type) {% endcomment %}
+    {%- if section.settings.enable_filtering and section.settings.filter_type == 'drawer' -%}
+      <div class="collection-filter-drawer__overlay" data-filter-drawer-overlay></div>
+      <div class="collection-filter-drawer" data-filter-drawer>
+        <div class="collection-filter-drawer__header">
+          <span class="collection-filter-drawer__title">{{ 'products.facets.filter_button' | t }}</span>
+          <button class="collection-filter-drawer__close" data-filter-drawer-close>
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M4 4l8 8M12 4l-8 8"/></svg>
+          </button>
+        </div>
+        <div class="collection-filter-drawer__body">
+          {%- render 'facets',
+            results: collection,
+            enable_filtering: section.settings.enable_filtering,
+            enable_sorting: false,
+            filter_type: 'vertical'
+          %}
+        </div>
+        <div class="collection-filter-drawer__footer">
+          <button class="collection-filter-drawer__apply" data-filter-drawer-apply>
+            {{ 'products.facets.filter_button' | t }}
+          </button>
+        </div>
+      </div>
+    {%- endif -%}
   </div>
+</collection-toolbar>
 </collection-component>
+
+<script src="{{ 'collection-toolbar.js' | asset_url }}" defer="defer"></script>
 
 {% schema %}
 {
