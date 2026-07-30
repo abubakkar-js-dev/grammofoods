@@ -239,7 +239,7 @@
     </slider-component>
 
 
-    {%- if section.settings.show_view_all and more_in_collection -%}
+    {%- if section.settings.show_view_all and more_in_collection and section.settings.hide_primary_view_all != true -%}
       <div class="center featured-collection__view-all-bottom{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
         <a
           href="{{ section.settings.collection.url }}"
@@ -381,6 +381,12 @@
       "default": true,
       "label": "t:sections.featured-collection.settings.show_view_all.label",
       "info": "t:sections.featured-collection.settings.show_view_all.info"
+    },
+    {
+      "type": "checkbox",
+      "id": "hide_primary_view_all",
+      "default": false,
+      "label": "Hide primary view all button"
     },
 
     {
