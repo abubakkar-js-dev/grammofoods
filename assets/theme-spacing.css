@@ -57,6 +57,7 @@
 @media (max-width: 990px) {
   :root {
     --section-py-desktop: 60px;
+    --section-px-desktop: var(--section-px-tablet);
     --gap-lg: 32px;
     --gap-xl: 40px;
   }
