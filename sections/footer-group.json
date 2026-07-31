@@ -11,8 +11,57 @@
   "name": "t:sections.footer.name",
   "type": "footer",
   "sections": {
+    "custom_footer_bottom_bcaJCp": {
+      "type": "custom-footer-bottom",
+      "blocks": {
+        "copyright_FwbxJP": {
+          "type": "copyright",
+          "settings": {
+            "show_logo": false,
+            "logo_width": 120,
+            "copyright_text": "Grammo Food",
+            "rights_text": "All rights reserved",
+            "trade_license": "Trade Licence Number: 17451",
+            "show_legal_links": true,
+            "link1_text": "Privacy Policy",
+            "link1_url": "",
+            "link2_text": "Terms of Service",
+            "link2_url": "",
+            "link3_text": "Refund Policy",
+            "link3_url": ""
+          }
+        },
+        "payments_Ve8Qm6": {
+          "type": "payments",
+          "settings": {
+            "heading": "We Accept",
+            "secure_badge": true,
+            "secure_text": "100% Secure Checkout",
+            "verified_label": "Verified by"
+          }
+        }
+      },
+      "block_order": [
+        "copyright_FwbxJP",
+        "payments_Ve8Qm6"
+      ],
+      "name": "Custom Footer Bottom",
+      "settings": {
+        "show_divider": true,
+        "color_scheme": "",
+        "bg_color": "#f6f6f8",
+        "text_color": "#6b7280",
+        "link_color": "#6b7280",
+        "link_hover_color": "#17a953",
+        "accent_color": "#17a953",
+        "border_color": "#e5e7eb",
+        "padding_top": 24,
+        "padding_bottom": 24
+      }
+    },
     "footer": {
       "type": "footer",
+      "disabled": true,
       "settings": {
         "color_scheme": "scheme-1",
         "newsletter_enable": true,
@@ -27,9 +76,86 @@
         "padding_top": 36,
         "padding_bottom": 36
       }
+    },
+    "custom_footer_top_jDVAbN": {
+      "type": "custom-footer-top",
+      "blocks": {
+        "contact_f6yhMU": {
+          "type": "contact",
+          "settings": {
+            "heading": "Contact Us",
+            "address": "Shop #2, Omrbin Khattb Mosjid Market, Greatwall City, Gazipur",
+            "email": "grammofoods@gmail.com",
+            "phone": "+8809611900245",
+            "hours": "Sat - Thu: 9:00 AM - 8:00 PM"
+          }
+        },
+        "menu_HwtiDN": {
+          "type": "menu",
+          "settings": {
+            "heading": "Information",
+            "menu": "footer"
+          }
+        },
+        "menu_C4LJL7": {
+          "type": "menu",
+          "settings": {
+            "heading": "Information",
+            "menu": "footer"
+          }
+        },
+        "social_39qFyq": {
+          "type": "social",
+          "settings": {
+            "heading": "Follow Us",
+            "description": "Stay connected on social media",
+            "facebook": "",
+            "instagram": "",
+            "youtube": "",
+            "twitter": "",
+            "tiktok": "",
+            "whatsapp": ""
+          }
+        },
+        "newsletter_Uh8Vfr": {
+          "type": "newsletter",
+          "settings": {
+            "heading": "Sign Up & Save",
+            "description": "Subscribe to get special offers, free giveaways, and once-in-a-lifetime deals.",
+            "placeholder": "Your email address",
+            "button_text": "Subscribe",
+            "success_message": "Thanks for subscribing! Check your inbox.",
+            "badges_enabled": true
+          }
+        }
+      },
+      "block_order": [
+        "contact_f6yhMU",
+        "menu_HwtiDN",
+        "menu_C4LJL7",
+        "social_39qFyq",
+        "newsletter_Uh8Vfr"
+      ],
+      "name": "Custom Footer Top",
+      "settings": {
+        "color_scheme": "",
+        "bg_color": "#f6f6f8",
+        "heading_color": "#000000",
+        "text_color": "#6b7280",
+        "link_color": "#6b7280",
+        "link_hover_color": "#17a953",
+        "accent_color": "#17a953",
+        "border_color": "#e5e7eb",
+        "padding_top": 75,
+        "padding_bottom": 40,
+        "padding_top_mobile": 45,
+        "padding_bottom_mobile": 20
+      }
     }
   },
   "order": [
-    "footer"
+    "footer",
+    "custom_footer_top_jDVAbN",
+    "custom_footer_bottom_bcaJCp"
   ]
 }
