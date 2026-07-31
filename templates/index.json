@@ -258,7 +258,7 @@
         "heading_align": "center",
         "heading_color": "#000000",
         "heading_size": 28,
-        "bg_color": "#F8F6EF",
+        "bg_color": "#f8f6ef",
         "page_width": 1200,
         "columns_desktop": 3,
         "columns_tablet": 2,
@@ -328,6 +328,7 @@
         "autoplay_speed": 6,
         "color_scheme": "scheme-f6669edd-8300-491f-a8b5-3f8efbf0f33a",
         "accent_color": "#22c55e",
+        "cards_gap": 24,
         "padding_top": 80,
         "padding_bottom": 80
       }
