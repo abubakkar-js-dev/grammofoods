@@ -7,6 +7,7 @@
     --cr-padding-top: {{ section.settings.padding_top }}px;
     --cr-padding-bottom: {{ section.settings.padding_bottom }}px;
     --cr-accent: {{ section.settings.accent_color }};
+    --cr-grid-gap: {{ section.settings.cards_gap }}px;
   "
 >
   <div class="customer-reviews__container page-width">
@@ -309,6 +310,16 @@
       "id": "accent_color",
       "label": "Accent color",
       "default": "#22c55e"
+    },
+    {
+      "type": "range",
+      "id": "cards_gap",
+      "label": "Gap between cards",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 60
     },
     {
       "type": "range",
