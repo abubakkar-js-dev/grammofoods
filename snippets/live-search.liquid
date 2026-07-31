@@ -1,0 +1,65 @@
+<div class="live-search" data-live-search>
+  <div class="live-search__dropdown" data-live-search-dropdown>
+
+    <!-- Skeleton Loader -->
+    <div class="live-search__skeleton" data-live-search-skeleton hidden>
+      <div class="live-search__skeleton-row">
+        <div class="live-search__skeleton-img"></div>
+        <div class="live-search__skeleton-content">
+          <div class="live-search__skeleton-line"></div>
+          <div class="live-search__skeleton-line live-search__skeleton-line--short"></div>
+        </div>
+      </div>
+      <div class="live-search__skeleton-row">
+        <div class="live-search__skeleton-img"></div>
+        <div class="live-search__skeleton-content">
+          <div class="live-search__skeleton-line"></div>
+          <div class="live-search__skeleton-line live-search__skeleton-line--short"></div>
+        </div>
+      </div>
+      <div class="live-search__skeleton-row">
+        <div class="live-search__skeleton-img"></div>
+        <div class="live-search__skeleton-content">
+          <div class="live-search__skeleton-line"></div>
+          <div class="live-search__skeleton-line live-search__skeleton-line--short"></div>
+        </div>
+      </div>
+      <div class="live-search__skeleton-row">
+        <div class="live-search__skeleton-img"></div>
+        <div class="live-search__skeleton-content">
+          <div class="live-search__skeleton-line"></div>
+          <div class="live-search__skeleton-line live-search__skeleton-line--short"></div>
+        </div>
+      </div>
+      <div class="live-search__skeleton-row">
+        <div class="live-search__skeleton-img"></div>
+        <div class="live-search__skeleton-content">
+          <div class="live-search__skeleton-line"></div>
+          <div class="live-search__skeleton-line live-search__skeleton-line--short"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Results Container -->
+    <div class="live-search__results" data-live-search-results></div>
+
+    <!-- Empty State -->
+    <div class="live-search__empty" data-live-search-empty hidden>
+      <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/>
+      </svg>
+      <p>No products found</p>
+      <span>Try a different search term</span>
+    </div>
+
+    <!-- View All Button -->
+    <div class="live-search__footer">
+      <a href="{{ routes.search_url }}" class="live-search__view-all" data-live-search-view-all>
+        View All
+        <svg width="16" height="16" viewBox="0 0 32 32" aria-hidden="true">
+          <path d="M 18.71875 6.78125 L 17.28125 8.21875 L 24.0625 15 L 4 15 L 4 17 L 24.0625 17 L 17.28125 23.78125 L 18.71875 25.21875 L 27.21875 16.71875 L 27.90625 16 L 27.21875 15.28125 Z"/>
+        </svg>
+      </a>
+    </div>
+  </div>
+</div>

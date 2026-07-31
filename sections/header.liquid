@@ -551,7 +551,10 @@
         <div class="header-search-inline small-hide medium-hide">
           <form action="{{ routes.search_url }}" method="get" role="search">
             <input type="hidden" name="options[prefix]" value="last">
-            <input class="search-input" type="search" name="q" placeholder="Search for products" value="{{ search.terms | escape }}">
+            <div class="live-search" data-live-search>
+              <input class="search-input" type="search" name="q" placeholder="Search for products" value="{{ search.terms | escape }}">
+              {% render 'live-search' %}
+            </div>
             <button type="submit" class="search-submit" aria-label="{{ 'general.search.search' | t }}">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/>
