@@ -1,0 +1,416 @@
+/* ============================================
+   Custom Footer Bottom - Modern Design
+   ============================================ */
+
+.cf-bottom {
+  background: var(--cfb-bg, #f6f6f8);
+  padding-top: var(--cfb-pt, 24px);
+  padding-bottom: var(--cfb-pb, 24px);
+  color: var(--cfb-text, #6b7280);
+  position: relative;
+}
+
+/* ---------- Top Divider ---------- */
+.cf-bottom__divider {
+  max-width: 1400px;
+  margin: 0 auto 24px;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--cfb-border, #e5e7eb) 20%,
+    var(--cfb-border, #e5e7eb) 80%,
+    transparent 100%
+  );
+}
+
+/* ---------- Container ---------- */
+.cf-bottom__container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* ---------- Row ---------- */
+.cf-bottom__row {
+  width: 100%;
+}
+
+/* ============================================
+   Copyright Row
+   ============================================ */
+.cf-bottom__copyright-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+@media (max-width: 749px) {
+  .cf-bottom__copyright-inner {
+    flex-direction: column;
+    text-align: center;
+    gap: 16px;
+  }
+}
+
+/* Logo */
+.cf-bottom__logo {
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.cf-bottom__logo-img {
+  height: auto;
+  max-width: 120px;
+  width: auto;
+  display: block;
+}
+
+/* Copyright Text */
+.cf-bottom__copyright-text {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+@media (max-width: 749px) {
+  .cf-bottom__copyright-text {
+    align-items: center;
+  }
+}
+
+.cf-bottom__copyright {
+  margin: 0;
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: var(--cfb-text, #6b7280);
+}
+
+.cf-bottom__brand {
+  color: var(--cfb-accent, #17a953);
+  font-weight: 700;
+  margin: 0 2px;
+}
+
+.cf-bottom__rights {
+  opacity: 0.85;
+}
+
+.cf-bottom__license {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0;
+  font-size: 0.8rem;
+  color: var(--cfb-text, #6b7280);
+  opacity: 0.85;
+}
+
+.cf-bottom__license svg {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+  color: var(--cfb-accent, #17a953);
+}
+
+/* Legal Links */
+.cf-bottom__legal-links {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  flex-wrap: wrap;
+}
+
+.cf-bottom__legal-links li {
+  display: inline-flex;
+  align-items: center;
+}
+
+.cf-bottom__legal-links li:not(:last-child)::after {
+  content: "";
+  display: inline-block;
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: 0.3;
+  margin-left: 8px;
+}
+
+.cf-bottom__legal-link {
+  color: var(--cfb-link, #6b7280);
+  text-decoration: none;
+  font-size: 0.825rem;
+  transition: color 0.25s ease;
+  position: relative;
+}
+
+.cf-bottom__legal-link::before {
+  content: "";
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background: var(--cfb-link-hover, #17a953);
+  transition: width 0.3s ease;
+}
+
+.cf-bottom__legal-link:hover {
+  color: var(--cfb-link-hover, #17a953);
+}
+
+.cf-bottom__legal-link:hover::before {
+  width: 100%;
+}
+
+/* ============================================
+   Payments Row
+   ============================================ */
+.cf-bottom__row--payments {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+
+.cf-bottom__payments-header {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.cf-bottom__payments-heading {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--cfb-text, #6b7280);
+  opacity: 0.75;
+}
+
+.cf-bottom__secure-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 10px;
+  background: rgba(23, 169, 83, 0.1);
+  color: var(--cfb-accent, #17a953);
+  border-radius: 100px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  border: 1px solid rgba(23, 169, 83, 0.2);
+}
+
+.cf-bottom__secure-badge svg {
+  width: 12px;
+  height: 12px;
+}
+
+.cf-bottom__payments-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 32px;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+@media (max-width: 749px) {
+  .cf-bottom__payments-wrap {
+    gap: 20px;
+    flex-direction: column;
+  }
+}
+
+.cf-bottom__payments {
+  flex: 1;
+  min-width: 0;
+  max-width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 16px;
+  background: #ffffff;
+  border-radius: 14px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+  border: 1px solid var(--cfb-border, #e5e7eb);
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.cf-bottom__payments:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+}
+
+.cf-bottom__payment-img {
+  max-width: 100%;
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: contain;
+}
+
+/* Verified Badge */
+.cf-bottom__verified {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 16px;
+  background: #ffffff;
+  border-radius: 14px;
+  border: 1px solid var(--cfb-border, #e5e7eb);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+  flex-shrink: 0;
+}
+
+.cf-bottom__verified:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+}
+
+.cf-bottom__verified-label {
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  color: var(--cfb-text, #6b7280);
+  text-transform: uppercase;
+  opacity: 0.7;
+  border-right: 1px solid var(--cfb-border, #e5e7eb);
+  padding-right: 10px;
+}
+
+.cf-bottom__verified-img {
+  height: 32px;
+  width: auto;
+  max-width: 140px;
+  display: block;
+  object-fit: contain;
+}
+
+/* ============================================
+   Custom Text Row
+   ============================================ */
+.cf-bottom__row--text {
+  text-align: center;
+}
+
+.cf-bottom__custom-text {
+  font-size: 0.85rem;
+  color: var(--cfb-text, #6b7280);
+  opacity: 0.85;
+}
+
+.cf-bottom__custom-text p {
+  margin: 0;
+}
+
+.cf-bottom__custom-text a {
+  color: var(--cfb-link, #6b7280);
+  text-decoration: none;
+  transition: color 0.25s ease;
+}
+
+.cf-bottom__custom-text a:hover {
+  color: var(--cfb-link-hover, #17a953);
+}
+
+/* ============================================
+   Back to Top Button
+   ============================================ */
+.cf-bottom__back-to-top {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: var(--cfb-accent, #17a953);
+  color: #ffffff;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(20px);
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 8px 24px rgba(23, 169, 83, 0.35);
+}
+
+.cf-bottom__back-to-top.is-visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.cf-bottom__back-to-top:hover {
+  background: #128f45;
+  transform: translateY(-4px);
+  box-shadow: 0 12px 28px rgba(23, 169, 83, 0.45);
+}
+
+.cf-bottom__back-to-top:active {
+  transform: translateY(-2px) scale(0.95);
+}
+
+.cf-bottom__back-to-top svg {
+  width: 20px;
+  height: 20px;
+  transition: transform 0.25s ease;
+}
+
+.cf-bottom__back-to-top:hover svg {
+  transform: translateY(-2px);
+}
+
+@media (max-width: 749px) {
+  .cf-bottom__back-to-top {
+    width: 42px;
+    height: 42px;
+    bottom: 20px;
+    right: 16px;
+  }
+  .cf-bottom__back-to-top svg {
+    width: 18px;
+    height: 18px;
+  }
+}
+
+/* Focus states */
+.cf-bottom__back-to-top:focus-visible,
+.cf-bottom__legal-link:focus-visible {
+  outline: 2px solid var(--cfb-accent, #17a953);
+  outline-offset: 3px;
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .cf-bottom *,
+  .cf-bottom *::before,
+  .cf-bottom *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
