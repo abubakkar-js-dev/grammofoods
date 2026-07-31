@@ -152,21 +152,6 @@
     {%- endfor -%}
   </div>
 
-  {%- comment -%} Back to Top Button {%- endcomment -%}
-  {%- if section.settings.show_back_to_top -%}
-    <button
-      type="button"
-      class="cf-bottom__back-to-top"
-      data-back-to-top
-      aria-label="Back to top"
-      title="Back to top"
-    >
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-        <line x1="12" y1="19" x2="12" y2="5"/>
-        <polyline points="5 12 12 5 19 12"/>
-      </svg>
-    </button>
-  {%- endif -%}
 </section>
 
 {% schema %}
@@ -183,12 +168,6 @@
       "type": "checkbox",
       "id": "show_divider",
       "label": "Show top divider line",
-      "default": true
-    },
-    {
-      "type": "checkbox",
-      "id": "show_back_to_top",
-      "label": "Show 'Back to Top' button",
       "default": true
     },
     {

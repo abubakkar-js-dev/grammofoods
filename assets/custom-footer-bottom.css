@@ -247,16 +247,7 @@
   padding: 12px 16px;
   background: #ffffff;
   border-radius: 14px;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
   border: 1px solid var(--cfb-border, #e5e7eb);
-  transition:
-    transform 0.3s ease,
-    box-shadow 0.3s ease;
-}
-
-.cf-bottom__payments:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
 }
 
 .cf-bottom__payment-img {
@@ -334,72 +325,7 @@
   color: var(--cfb-link-hover, #17a953);
 }
 
-/* ============================================
-   Back to Top Button
-   ============================================ */
-.cf-bottom__back-to-top {
-  position: fixed;
-  bottom: 24px;
-  right: 24px;
-  width: 46px;
-  height: 46px;
-  border-radius: 50%;
-  background: var(--cfb-accent, #17a953);
-  color: #ffffff;
-  border: none;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 999;
-  opacity: 0;
-  visibility: hidden;
-  transform: translateY(20px);
-  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 8px 24px rgba(23, 169, 83, 0.35);
-}
-
-.cf-bottom__back-to-top.is-visible {
-  opacity: 1;
-  visibility: visible;
-  transform: translateY(0);
-}
-
-.cf-bottom__back-to-top:hover {
-  background: #128f45;
-  transform: translateY(-4px);
-  box-shadow: 0 12px 28px rgba(23, 169, 83, 0.45);
-}
-
-.cf-bottom__back-to-top:active {
-  transform: translateY(-2px) scale(0.95);
-}
-
-.cf-bottom__back-to-top svg {
-  width: 20px;
-  height: 20px;
-  transition: transform 0.25s ease;
-}
-
-.cf-bottom__back-to-top:hover svg {
-  transform: translateY(-2px);
-}
-
-@media (max-width: 749px) {
-  .cf-bottom__back-to-top {
-    width: 42px;
-    height: 42px;
-    bottom: 20px;
-    right: 16px;
-  }
-  .cf-bottom__back-to-top svg {
-    width: 18px;
-    height: 18px;
-  }
-}
-
 /* Focus states */
-.cf-bottom__back-to-top:focus-visible,
 .cf-bottom__legal-link:focus-visible {
   outline: 2px solid var(--cfb-accent, #17a953);
   outline-offset: 3px;
