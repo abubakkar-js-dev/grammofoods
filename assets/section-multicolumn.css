@@ -231,3 +231,16 @@
     display: list-item;
   }
 }
+
+.multicolumn .title {
+  font-size: 2.4rem;
+  line-height: 1.3;
+}
+
+.multicolumn .title em {
+  display: block;
+  font-style: italic;
+  font-size: 1.6rem;
+  font-weight: 400;
+  color: rgba(var(--color-foreground), 0.6);
+}
