@@ -250,7 +250,7 @@
         "video_product_EWyTwp"
       ],
       "custom_css": [
-        "h2 {margin: 48px 0px !important;}"
+        "h2 {margin-bottom: 48px !important; font-size: 24px !important;}"
       ],
       "name": "Video Product Card",
       "settings": {
