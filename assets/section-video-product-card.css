@@ -1,11 +1,11 @@
 .t4s-video-product-section .t4s-section-heading {
-  margin: 0 0 40px;
+  margin: 0 0 var(--heading-mb-desktop);
   line-height: 1.2;
 }
 
 .t4s-video-product-grid {
   display: grid;
-  gap: var(--grid-gap);
+  gap: var(--grid-gap, var(--gap-lg));
   grid-template-columns: repeat(var(--columns-mobile), 1fr);
 }
 

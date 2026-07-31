@@ -4,16 +4,16 @@
 
 .cf-bottom {
   background: var(--cfb-bg, #f6f6f8);
-  padding-top: var(--cfb-pt, 24px);
-  padding-bottom: var(--cfb-pb, 24px);
+  padding-top: var(--cfb-pt, var(--section-py-desktop));
+  padding-bottom: var(--cfb-pb, var(--section-py-desktop));
   color: var(--cfb-text, #6b7280);
   position: relative;
 }
 
 /* ---------- Top Divider ---------- */
 .cf-bottom__divider {
-  max-width: 1400px;
-  margin: 0 auto 24px;
+  max-width: var(--container-max-width);
+  margin: 0 auto var(--space-lg);
   height: 1px;
   background: linear-gradient(
     90deg,
@@ -26,12 +26,19 @@
 
 /* ---------- Container ---------- */
 .cf-bottom__container {
-  max-width: 1400px;
+  max-width: var(--container-max-width);
   margin: 0 auto;
-  padding: 0 24px;
+  padding: 0 var(--section-px-desktop);
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: var(--space-lg);
+}
+
+@media (max-width: 749px) {
+  .cf-bottom__container {
+    padding-left: var(--section-px-mobile);
+    padding-right: var(--section-px-mobile);
+  }
 }
 
 /* ---------- Row ---------- */

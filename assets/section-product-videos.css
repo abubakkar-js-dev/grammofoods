@@ -1,11 +1,11 @@
 .custom-video-section .video-title {
-  margin: 0 0 40px;
+  margin: 0 0 var(--heading-mb-desktop);
   line-height: 1.2;
 }
 
 .custom-video-section .video-container {
   display: grid;
-  gap: 20px;
+  gap: var(--gap-lg);
 }
 
 .custom-video-section .video-item {

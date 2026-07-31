@@ -1,0 +1,73 @@
+/* ============================================
+   THEME SPACING SYSTEM
+   Global section spacing tokens for consistent,
+   harmonious padding and margins across all sections.
+   Loaded globally via snippets/theme-spacing.liquid.
+   ============================================ */
+
+/* ===== SECTION SPACING SYSTEM ===== */
+:root {
+  /* Section vertical padding (top & bottom of sections) */
+  --section-py-desktop: 80px;
+  --section-py-tablet: 60px;
+  --section-py-mobile: 48px;
+
+  /* Section horizontal padding (left & right) */
+  --section-px-desktop: 24px;
+  --section-px-tablet: 20px;
+  --section-px-mobile: 16px;
+
+  /* Container max-widths */
+  --container-max-width: 1400px;
+  --container-narrow: 1200px;
+  --container-wide: 1600px;
+
+  /* Gap between elements (grid/flex gaps) */
+  --gap-xs: 8px;
+  --gap-sm: 16px;
+  --gap-md: 24px;
+  --gap-lg: 40px;
+  --gap-xl: 60px;
+
+  /* Component internal spacing */
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 40px;
+  --space-2xl: 60px;
+  --space-3xl: 80px;
+
+  /* Section-to-section margin (between stacked sections) */
+  --section-gap: 0px; /* Sections use padding, not margin */
+
+  /* Heading margins */
+  --heading-mb-desktop: 32px;
+  --heading-mb-mobile: 24px;
+
+  /* Border radius standards */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  --radius-full: 9999px;
+}
+
+/* ===== RESPONSIVE OVERRIDES ===== */
+@media (max-width: 990px) {
+  :root {
+    --section-py-desktop: 60px;
+    --gap-lg: 32px;
+    --gap-xl: 40px;
+  }
+}
+
+@media (max-width: 749px) {
+  :root {
+    --section-py-desktop: 48px;
+    --section-px-desktop: 16px;
+    --gap-lg: 24px;
+    --gap-xl: 32px;
+    --heading-mb-desktop: 24px;
+  }
+}

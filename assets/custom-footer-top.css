@@ -4,8 +4,8 @@
 
 .cf-top {
   background: var(--cf-bg, #f6f6f8);
-  padding-top: var(--cf-pt, 75px);
-  padding-bottom: var(--cf-pb, 40px);
+  padding-top: var(--cf-pt, var(--section-py-desktop));
+  padding-bottom: var(--cf-pb, var(--section-py-desktop));
   color: var(--cf-text-color, #6b7280);
   position: relative;
   overflow: hidden;
@@ -46,9 +46,9 @@
 }
 
 .cf-top__container {
-  max-width: 1400px;
+  max-width: var(--container-max-width);
   margin: 0 auto;
-  padding: 0 24px;
+  padding: 0 var(--section-px-desktop);
   position: relative;
   z-index: 1;
 }
@@ -57,14 +57,14 @@
 .cf-top__grid {
   display: grid;
   grid-template-columns: 1.4fr 1fr 1fr 1fr 1.6fr;
-  gap: 40px;
+  gap: var(--gap-xl);
   align-items: flex-start;
 }
 
 @media (max-width: 1200px) {
   .cf-top__grid {
     grid-template-columns: 1fr 1fr 1fr;
-    gap: 32px;
+    gap: var(--gap-lg);
   }
   .cf-top__col--newsletter,
   .cf-top__col--contact {
@@ -74,8 +74,12 @@
 
 @media (max-width: 749px) {
   .cf-top {
-    padding-top: var(--cf-pt-mb, 45px);
-    padding-bottom: var(--cf-pb-mb, 20px);
+    padding-top: var(--cf-pt-mb, var(--section-py-mobile));
+    padding-bottom: var(--cf-pb-mb, var(--section-py-mobile));
+  }
+  .cf-top__container {
+    padding-left: var(--section-px-mobile);
+    padding-right: var(--section-px-mobile);
   }
   .cf-top__grid {
     grid-template-columns: 1fr;

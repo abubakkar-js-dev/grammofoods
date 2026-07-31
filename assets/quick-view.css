@@ -27,7 +27,7 @@
 .quick-view-modal__content {
   position: relative;
   background: #ffffff;
-  border-radius: 16px;
+  border-radius: var(--radius-lg);
   max-width: 1000px;
   width: 100%;
   max-height: calc(100vh - 24px);
@@ -634,7 +634,7 @@
   .quick-view-modal__content {
     max-height: 94vh;
     max-width: 100%;
-    border-radius: 16px 16px 0 0;
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
     animation: qv-content-in-mobile 0.35s ease;
   }
 

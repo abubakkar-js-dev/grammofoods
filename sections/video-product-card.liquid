@@ -9,24 +9,40 @@
     --columns-mobile: {{ section.settings.columns_mobile }};
     --columns-tablet: {{ section.settings.columns_tablet }};
     --columns-desktop: {{ section.settings.columns_desktop }};
+    --t4s-pt: {{ section.settings.padding_top }}px;
+    --t4s-pb: {{ section.settings.padding_bottom }}px;
+    --t4s-page-width: {{ section.settings.page_width }}px;
   }
 
   #shopify-section-{{ section.id }} .t4s-video-product-section {
     background: var(--section-bg);
-    padding-top: {{ section.settings.padding_top }}px;
-    padding-bottom: {{ section.settings.padding_bottom }}px;
+    padding-top: var(--t4s-pt, var(--section-py-desktop));
+    padding-bottom: var(--t4s-pb, var(--section-py-desktop));
   }
 
   #shopify-section-{{ section.id }} .t4s-video-product-section .page-width {
-    max-width: {{ section.settings.page_width }}px;
+    max-width: var(--t4s-page-width, var(--container-max-width));
     margin: 0 auto;
-    padding: 0 20px;
+    padding-left: var(--section-px-desktop);
+    padding-right: var(--section-px-desktop);
   }
 
   #shopify-section-{{ section.id }} .t4s-section-heading {
     color: {{ section.settings.heading_color }};
     font-size: {{ section.settings.heading_size }}px;
     text-align: {{ section.settings.heading_align }};
+    margin: 0 0 var(--heading-mb-desktop);
+  }
+
+  @media screen and (max-width: 749px) {
+    #shopify-section-{{ section.id }} .t4s-video-product-section {
+      padding-top: var(--section-py-mobile);
+      padding-bottom: var(--section-py-mobile);
+    }
+    #shopify-section-{{ section.id }} .t4s-video-product-section .page-width {
+      padding-left: var(--section-px-mobile);
+      padding-right: var(--section-px-mobile);
+    }
   }
 {%- endstyle -%}
 
@@ -227,7 +243,7 @@
       "min": 800,
       "max": 1600,
       "step": 20,
-      "default": 1200,
+      "default": 1400,
       "unit": "px"
     },
     {
@@ -308,9 +324,9 @@
       "id": "padding_top",
       "label": "Top padding",
       "min": 0,
-      "max": 100,
-      "step": 4,
-      "default": 40,
+      "max": 150,
+      "step": 5,
+      "default": 80,
       "unit": "px"
     },
     {
@@ -318,9 +334,9 @@
       "id": "padding_bottom",
       "label": "Bottom padding",
       "min": 0,
-      "max": 100,
-      "step": 4,
-      "default": 40,
+      "max": 150,
+      "step": 5,
+      "default": 80,
       "unit": "px"
     }
   ],
