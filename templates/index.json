@@ -249,6 +249,9 @@
         "video_product_x9JbKh",
         "video_product_EWyTwp"
       ],
+      "custom_css": [
+        "h2 {margin: 65px 0 !important;}"
+      ],
       "name": "Video Product Card",
       "settings": {
         "heading": "Video Product Cards",
