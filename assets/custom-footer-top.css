@@ -271,6 +271,8 @@
 .cf-top__menu-arrow {
   display: inline-flex;
   align-items: center;
+  width: 0;
+  overflow: hidden;
   opacity: 0;
   transform: translateX(-8px);
   transition: all 0.3s ease;
@@ -280,6 +282,7 @@
 .cf-top__menu-arrow svg {
   width: 14px;
   height: 14px;
+  flex-shrink: 0;
 }
 
 .cf-top__menu-link:hover {
@@ -288,6 +291,7 @@
 }
 
 .cf-top__menu-link:hover .cf-top__menu-arrow {
+  width: 14px;
   opacity: 1;
   transform: translateX(0);
 }
