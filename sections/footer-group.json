@@ -36,10 +36,24 @@
           "type": "contact",
           "settings": {
             "heading": "Contact Us",
+            "show_address": true,
             "address": "Shop #2, Omrbin Khattb Mosjid Market, Greatwall City, Gazipur",
+            "address_use_accent": true,
+            "address_icon_color": "#17a953",
+            "show_email": true,
             "email": "grammofoods@gmail.com",
+            "email_link_enabled": true,
+            "email_use_accent": true,
+            "email_icon_color": "#17a953",
+            "show_phone": true,
             "phone": "+8809611900245",
-            "hours": "Sat - Thu: 9:00 AM - 8:00 PM"
+            "phone_link_enabled": true,
+            "phone_use_accent": true,
+            "phone_icon_color": "#17a953",
+            "show_hours": true,
+            "hours": "Sat - Thu: 9:00 AM - 8:00 PM",
+            "hours_use_accent": true,
+            "hours_icon_color": "#17a953"
           }
         },
         "menu_HwtiDN": {
@@ -61,11 +75,13 @@
           "settings": {
             "heading": "Follow Us",
             "description": "Stay connected on social media",
-            "facebook": "",
-            "instagram": "",
-            "youtube": "",
+            "facebook": "https://www.facebook.com/shopify",
+            "instagram": "https://www.instagram.com/shopify",
+            "youtube": "https://x.com/shopify",
             "twitter": "",
             "tiktok": "",
+            "linkedin": "",
+            "pinterest": "",
             "whatsapp": ""
           }
         },
@@ -77,7 +93,9 @@
             "placeholder": "Your email address",
             "button_text": "Subscribe",
             "success_message": "Thanks for subscribing! Check your inbox.",
-            "badges_enabled": true
+            "badges_enabled": true,
+            "badge_1_text": "No spam",
+            "badge_2_text": "Unsubscribe anytime"
           }
         }
       },
@@ -98,6 +116,10 @@
         "link_hover_color": "#17a953",
         "accent_color": "#17a953",
         "border_color": "#e5e7eb",
+        "show_underline": true,
+        "underline_color": "#17a953",
+        "underline_width": 2,
+        "column_gap": 30,
         "padding_top": 75,
         "padding_bottom": 40,
         "padding_top_mobile": 45,
@@ -143,7 +165,7 @@
       "settings": {
         "show_divider": true,
         "color_scheme": "",
-        "bg_color": "#FFFFFF",
+        "bg_color": "#ffffff",
         "text_color": "#6b7280",
         "link_color": "#6b7280",
         "link_hover_color": "#17a953",
