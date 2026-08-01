@@ -60,7 +60,7 @@
           "type": "menu",
           "settings": {
             "heading": "Information",
-            "menu": "information"
+            "menu": "footer"
           }
         },
         "menu_C4LJL7": {
