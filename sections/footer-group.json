@@ -46,14 +46,14 @@
           "type": "menu",
           "settings": {
             "heading": "Information",
-            "menu": "footer"
+            "menu": "information"
           }
         },
         "menu_C4LJL7": {
           "type": "menu",
           "settings": {
-            "heading": "Information",
-            "menu": "footer"
+            "heading": "Policies",
+            "menu": "policies"
           }
         },
         "social_39qFyq": {
@@ -149,8 +149,8 @@
         "link_hover_color": "#17a953",
         "accent_color": "#17a953",
         "border_color": "#e5e7eb",
-        "padding_top": 24,
-        "padding_bottom": 24
+        "padding_top": 25,
+        "padding_bottom": 25
       }
     }
   },
