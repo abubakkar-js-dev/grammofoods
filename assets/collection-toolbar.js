@@ -74,8 +74,9 @@ class CollectionToolbar extends HTMLElement {
   applyLayout(layout) {
     this.grid.classList.remove(
       'grid--1-col-tablet-down', 'grid--2-col-tablet-down',
-      'grid--2-col-desktop', 'grid--3-col-desktop', 'grid--4-col-desktop',
-      'grid--5-col-desktop', 'grid--6-col-desktop',
+      'grid--3-col-tablet-down', 'grid--4-col-tablet-down',
+      'grid--1-col-desktop', 'grid--2-col-desktop', 'grid--3-col-desktop',
+      'grid--4-col-desktop', 'grid--5-col-desktop', 'grid--6-col-desktop',
       'grid--list'
     );
 

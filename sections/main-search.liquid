@@ -3,6 +3,7 @@
 {{ 'component-price.css' | asset_url | stylesheet_tag }}
 {{ 'component-search.css' | asset_url | stylesheet_tag }}
 {{ 'collection-toolbar.css' | asset_url | stylesheet_tag }}
+{{ 'quick-view.css' | asset_url | stylesheet_tag }}
 
 {% if section.settings.image_shape == 'blob' %}
   {{ 'mask-blobs.css' | asset_url | stylesheet_tag }}
@@ -165,9 +166,6 @@
             <div class="collection-header__layout-switch" data-layout-switch>
               <button class="collection-header__layout-btn is--mobile-only" data-layout-btn data-layout-group="mobile" data-layout-val="list" title="{{ 'products.facets.list_view' | t }}">
                 <svg class="icon icon-list" viewBox="0 0 24 24" fill="none"><rect x="4" y="5" width="16" height="2.4" rx="0.5" fill="currentColor"/><rect x="4" y="10.8" width="16" height="2.4" rx="0.5" fill="currentColor"/><rect x="4" y="16.6" width="16" height="2.4" rx="0.5" fill="currentColor"/></svg>
-              </button>
-              <button class="collection-header__layout-btn is--mobile-only" data-layout-btn data-layout-group="mobile" data-layout-val="1" title="1 {{ 'products.facets.column' | t }}">
-                <svg class="icon" viewBox="0 0 24 24" fill="none"><rect x="4" y="4" width="16" height="16" rx="1" fill="currentColor"/></svg>
               </button>
               <button class="collection-header__layout-btn is--mobile-only" data-layout-btn data-layout-group="mobile" data-layout-val="2" title="2 {{ 'products.facets.columns' | t }}">
                 <svg class="icon" viewBox="0 0 24 24" fill="none"><rect x="4" y="4" width="6.5" height="16" rx="0.8" fill="currentColor"/><rect x="13.5" y="4" width="6.5" height="16" rx="0.8" fill="currentColor"/></svg>
@@ -387,6 +385,7 @@
                           product_view_context: 'search',
                           max_title_words: section.settings.max_title_words
                         %}
+                        {% render 'custom-list-card', product: item %}
                         {%- assign skip_card_product_styles = true -%}
                       {%- when 'article' -%}
                         {% render 'article-card',
@@ -466,6 +465,21 @@
     </collection-toolbar>
   {%- endif -%}
 </div>
+
+<quick-view-modal id="QuickViewModal-{{ section.id }}" class="quick-view-modal">
+  <div role="dialog" aria-label="Quick view" aria-modal="true" class="quick-view-modal__content" tabindex="-1">
+    <button id="ModalClose-{{ section.id }}" type="button" class="quick-view-modal__close" aria-label="Close">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M18 6L6 18"/><path d="M6 6l12 12"/>
+      </svg>
+    </button>
+    <div class="quick-view-modal__body"></div>
+    <div class="quick-view-modal__loading">
+      <div class="spinner"></div>
+    </div>
+    <div class="quick-view-modal__error"></div>
+  </div>
+</quick-view-modal>
 
 <script src="{{ 'collection-toolbar.js' | asset_url }}" defer="defer"></script>
 

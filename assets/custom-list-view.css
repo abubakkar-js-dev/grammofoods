@@ -1,0 +1,289 @@
+/* ========================================
+   Custom 1-Column List View Product Card
+   Active ONLY when the 1-column layout button
+   (data-layout-val="1") is selected on a
+   collection or search results page.
+
+   The theme's toolbar JS marks 1-column mode
+   with either:
+     - .grid--1-col-desktop      (desktop viewport)
+     - .grid--1-col-tablet-down  (mobile/tablet viewport)
+   ======================================== */
+
+/* Hide our custom card by default (in grid views) */
+.custom-list-card {
+  display: none;
+}
+
+/* ---------- 1-COLUMN / LIST MODE: SWAP CARDS ---------- */
+
+/* Hide the theme's default product card */
+.product-grid.grid--list .card-wrapper.product-card-wrapper,
+.product-grid.grid--1-col-desktop .card-wrapper.product-card-wrapper,
+.product-grid.grid--1-col-tablet-down .card-wrapper.product-card-wrapper {
+  display: none !important;
+}
+
+/* Show our custom card */
+.product-grid.grid--list .custom-list-card,
+.product-grid.grid--1-col-desktop .custom-list-card,
+.product-grid.grid--1-col-tablet-down .custom-list-card {
+  display: flex !important;
+}
+
+/* Each product becomes a full-width row */
+.product-grid.grid--list .grid__item,
+.product-grid.grid--1-col-desktop .grid__item,
+.product-grid.grid--1-col-tablet-down .grid__item {
+  width: 100% !important;
+  max-width: 100% !important;
+  flex: 0 0 100% !important;
+}
+
+/* Wrapper around the whole products list in 1-col / list mode */
+.product-grid.grid--list,
+.product-grid.grid--1-col-desktop,
+.product-grid.grid--1-col-tablet-down {
+  border: 1px solid #eaeaea;
+  border-radius: 4px;
+  overflow: hidden;
+  row-gap: 0 !important;
+  column-gap: 0 !important;
+}
+
+/* Grid item wrapper: no extra margin/padding creating gaps */
+.product-grid.grid--list .grid__item,
+.product-grid.grid--1-col-desktop .grid__item,
+.product-grid.grid--1-col-tablet-down .grid__item {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* ============ CUSTOM CARD STYLES ============ */
+
+/* Border-collapse: cards flush, single divider line between them */
+.custom-list-card {
+  width: 100%;
+  border: none;
+  border-bottom: 1px solid #eaeaea;
+  border-radius: 0;
+  margin-bottom: 0;
+  padding: 25px 20px;
+  align-items: center;
+  gap: 30px;
+  background: #fff;
+  position: relative;
+  transition: background 0.2s ease;
+}
+
+/* Last card: no bottom border (container border handles it) */
+.product-grid.grid--list .grid__item:last-child .custom-list-card,
+.product-grid.grid--1-col-desktop .grid__item:last-child .custom-list-card,
+.product-grid.grid--1-col-tablet-down .grid__item:last-child .custom-list-card {
+  border-bottom: none;
+}
+
+.custom-list-card:hover {
+  background: #fafafa;
+}
+
+/* Image */
+.custom-list-card__image-wrap {
+  flex: 0 0 180px;
+  position: relative;
+  background: #f5f5f5;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.custom-list-card__image-link {
+  display: block;
+}
+
+.custom-list-card__image {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1 / 1;
+  object-fit: contain;
+  display: block;
+}
+
+.custom-list-card__image--placeholder {
+  background: #f4f4f4;
+}
+
+/* Wishlist icon — hidden by default, fade in on card hover */
+.custom-list-card__wishlist {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #fff;
+  color: #222;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-5px);
+  transition: all 0.3s ease;
+  z-index: 2;
+}
+
+.custom-list-card:hover .custom-list-card__wishlist {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.custom-list-card__wishlist:hover {
+  background: var(--accent-color, #17a953);
+  color: #fff;
+}
+
+.custom-list-card__wishlist.is-active {
+  background: var(--accent-color, #17a953);
+  color: #fff;
+}
+
+.custom-list-card__wishlist svg {
+  display: block;
+}
+
+/* Info section (center) */
+.custom-list-card__info {
+  flex: 1 1 auto;
+  min-width: 0;
+  text-align: center;
+}
+
+.custom-list-card__title {
+  margin: 0 0 8px 0;
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.custom-list-card__title a {
+  color: #222;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.custom-list-card__title a:hover {
+  color: var(--accent-color, #17a953);
+}
+
+.custom-list-card__price {
+  margin: 0 0 10px 0;
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--accent-color, #17a953);
+}
+
+.custom-list-card__price--sale {
+  color: #ec0101;
+  margin-right: 8px;
+}
+
+.custom-list-card__price--compare {
+  color: #999;
+  text-decoration: line-through;
+  font-weight: 400;
+  font-size: 14px;
+}
+
+.custom-list-card__description {
+  color: #666;
+  font-size: 14px;
+  line-height: 1.5;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Actions (right side buttons) */
+.custom-list-card__actions {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 160px;
+}
+
+.custom-list-card__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 11px 24px;
+  border-radius: 60px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  border: 1.5px solid var(--accent-color, #17a953);
+  white-space: nowrap;
+}
+
+.custom-list-card__btn--outline {
+  background: transparent;
+  color: var(--accent-color, #17a953);
+}
+
+.custom-list-card__btn--outline:hover {
+  background: var(--accent-color, #17a953);
+  color: #fff;
+}
+
+.custom-list-card__btn--filled {
+  background: var(--accent-color, #17a953);
+  color: #fff;
+}
+
+.custom-list-card__btn--filled:hover {
+  background: #0e6632;
+  border-color: #0e6632;
+  color: #fff;
+}
+
+/* ============ RESPONSIVE ============ */
+
+@media (max-width: 767px) {
+  .custom-list-card {
+    flex-direction: column;
+    text-align: center;
+    gap: 15px;
+    padding: 20px 15px;
+  }
+
+  .custom-list-card__image-wrap {
+    flex: 0 0 auto;
+    width: 200px;
+  }
+
+  .custom-list-card__actions {
+    flex-direction: row;
+    width: 100%;
+    justify-content: center;
+    min-width: unset;
+  }
+
+  .custom-list-card__btn {
+    flex: 1;
+    max-width: 160px;
+  }
+
+  .custom-list-card__wishlist {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+}

@@ -1,0 +1,68 @@
+{% comment %}
+  Custom 1-column list view product card.
+  Rendered alongside the theme's default card inside the product grid.
+  Hidden by CSS unless the 1-column layout is active.
+{% endcomment %}
+<div class="custom-list-card" data-product-id="{{ product.id }}">
+  <div class="custom-list-card__image-wrap">
+    <a href="{{ product.url }}" class="custom-list-card__image-link">
+      {%- if product.featured_image -%}
+        <img
+          src="{{ product.featured_image | image_url: width: 400 }}"
+          alt="{{ product.featured_image.alt | escape }}"
+          class="custom-list-card__image"
+          loading="lazy"
+          width="180"
+          height="180">
+      {%- else -%}
+        <div class="custom-list-card__image custom-list-card__image--placeholder"></div>
+      {%- endif -%}
+    </a>
+    <a
+      href="{{ product.url }}"
+      class="custom-list-card__wishlist"
+      data-action-wishlist
+      data-id="{{ product.id }}"
+      aria-label="Add to Wishlist">
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+      </svg>
+    </a>
+  </div>
+
+  <div class="custom-list-card__info">
+    <h3 class="custom-list-card__title">
+      <a href="{{ product.url }}">{{ product.title }}</a>
+    </h3>
+    <div class="custom-list-card__price">
+      {% if product.compare_at_price > product.price %}
+        <span class="custom-list-card__price--sale">{{ product.price | money }}</span>
+        <span class="custom-list-card__price--compare">{{ product.compare_at_price | money }}</span>
+      {% else %}
+        {{ product.price | money }}
+      {% endif %}
+    </div>
+    {%- if product.description != blank -%}
+      <div class="custom-list-card__description">
+        {{ product.description | strip_html | truncate: 200 }}
+      </div>
+    {%- endif -%}
+  </div>
+
+  <div class="custom-list-card__actions">
+    <a
+      href="{{ product.url }}"
+      class="custom-list-card__btn custom-list-card__btn--outline"
+      data-action-quickview
+      data-id="{{ product.id }}">
+      Quick View
+    </a>
+    <a
+      href="{{ product.url }}"
+      class="custom-list-card__btn custom-list-card__btn--filled"
+      data-action-quickshop
+      data-id="{{ product.id }}">
+      Quick Shop
+    </a>
+  </div>
+</div>
