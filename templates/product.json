@@ -91,7 +91,7 @@
         "columns_desktop": 4,
         "columns_mobile": "2",
         "color_scheme": "scheme-1",
-        "image_ratio": "square",
+        "image_ratio": "portrait",
         "image_shape": "default",
         "show_secondary_image": true,
         "show_vendor": false,
@@ -104,8 +104,13 @@
       "type": "recently-viewed",
       "settings": {
         "heading": "Recently viewed products",
-        "products_to_show": 8,
-        "accent_color": "#17a953"
+        "heading_size": "h2",
+        "products_to_show": 4,
+        "columns_desktop": 4,
+        "columns_mobile": "2",
+        "color_scheme": "scheme-1",
+        "padding_top": 36,
+        "padding_bottom": 28
       }
     }
   },

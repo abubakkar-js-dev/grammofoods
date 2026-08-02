@@ -1,0 +1,41 @@
+{% comment %}
+  ============================================================
+  Recently Viewed — single product card (loaded via AJAX)
+  File: sections/recently-viewed-card.liquid
+
+  This section is NOT part of any template. The Recently Viewed
+  section's JS requests it in the context of a product page:
+
+    /products/{handle}?section_id=recently-viewed-card
+
+  It renders the SAME card-product snippet used by "You may
+  also like" (related-products), so recently-viewed cards are
+  byte-for-byte identical to related-products cards.
+
+  NOTE: Keep the card-product arguments in sync with
+  sections/related-products.liquid.
+  ============================================================
+{% endcomment %}
+
+{%- if product -%}
+  <li class="grid__item">
+    {% render 'card-product',
+      card_product: product,
+      media_aspect_ratio: 'portrait',
+      image_shape: 'default',
+      show_secondary_image: true,
+      show_vendor: false,
+      show_rating: false,
+      skip_styles: true,
+      section_id: section.id,
+      product_view_context: 'recently-viewed'
+    %}
+  </li>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Recently viewed card",
+  "settings": []
+}
+{% endschema %}

@@ -1,33 +1,65 @@
 {% comment %}
   ============================================================
-  Recently Viewed Products (Dawn / OS 2.0 compatible)
+  Recently Viewed Products (styled exactly like "You may also like")
   File: sections/recently-viewed.liquid
 
-  Requires these assets (upload to the Assets folder):
-    - assets/recently-viewed.css
-    - assets/recently-viewed.js
-
   - Remembers viewed products in the visitor's localStorage
-  - Renders them as a styled grid ("Recently viewed products")
-  - Green pill buttons: "Add to cart" (single-variant items),
-    "Quick Shop" (multi-variant items), "Read more" (sold out)
+  - Cards are rendered by the card-product snippet (the same
+    component used by related-products) via the Section
+    Rendering API — see assets/recently-viewed.js and
+    sections/recently-viewed-card.liquid
   ============================================================
 {% endcomment %}
 
+{{ 'component-card.css' | asset_url | stylesheet_tag }}
+{{ 'component-price.css' | asset_url | stylesheet_tag }}
+{{ 'collection-toolbar.css' | asset_url | stylesheet_tag }}
+{{ 'section-related-products.css' | asset_url | stylesheet_tag }}
 {{ 'recently-viewed.css' | asset_url | stylesheet_tag }}
 <script src="{{ 'recently-viewed.js' | asset_url }}" defer="defer"></script>
 
-<div class="rv page-width" id="RecentlyViewed-{{ section.id }}" data-rv-root
-  style="--rv-accent: {{ section.settings.accent_color }}; --rv-accent-dark: {{ section.settings.accent_color | color_darken: 20 }};"
-  data-current-handle="{% if product %}{{ product.handle | escape }}{% endif %}"
-  data-limit="{{ section.settings.products_to_show }}"
-  data-money-format="{{ shop.money_format | escape }}"
-  data-add-url="{{ routes.cart_add_url }}"
-  data-cart-url="{{ routes.cart_url }}">
+<script>
+  document.body.classList.add('collection-toolbar-enabled');
+</script>
 
-  <h3 class="rv-heading">{{ section.settings.heading | escape }}</h3>
-  <div class="rv-grid" data-rv-grid></div>
-  <p class="rv-empty" data-rv-empty hidden>Browse some products and they'll show up here.</p>
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
+
+<div class="color-{{ section.settings.color_scheme }} gradient">
+  <div
+    class="related-products page-width section-{{ section.id }}-padding isolate{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
+    id="RecentlyViewed-{{ section.id }}"
+    data-rv-root
+    data-current-handle="{% if product %}{{ product.handle | escape }}{% endif %}"
+    data-limit="{{ section.settings.products_to_show }}"
+  >
+    {%- if section.settings.heading != blank -%}
+      <div class="collection__title title-wrapper title-wrapper--no-top-margin">
+        <h2 class="related-products__heading title inline-richtext {{ section.settings.heading_size }}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
+          {{ section.settings.heading }}
+        </h2>
+      </div>
+    {%- endif -%}
+
+    <ul
+      class="grid product-grid grid--{{ section.settings.columns_desktop }}-col-desktop grid--{{ section.settings.columns_mobile }}-col-tablet-down"
+      role="list"
+      aria-label="{{ section.settings.heading | default: 'Recently viewed products' | escape }}"
+      data-rv-grid
+    ></ul>
+    <p class="rv-empty" data-rv-empty hidden>Browse some products and they'll show up here.</p>
+  </div>
 </div>
 
 {% schema %}
@@ -37,10 +69,38 @@
   "class": "section-recently-viewed",
   "settings": [
     {
-      "type": "text",
+      "type": "inline_richtext",
       "id": "heading",
       "label": "Heading",
       "default": "Recently viewed products"
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "options": [
+        {
+          "value": "h2",
+          "label": "Small"
+        },
+        {
+          "value": "h1",
+          "label": "Medium"
+        },
+        {
+          "value": "h0",
+          "label": "Large"
+        },
+        {
+          "value": "hxl",
+          "label": "Extra large"
+        },
+        {
+          "value": "hxxl",
+          "label": "2XL"
+        }
+      ],
+      "default": "h2",
+      "label": "Heading size"
     },
     {
       "type": "range",
@@ -49,13 +109,67 @@
       "min": 2,
       "max": 12,
       "step": 1,
-      "default": 8
+      "default": 4
     },
     {
-      "type": "color",
-      "id": "accent_color",
-      "label": "Accent color",
-      "default": "#17a953"
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "columns_desktop",
+      "min": 1,
+      "max": 6,
+      "step": 1,
+      "default": 4,
+      "label": "Columns on desktop"
+    },
+    {
+      "type": "select",
+      "id": "columns_mobile",
+      "default": "2",
+      "label": "Columns on mobile",
+      "options": [
+        {
+          "value": "1",
+          "label": "1 column"
+        },
+        {
+          "value": "2",
+          "label": "2 columns"
+        }
+      ]
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "info": "Applies to the section background.",
+      "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "Section padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding top",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding bottom",
+      "default": 36
     }
   ],
   "presets": [
