@@ -81,6 +81,7 @@
     /* ---------- Elements ---------- */
     var priceEl = root.querySelector('[data-gp-price]');
     var availEl = root.querySelector('[data-gp-availability]');
+    var availText = root.querySelector('[data-gp-avail-text]');
     var variantInput = root.querySelector('[data-gp-variant-id]');
     var atcBtn = root.querySelector('[data-gp-atc]');
     var atcText = root.querySelector('[data-gp-atc-text]');
@@ -102,8 +103,10 @@
 
       var available = !!(variant && variant.available);
       if (availEl) {
-        availEl.textContent = variant ? (available ? 'In Stock' : 'Out of stock') : 'Unavailable';
         availEl.classList.toggle('is-out', !available);
+      }
+      if (availText) {
+        availText.textContent = variant ? (available ? 'In Stock' : 'Out of stock') : 'Unavailable';
       }
       if (variantInput && variant) variantInput.value = variant.id;
       [atcBtn, stickyAtcBtn].forEach(function (btn) {

@@ -23,10 +23,35 @@
 {%- liquid
   assign current_variant = product.selected_or_first_available_variant
   assign form_id = 'gp-form-' | append: section.id
+
+  case section.settings.title_size
+    when 'small'
+      assign title_fs = '22px'
+    when 'large'
+      assign title_fs = '36px'
+    else
+      assign title_fs = '28px'
+  endcase
+
+  case section.settings.price_size
+    when 'small'
+      assign price_fs = '20px'
+    when 'large'
+      assign price_fs = '30px'
+    else
+      assign price_fs = '24px'
+  endcase
 -%}
 
+{%- style -%}
+  #GrammoProduct-{{ section.id }} {
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+  }
+{%- endstyle -%}
+
 <div class="grammo-product page-width" id="GrammoProduct-{{ section.id }}" data-gp-root data-section-id="{{ section.id }}"
-  style="--gp-accent: {{ section.settings.accent_color }}; --gp-accent-dark: {{ section.settings.accent_color | color_darken: 20 }};"
+  style="--gp-accent: {{ section.settings.accent_color }}; --gp-accent-dark: {{ section.settings.accent_color | color_darken: 20 }}; --gp-title-size: {{ title_fs }}; --gp-price-size: {{ price_fs }}; --gp-radius-btn: {{ section.settings.button_radius }}px; --gp-media-radius: {{ section.settings.media_radius }}px;"
   data-money-format="{{ shop.money_format | escape }}"
   data-product-title="{{ product.title | escape }}"
   data-add-url="{{ routes.cart_add_url }}"
@@ -71,7 +96,7 @@
               {%- endif -%}
             </div>
           {%- endfor -%}
-          {%- if product.media.size > 1 -%}
+          {%- if product.media.size > 1 and section.settings.show_gallery_arrows -%}
             <button type="button" class="gp-arrow gp-arrow--prev" data-gp-prev aria-label="Previous image">
               <svg viewBox="0 0 100 100" width="12" height="12"><path d="M 10,50 L 60,100 L 70,90 L 30,50 L 70,10 L 60,0 Z" fill="currentColor"/></svg>
             </button>
@@ -81,10 +106,12 @@
           {%- endif -%}
         </div>
       </div>
+      {%- if section.settings.show_zoom_hint -%}
       <div class="gp-zoom-hint">
         <svg viewBox="0 0 448 512" width="13" height="13" fill="currentColor" aria-hidden="true"><path d="M416 176V86.63L246.6 256L416 425.4V336c0-8.844 7.156-16 16-16s16 7.156 16 16v128c0 8.844-7.156 16-16 16h-128c-8.844 0-16-7.156-16-16s7.156-16 16-16h89.38L224 278.6L54.63 448H144c8.8 0 16 7.2 16 16s-7.2 16-16 16H16C7.156 480 0 472.8 0 464V336c0-8.8 7.156-16 16-16s16 7.2 16 16v89.38L201.4 256 32 86.63V176c0 8.8-7.16 16-16 16S0 184.8 0 176V48C0 39.16 7.156 32 16 32h128c8.8 0 16 7.16 16 16s-7.2 16-16 16H54.63L224 233.4 393.4 64H304c-8.8 0-16-7.16-16-16s7.2-16 16-16h128c8.8 0 16 7.16 16 16v128c0 8.8-7.2 16-16 16s-16-7.2-16-16z"/></svg>
         Click image to enlarge
       </div>
+      {%- endif -%}
     </div>
 
     {%- comment -%} ---------- INFO / BLOCKS ---------- {%- endcomment -%}
@@ -116,7 +143,8 @@
             <div class="gp-availability" {{ block.shopify_attributes }}>
               Availability:
               <span class="gp-availability-status" data-gp-availability>
-                {%- if current_variant.available %}In Stock{% else %}Out of stock{% endif -%}
+                <span class="gp-availability-dot" data-gp-avail-dot></span>
+                <span data-gp-avail-text>{%- if current_variant.available %}In Stock{% else %}Out of stock{% endif -%}</span>
               </span>
             </div>
 
@@ -170,6 +198,7 @@
                 <input type="hidden" name="id" value="{{ current_variant.id }}" data-gp-variant-id>
 
                 <div class="gp-atc-row">
+                  {%- if block.settings.show_quantity -%}
                   <div class="gp-qty">
                     <button type="button" data-gp-qty-minus aria-label="Decrease quantity">&#8722;</button>
                     <input type="number" name="quantity" value="1" min="1"
@@ -177,6 +206,7 @@
                       data-gp-qty-input inputmode="numeric" aria-label="Quantity">
                     <button type="button" data-gp-qty-plus aria-label="Increase quantity">+</button>
                   </div>
+                  {%- endif -%}
 
                   <button type="submit" name="add" class="gp-btn gp-btn--atc" data-gp-atc
                     {% unless current_variant.available %}disabled{% endunless %}>
@@ -286,10 +316,110 @@
       "default": "#17a953"
     },
     {
+      "type": "header",
+      "content": "Layout & Style"
+    },
+    {
+      "type": "select",
+      "id": "title_size",
+      "label": "Product title size",
+      "options": [
+        {
+          "value": "small",
+          "label": "Small"
+        },
+        {
+          "value": "medium",
+          "label": "Medium"
+        },
+        {
+          "value": "large",
+          "label": "Large"
+        }
+      ],
+      "default": "medium"
+    },
+    {
+      "type": "select",
+      "id": "price_size",
+      "label": "Price size",
+      "options": [
+        {
+          "value": "small",
+          "label": "Small"
+        },
+        {
+          "value": "medium",
+          "label": "Medium"
+        },
+        {
+          "value": "large",
+          "label": "Large"
+        }
+      ],
+      "default": "medium"
+    },
+    {
+      "type": "range",
+      "id": "button_radius",
+      "min": 0,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "label": "Button corner radius",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "media_radius",
+      "min": 0,
+      "max": 30,
+      "step": 2,
+      "unit": "px",
+      "label": "Image corner radius",
+      "default": 12
+    },
+    {
+      "type": "checkbox",
+      "id": "show_gallery_arrows",
+      "label": "Show gallery arrows",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_zoom_hint",
+      "label": "Show zoom hint",
+      "default": true
+    },
+    {
       "type": "checkbox",
       "id": "enable_sticky_atc",
       "label": "Enable sticky add to cart bar",
       "default": true
+    },
+    {
+      "type": "header",
+      "content": "Section padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding top",
+      "default": 44
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding bottom",
+      "default": 44
     }
   ],
   "blocks": [
@@ -367,6 +497,12 @@
       "name": "Buy buttons",
       "limit": 1,
       "settings": [
+        {
+          "type": "checkbox",
+          "id": "show_quantity",
+          "label": "Show quantity selector",
+          "default": true
+        },
         {
           "type": "checkbox",
           "id": "show_wishlist",
