@@ -97,7 +97,7 @@
         "show_vendor": false,
         "show_rating": false,
         "padding_top": 36,
-        "padding_bottom": 28
+        "padding_bottom": 44
       }
     },
     "recently-viewed": {
@@ -109,8 +109,8 @@
         "columns_desktop": 4,
         "columns_mobile": "2",
         "color_scheme": "scheme-1",
-        "padding_top": 36,
-        "padding_bottom": 28
+        "padding_top": 44,
+        "padding_bottom": 44
       }
     }
   },

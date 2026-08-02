@@ -6,6 +6,10 @@
    This file only styles the empty-state message.
    ============================================================ */
 
+.section-recently-viewed {
+  margin-bottom: 2rem;
+}
+
 .rv-empty {
   text-align: center;
   color: rgba(var(--color-foreground), 0.75);
