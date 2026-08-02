@@ -1,0 +1,67 @@
+{% comment %}
+  ============================================================
+  Recently Viewed Products (Dawn / OS 2.0 compatible)
+  File: sections/recently-viewed.liquid
+
+  Requires these assets (upload to the Assets folder):
+    - assets/recently-viewed.css
+    - assets/recently-viewed.js
+
+  - Remembers viewed products in the visitor's localStorage
+  - Renders them as a styled grid ("Recently viewed products")
+  - Green pill buttons: "Add to cart" (single-variant items),
+    "Quick Shop" (multi-variant items), "Read more" (sold out)
+  ============================================================
+{% endcomment %}
+
+{{ 'recently-viewed.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'recently-viewed.js' | asset_url }}" defer="defer"></script>
+
+<div class="rv page-width" id="RecentlyViewed-{{ section.id }}" data-rv-root
+  style="--rv-accent: {{ section.settings.accent_color }}; --rv-accent-dark: {{ section.settings.accent_color | color_darken: 20 }};"
+  data-current-handle="{% if product %}{{ product.handle | escape }}{% endif %}"
+  data-limit="{{ section.settings.products_to_show }}"
+  data-money-format="{{ shop.money_format | escape }}"
+  data-add-url="{{ routes.cart_add_url }}"
+  data-cart-url="{{ routes.cart_url }}">
+
+  <h3 class="rv-heading">{{ section.settings.heading | escape }}</h3>
+  <div class="rv-grid" data-rv-grid></div>
+  <p class="rv-empty" data-rv-empty hidden>Browse some products and they'll show up here.</p>
+</div>
+
+{% schema %}
+{
+  "name": "Recently viewed",
+  "tag": "section",
+  "class": "section-recently-viewed",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Recently viewed products"
+    },
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "label": "Products to show",
+      "min": 2,
+      "max": 12,
+      "step": 1,
+      "default": 8
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Accent color",
+      "default": "#17a953"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Recently viewed"
+    }
+  ]
+}
+{% endschema %}

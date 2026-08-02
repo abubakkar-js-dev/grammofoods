@@ -1,0 +1,547 @@
+/* ============================================================
+   Grammo Product Page — main section styles
+   File: assets/grammo-product.css
+   Loaded by: sections/custom-main-product.liquid
+   Accent colors come from section settings as inline CSS vars:
+   --gp-accent, --gp-accent-dark (fall back to defaults here)
+   ============================================================ */
+
+.grammo-product {
+  --gp-accent: #17a953;
+  --gp-accent-dark: #0e6632;
+  --gp-dark: #222222;
+  --gp-text: #000000;
+  --gp-muted: #696969;
+  --gp-border: #dddddd;
+  --gp-radius-btn: 60px;
+  padding-top: 45px;
+  color: var(--gp-text);
+}
+.grammo-product .gp-grid {
+  display: flex;
+  gap: 45px;
+  align-items: flex-start;
+}
+
+/* ---------- Gallery ---------- */
+.grammo-product .gp-media {
+  flex: 0 0 calc(50% - 22px);
+  max-width: calc(50% - 22px);
+}
+.grammo-product .gp-media-wrap {
+  display: flex;
+  gap: 15px;
+  align-items: flex-start;
+}
+.grammo-product .gp-thumbs {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 88px;
+  flex-shrink: 0;
+}
+.grammo-product .gp-thumb {
+  border: 1px solid transparent;
+  border-radius: 4px;
+  overflow: hidden;
+  cursor: pointer;
+  aspect-ratio: 1/1;
+  background: #fbfbfb;
+  padding: 0;
+  transition: border-color 0.2s;
+}
+.grammo-product .gp-thumb.is-active {
+  border-color: var(--gp-dark);
+}
+.grammo-product .gp-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.grammo-product .gp-main-media {
+  position: relative;
+  flex: 1;
+  aspect-ratio: 1/1;
+  background: #fff;
+  overflow: hidden;
+}
+.grammo-product .gp-media-item {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s;
+}
+.grammo-product .gp-media-item.is-active {
+  opacity: 1;
+  pointer-events: auto;
+  position: relative;
+}
+.grammo-product .gp-media-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  cursor: zoom-in;
+}
+.grammo-product .gp-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid var(--gp-border);
+  background: #fff;
+  color: var(--gp-dark);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: 0.2s;
+  padding: 0;
+}
+.grammo-product .gp-arrow:hover {
+  background: var(--gp-dark);
+  color: #fff;
+  border-color: var(--gp-dark);
+}
+.grammo-product .gp-arrow--prev {
+  left: 14px;
+}
+.grammo-product .gp-arrow--next {
+  right: 14px;
+}
+.grammo-product .gp-zoom-hint {
+  margin-top: 12px;
+  font-size: 12px;
+  color: #777;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+/* ---------- Info column ---------- */
+.grammo-product .gp-info {
+  flex: 1;
+  min-width: 0;
+}
+.grammo-product .gp-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--gp-dark);
+  margin: 0 0 10px;
+  line-height: 1.3;
+}
+.grammo-product .gp-price {
+  font-size: 22px;
+  color: var(--gp-muted);
+  margin: 0 0 4px;
+}
+.grammo-product .gp-price del {
+  color: #aaa;
+  margin-right: 8px;
+  font-size: 18px;
+}
+.grammo-product .gp-price ins {
+  text-decoration: none;
+  color: #ec0101;
+}
+.grammo-product .gp-short-desc {
+  font-size: 13.5px;
+  line-height: 1.7;
+  color: #555;
+  margin: 14px 0 12px;
+}
+.grammo-product .gp-availability {
+  font-size: 13.5px;
+  margin-bottom: 18px;
+  color: var(--gp-dark);
+}
+.grammo-product .gp-availability-status {
+  color: var(--gp-accent);
+  font-weight: 500;
+}
+.grammo-product .gp-availability-status.is-out {
+  color: #e8101e;
+}
+
+/* ---------- Pick your needs ---------- */
+.grammo-product .gp-picks__heading {
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: var(--gp-dark);
+  margin: 0 0 10px;
+}
+.grammo-product .gp-picks__row {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 22px;
+}
+.grammo-product .gp-pick {
+  flex: 0 0 23%;
+  max-width: 23%;
+  border: 1px solid var(--gp-border);
+  border-radius: 4px;
+  padding: 8px;
+  text-align: center;
+  transition: 0.2s;
+  display: block;
+  color: inherit;
+  text-decoration: none;
+}
+.grammo-product .gp-pick:hover {
+  border-color: var(--gp-accent);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.07);
+}
+.grammo-product .gp-pick img {
+  aspect-ratio: 1/1;
+  object-fit: cover;
+  width: 100%;
+  border-radius: 3px;
+}
+.grammo-product .gp-pick__name {
+  font-size: 10.5px;
+  color: #555;
+  margin-top: 6px;
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ---------- Variant options ---------- */
+.grammo-product .gp-option {
+  margin-bottom: 18px;
+}
+.grammo-product .gp-option__label {
+  font-size: 13.5px;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: var(--gp-dark);
+  margin-bottom: 10px;
+}
+.grammo-product .gp-option__label span {
+  font-weight: 400;
+  text-transform: none;
+}
+.grammo-product .gp-option__values {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.grammo-product .gp-option__value {
+  padding: 7px 18px;
+  border-radius: 3px;
+  font-size: 13px;
+  cursor: pointer;
+  background: #fff;
+  color: var(--gp-dark);
+  border: 1px solid var(--gp-border);
+  transition: 0.15s;
+}
+.grammo-product .gp-option__value:hover {
+  border-color: var(--gp-dark);
+}
+.grammo-product .gp-option__value.is-active {
+  background: var(--gp-dark);
+  color: #fff;
+  border-color: var(--gp-dark);
+}
+
+/* ---------- Buy buttons ---------- */
+.grammo-product .gp-form {
+  margin: 0;
+}
+.grammo-product .gp-atc-row {
+  display: flex;
+  gap: 12px;
+  align-items: stretch;
+  margin-bottom: 12px;
+}
+.grammo-product .gp-qty {
+  display: flex;
+  align-items: center;
+  border: 1px solid var(--gp-border);
+  border-radius: var(--gp-radius-btn);
+  padding: 0 6px;
+  flex-shrink: 0;
+}
+.grammo-product .gp-qty button {
+  width: 32px;
+  height: 44px;
+  font-size: 18px;
+  color: var(--gp-dark);
+  background: none;
+  border: 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.grammo-product .gp-qty input {
+  width: 42px;
+  text-align: center;
+  border: 0;
+  outline: none;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 500;
+  background: transparent;
+  -moz-appearance: textfield;
+}
+.grammo-product .gp-qty input::-webkit-outer-spin-button,
+.grammo-product .gp-qty input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.grammo-product .gp-btn {
+  border: 0;
+  cursor: pointer;
+  font-weight: 500;
+  font-family: inherit;
+  transition: background 0.25s;
+}
+.grammo-product .gp-btn--atc {
+  flex: 1;
+  background: var(--gp-dark);
+  color: #fff;
+  border-radius: var(--gp-radius-btn);
+  font-size: 12px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 14px 20px;
+}
+.grammo-product .gp-btn--atc:hover:not(:disabled) {
+  background: var(--gp-accent);
+}
+.grammo-product .gp-btn--atc:disabled {
+  background: #bbb;
+  cursor: not-allowed;
+}
+.grammo-product .gp-wish-btn {
+  width: 48px;
+  height: 48px;
+  border: 1px solid var(--gp-border);
+  border-radius: 50%;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fff;
+  color: var(--gp-dark);
+  cursor: pointer;
+  transition: 0.2s;
+  padding: 0;
+}
+.grammo-product .gp-wish-btn:hover {
+  border-color: var(--gp-accent);
+  color: var(--gp-accent);
+}
+.grammo-product .gp-wish-btn.is-active {
+  color: #e81e1e;
+  border-color: #e81e1e;
+}
+.grammo-product .gp-dynamic {
+  margin-bottom: 12px;
+}
+.grammo-product .gp-btn--cod {
+  width: 100%;
+  background: var(--gp-accent);
+  color: #fff;
+  border-radius: var(--gp-radius-btn);
+  padding: 14px 20px;
+  font-size: 14.5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 26px;
+}
+.grammo-product .gp-btn--cod:hover {
+  background: var(--gp-accent-dark);
+}
+.grammo-product .gp-btn--cod:disabled {
+  background: #bbb;
+  cursor: not-allowed;
+}
+
+/* ---------- Accordions ---------- */
+.grammo-product .gp-acc:first-of-type {
+  border-top: 1px solid #eee;
+}
+.grammo-product .gp-acc__item {
+  border-bottom: 1px solid #eee;
+}
+.grammo-product .gp-acc + .gp-acc .gp-acc__item:first-child {
+  border-top: 0;
+}
+.grammo-product .gp-acc__head {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 0;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--gp-dark);
+  background: none;
+  border: 0;
+  cursor: pointer;
+  text-align: left;
+  font-family: inherit;
+}
+.grammo-product .gp-acc__icon {
+  font-size: 19px;
+  font-weight: 300;
+  color: #666;
+  transition: transform 0.25s;
+  line-height: 1;
+}
+.grammo-product .gp-acc__item.is-open .gp-acc__icon {
+  transform: rotate(45deg);
+}
+.grammo-product .gp-acc__body {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.35s ease;
+}
+.grammo-product .gp-acc__content {
+  padding: 0 0 22px;
+  font-size: 13px;
+  line-height: 1.75;
+  color: #444;
+}
+
+/* ---------- Sticky add to cart ---------- */
+.grammo-product .gp-sticky {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 40;
+  background: #fff;
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.1);
+  padding: 12px 0;
+  transform: translateY(110%);
+  transition: transform 0.35s ease;
+}
+.grammo-product .gp-sticky.is-visible {
+  transform: none;
+}
+.grammo-product .gp-sticky__inner {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.grammo-product .gp-sticky__img {
+  width: 52px;
+  height: 52px;
+  object-fit: cover;
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+.grammo-product .gp-sticky__info {
+  flex: 1;
+  min-width: 0;
+}
+.grammo-product .gp-sticky__title {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--gp-dark);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.grammo-product .gp-sticky__price {
+  font-size: 14px;
+  color: var(--gp-muted);
+}
+.grammo-product .gp-sticky__atc {
+  flex: 0 0 auto;
+}
+
+/* ---------- Lightbox ---------- */
+.grammo-product .gp-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  background: rgba(0, 0, 0, 0.9);
+  display: none;
+  align-items: center;
+  justify-content: center;
+}
+.grammo-product .gp-lightbox.is-open {
+  display: flex;
+}
+.grammo-product .gp-lightbox img {
+  max-width: 88vw;
+  max-height: 88vh;
+  object-fit: contain;
+}
+.grammo-product .gp-lightbox__close {
+  position: absolute;
+  top: 22px;
+  right: 26px;
+  color: #fff;
+  font-size: 32px;
+  background: none;
+  border: 0;
+  cursor: pointer;
+  line-height: 1;
+}
+
+/* ---------- Toast ---------- */
+.grammo-product .gp-toast {
+  position: fixed;
+  bottom: 90px;
+  right: 24px;
+  z-index: 95;
+  background: var(--gp-accent);
+  color: #fff;
+  padding: 13px 22px;
+  border-radius: 6px;
+  font-size: 13.5px;
+  font-weight: 500;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.18);
+  transform: translateY(18px);
+  opacity: 0;
+  transition: 0.3s;
+  pointer-events: none;
+}
+.grammo-product .gp-toast.is-visible {
+  transform: none;
+  opacity: 1;
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 989px) {
+  .grammo-product .gp-grid {
+    flex-direction: column;
+  }
+  .grammo-product .gp-media {
+    flex: none;
+    max-width: 100%;
+    width: 100%;
+  }
+}
+@media (max-width: 749px) {
+  .grammo-product .gp-media-wrap {
+    flex-direction: column-reverse;
+  }
+  .grammo-product .gp-thumbs {
+    flex-direction: row;
+    width: auto;
+  }
+  .grammo-product .gp-thumb {
+    width: 70px;
+  }
+  .grammo-product .gp-picks__row {
+    flex-wrap: wrap;
+  }
+  .grammo-product .gp-pick {
+    flex: 0 0 calc(50% - 5px);
+    max-width: calc(50% - 5px);
+  }
+}

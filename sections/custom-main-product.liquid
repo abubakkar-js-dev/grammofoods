@@ -1,0 +1,445 @@
+{% comment %}
+  ============================================================
+  Grammo-style Product Main Section (Dawn / OS 2.0 compatible)
+  File: sections/custom-main-product.liquid
+
+  Requires these assets (upload to the Assets folder):
+    - assets/grammo-product.css
+    - assets/grammo-product.js
+
+  Features:
+  - Left vertical thumbnail gallery + arrows + lightbox zoom
+  - Blocks: Title, Price, Short description, Availability,
+    Pick your needs, Variant picker, Buy buttons (+ COD, wishlist),
+    Description accordion, Collapsible tabs, Custom Liquid
+  - AJAX add to cart (updates Dawn cart bubble / cart drawer)
+  - Sticky add-to-cart bar
+  ============================================================
+{% endcomment %}
+
+{{ 'grammo-product.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'grammo-product.js' | asset_url }}" defer="defer"></script>
+
+{%- liquid
+  assign current_variant = product.selected_or_first_available_variant
+  assign form_id = 'gp-form-' | append: section.id
+-%}
+
+<div class="grammo-product page-width" id="GrammoProduct-{{ section.id }}" data-gp-root data-section-id="{{ section.id }}"
+  style="--gp-accent: {{ section.settings.accent_color }}; --gp-accent-dark: {{ section.settings.accent_color | color_darken: 20 }};"
+  data-money-format="{{ shop.money_format | escape }}"
+  data-product-title="{{ product.title | escape }}"
+  data-add-url="{{ routes.cart_add_url }}"
+  data-cart-url="{{ routes.cart_url }}"
+  data-media-ids="{{ product.media | map: 'id' | json | escape }}"
+  data-selected-options="{{ current_variant.options | json | escape }}"
+  data-initial-variant="{{ current_variant.id }}">
+
+  <div class="gp-grid">
+
+    {%- comment -%} ---------- MEDIA / GALLERY ---------- {%- endcomment -%}
+    <div class="gp-media">
+      <div class="gp-media-wrap">
+        {%- if product.media.size > 1 -%}
+          <div class="gp-thumbs" data-gp-thumbs>
+            {%- for media in product.media -%}
+              <button type="button" class="gp-thumb{% if forloop.first %} is-active{% endif %}" data-gp-thumb data-index="{{ forloop.index0 }}" aria-label="View image {{ forloop.index }}">
+                {%- if media.media_type == 'image' -%}
+                  <img src="{{ media | image_url: width: 160 }}" alt="{{ media.alt | escape }}" width="80" height="80" loading="lazy">
+                {%- else -%}
+                  <img src="{{ media.preview_image | image_url: width: 160 }}" alt="{{ media.alt | escape }}" width="80" height="80" loading="lazy">
+                {%- endif -%}
+              </button>
+            {%- endfor -%}
+          </div>
+        {%- endif -%}
+
+        <div class="gp-main-media" data-gp-main>
+          {%- for media in product.media -%}
+            <div class="gp-media-item{% if forloop.first %} is-active{% endif %}" data-gp-media-item data-media-id="{{ media.id }}">
+              {%- if media.media_type == 'image' -%}
+                <img
+                  src="{{ media | image_url: width: 900 }}"
+                  srcset="{{ media | image_url: width: 500 }} 500w, {{ media | image_url: width: 900 }} 900w, {{ media | image_url: width: 1400 }} 1400w"
+                  sizes="(min-width: 750px) 45vw, 100vw"
+                  alt="{{ media.alt | escape }}"
+                  width="{{ media.width }}" height="{{ media.height }}"
+                  {% if forloop.first %}fetchpriority="high"{% else %}loading="lazy"{% endif %}
+                  data-gp-zoom="{{ media | image_url: width: 1600 }}">
+              {%- else -%}
+                <img src="{{ media.preview_image | image_url: width: 900 }}" alt="{{ media.alt | escape }}" loading="lazy" data-gp-zoom="{{ media.preview_image | image_url: width: 1600 }}">
+              {%- endif -%}
+            </div>
+          {%- endfor -%}
+          {%- if product.media.size > 1 -%}
+            <button type="button" class="gp-arrow gp-arrow--prev" data-gp-prev aria-label="Previous image">
+              <svg viewBox="0 0 100 100" width="12" height="12"><path d="M 10,50 L 60,100 L 70,90 L 30,50 L 70,10 L 60,0 Z" fill="currentColor"/></svg>
+            </button>
+            <button type="button" class="gp-arrow gp-arrow--next" data-gp-next aria-label="Next image">
+              <svg viewBox="0 0 100 100" width="12" height="12"><path d="M 10,50 L 60,100 L 70,90 L 30,50 L 70,10 L 60,0 Z" fill="currentColor" transform="translate(100,100) rotate(180)"/></svg>
+            </button>
+          {%- endif -%}
+        </div>
+      </div>
+      <div class="gp-zoom-hint">
+        <svg viewBox="0 0 448 512" width="13" height="13" fill="currentColor" aria-hidden="true"><path d="M416 176V86.63L246.6 256L416 425.4V336c0-8.844 7.156-16 16-16s16 7.156 16 16v128c0 8.844-7.156 16-16 16h-128c-8.844 0-16-7.156-16-16s7.156-16 16-16h89.38L224 278.6L54.63 448H144c8.8 0 16 7.2 16 16s-7.2 16-16 16H16C7.156 480 0 472.8 0 464V336c0-8.8 7.156-16 16-16s16 7.2 16 16v89.38L201.4 256 32 86.63V176c0 8.8-7.16 16-16 16S0 184.8 0 176V48C0 39.16 7.156 32 16 32h128c8.8 0 16 7.16 16 16s-7.2 16-16 16H54.63L224 233.4 393.4 64H304c-8.8 0-16-7.16-16-16s7.2-16 16-16h128c8.8 0 16 7.16 16 16v128c0 8.8-7.2 16-16 16s-16-7.2-16-16z"/></svg>
+        Click image to enlarge
+      </div>
+    </div>
+
+    {%- comment -%} ---------- INFO / BLOCKS ---------- {%- endcomment -%}
+    <div class="gp-info">
+      {%- for block in section.blocks -%}
+        {%- case block.type -%}
+
+          {%- when 'title' -%}
+            <h1 class="gp-title" {{ block.shopify_attributes }}>{{ product.title | escape }}</h1>
+
+          {%- when 'price' -%}
+            <div class="gp-price" data-gp-price {{ block.shopify_attributes }}>
+              {%- if current_variant.compare_at_price > current_variant.price -%}
+                <del>{{ current_variant.compare_at_price | money }}</del>
+                <ins>{{ current_variant.price | money }}</ins>
+              {%- else -%}
+                <span>{{ current_variant.price | money }}</span>
+              {%- endif -%}
+            </div>
+
+          {%- when 'short_description' -%}
+            {%- if product.description != blank -%}
+              <p class="gp-short-desc" {{ block.shopify_attributes }}>
+                {{ product.description | strip_html | truncatewords: block.settings.words }}
+              </p>
+            {%- endif -%}
+
+          {%- when 'availability' -%}
+            <div class="gp-availability" {{ block.shopify_attributes }}>
+              Availability:
+              <span class="gp-availability-status" data-gp-availability>
+                {%- if current_variant.available %}In Stock{% else %}Out of stock{% endif -%}
+              </span>
+            </div>
+
+          {%- when 'pick_your_needs' -%}
+            {%- assign has_picks = false -%}
+            {%- for i in (1..4) -%}
+              {%- assign key = 'product_' | append: i -%}
+              {%- if block.settings[key] != blank -%}{%- assign has_picks = true -%}{%- endif -%}
+            {%- endfor -%}
+            {%- if has_picks -%}
+              <div class="gp-picks" {{ block.shopify_attributes }}>
+                <h4 class="gp-picks__heading">{{ block.settings.heading }}</h4>
+                <div class="gp-picks__row">
+                  {%- for i in (1..4) -%}
+                    {%- assign key = 'product_' | append: i -%}
+                    {%- assign pick = block.settings[key] -%}
+                    {%- if pick != blank -%}
+                      <a class="gp-pick" href="{{ pick.url }}" title="{{ pick.title | escape }}">
+                        {%- if pick.featured_media -%}
+                          <img src="{{ pick.featured_media | image_url: width: 204 }}" alt="{{ pick.title | escape }}" width="102" height="102" loading="lazy">
+                        {%- endif -%}
+                        <span class="gp-pick__name">{{ pick.title | truncate: 34 }}</span>
+                      </a>
+                    {%- endif -%}
+                  {%- endfor -%}
+                </div>
+              </div>
+            {%- endif -%}
+
+          {%- when 'variant_picker' -%}
+            {%- unless product.has_only_default_variant -%}
+              <div class="gp-options" {{ block.shopify_attributes }}>
+                {%- for option in product.options_with_values -%}
+                  <div class="gp-option" data-gp-option data-option-position="{{ option.position }}">
+                    <div class="gp-option__label">{{ option.name }}: <span data-gp-option-current>{{ option.selected_value }}</span></div>
+                    <div class="gp-option__values">
+                      {%- for value in option.values -%}
+                        <button type="button"
+                          class="gp-option__value{% if option.selected_value == value %} is-active{% endif %}"
+                          data-gp-option-value data-value="{{ value | escape }}">{{ value }}</button>
+                      {%- endfor -%}
+                    </div>
+                  </div>
+                {%- endfor -%}
+              </div>
+            {%- endunless -%}
+
+          {%- when 'buy_buttons' -%}
+            <div class="gp-buy" {{ block.shopify_attributes }}>
+              {%- form 'product', product, id: form_id, class: 'gp-form', novalidate: 'novalidate', data-gp-form: '' -%}
+                <input type="hidden" name="id" value="{{ current_variant.id }}" data-gp-variant-id>
+
+                <div class="gp-atc-row">
+                  <div class="gp-qty">
+                    <button type="button" data-gp-qty-minus aria-label="Decrease quantity">&#8722;</button>
+                    <input type="number" name="quantity" value="1" min="1"
+                      {%- if current_variant.inventory_management == 'shopify' and current_variant.inventory_policy == 'deny' %} max="{{ current_variant.inventory_quantity }}"{% endif %}
+                      data-gp-qty-input inputmode="numeric" aria-label="Quantity">
+                    <button type="button" data-gp-qty-plus aria-label="Increase quantity">+</button>
+                  </div>
+
+                  <button type="submit" name="add" class="gp-btn gp-btn--atc" data-gp-atc
+                    {% unless current_variant.available %}disabled{% endunless %}>
+                    <span data-gp-atc-text>{% if current_variant.available %}Add to cart{% else %}Sold out{% endif %}</span>
+                  </button>
+
+                  {%- if block.settings.show_wishlist -%}
+                    <button type="button" class="gp-wish-btn" data-gp-wish aria-label="Add to wishlist">
+                      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 21s-8-4.9-10.5-9.5C-.3 7.7 2.3 3.5 6.5 3.5c2.5 0 4.4 1.4 5.5 3.3 1.1-1.9 3-3.3 5.5-3.3 4.2 0 6.8 4.2 5 8C20 16.1 12 21 12 21z"/></svg>
+                    </button>
+                  {%- endif -%}
+                </div>
+
+                {%- if block.settings.show_dynamic_checkout -%}
+                  <div class="gp-dynamic">{{ form | payment_button }}</div>
+                {%- endif -%}
+              {%- endform -%}
+
+              {%- if block.settings.show_cod -%}
+                <button type="button" class="gp-btn gp-btn--cod" data-gp-cod>
+                  <span>{{ block.settings.cod_text }}</span>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M15.55 13c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.37-.66-.11-1.48-.87-1.48H5.21l-.94-2H1v2h2l3.6 7.59-1.35 2.44C4.52 15.37 5.48 17 7 17h12v-2H7l1.1-2h7.45zM6.16 6h12.15l-2.76 5H8.53L6.16 6zM7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zm10 0c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
+                </button>
+              {%- endif -%}
+            </div>
+
+          {%- when 'description_accordion' -%}
+            {%- if product.description != blank -%}
+              <div class="gp-acc" {{ block.shopify_attributes }}>
+                <div class="gp-acc__item">
+                  <button type="button" class="gp-acc__head" data-gp-acc-head>
+                    <span>{{ block.settings.heading }}</span>
+                    <span class="gp-acc__icon">+</span>
+                  </button>
+                  <div class="gp-acc__body" data-gp-acc-body>
+                    <div class="gp-acc__content rte">{{ product.description }}</div>
+                  </div>
+                </div>
+              </div>
+            {%- endif -%}
+
+          {%- when 'collapsible_tab' -%}
+            <div class="gp-acc" {{ block.shopify_attributes }}>
+              <div class="gp-acc__item">
+                <button type="button" class="gp-acc__head" data-gp-acc-head>
+                  <span>{{ block.settings.heading }}</span>
+                  <span class="gp-acc__icon">+</span>
+                </button>
+                <div class="gp-acc__body" data-gp-acc-body>
+                  <div class="gp-acc__content rte">
+                    {{ block.settings.content }}
+                    {{ block.settings.page.content }}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          {%- when 'custom_liquid' -%}
+            <div {{ block.shopify_attributes }}>{{ block.settings.custom_liquid }}</div>
+
+        {%- endcase -%}
+      {%- endfor -%}
+    </div>
+  </div>
+
+  {%- comment -%} ---------- STICKY ATC ---------- {%- endcomment -%}
+  {%- if section.settings.enable_sticky_atc -%}
+    <div class="gp-sticky" data-gp-sticky>
+      <div class="gp-sticky__inner page-width">
+        {%- if product.featured_media -%}
+          <img class="gp-sticky__img" src="{{ product.featured_media | image_url: width: 120 }}" alt="{{ product.title | escape }}" width="52" height="52">
+        {%- endif -%}
+        <div class="gp-sticky__info">
+          <div class="gp-sticky__title">{{ product.title | escape }}</div>
+          <div class="gp-sticky__price" data-gp-sticky-price>{{ current_variant.price | money }}</div>
+        </div>
+        <button type="button" class="gp-btn gp-btn--atc gp-sticky__atc" data-gp-sticky-atc
+          {% unless current_variant.available %}disabled{% endunless %}>
+          Add to cart
+        </button>
+      </div>
+    </div>
+  {%- endif -%}
+
+  {%- comment -%} ---------- LIGHTBOX ---------- {%- endcomment -%}
+  <div class="gp-lightbox" data-gp-lightbox>
+    <button type="button" class="gp-lightbox__close" data-gp-lb-close aria-label="Close">&times;</button>
+    <img data-gp-lb-img src="" alt="{{ product.title | escape }}">
+  </div>
+
+  <div class="gp-toast" data-gp-toast role="status"></div>
+
+  {%- comment -%} ---------- VARIANT DATA (read by grammo-product.js) ---------- {%- endcomment -%}
+  <script type="application/json" data-gp-variants>{{ product.variants | json }}</script>
+</div>
+
+{% schema %}
+{
+  "name": "Grammo product page",
+  "tag": "section",
+  "class": "section-grammo-product",
+  "settings": [
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Accent color",
+      "default": "#17a953"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_sticky_atc",
+      "label": "Enable sticky add to cart bar",
+      "default": true
+    }
+  ],
+  "blocks": [
+    {
+      "type": "title",
+      "name": "Title",
+      "limit": 1
+    },
+    {
+      "type": "price",
+      "name": "Price",
+      "limit": 1
+    },
+    {
+      "type": "short_description",
+      "name": "Short description",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "range",
+          "id": "words",
+          "label": "Truncate after (words)",
+          "min": 10,
+          "max": 60,
+          "step": 5,
+          "default": 30
+        }
+      ]
+    },
+    {
+      "type": "availability",
+      "name": "Availability",
+      "limit": 1
+    },
+    {
+      "type": "pick_your_needs",
+      "name": "Pick your needs",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "default": "Pick Your Needs"
+        },
+        {
+          "type": "product",
+          "id": "product_1",
+          "label": "Product 1"
+        },
+        {
+          "type": "product",
+          "id": "product_2",
+          "label": "Product 2"
+        },
+        {
+          "type": "product",
+          "id": "product_3",
+          "label": "Product 3"
+        },
+        {
+          "type": "product",
+          "id": "product_4",
+          "label": "Product 4"
+        }
+      ]
+    },
+    {
+      "type": "variant_picker",
+      "name": "Variant picker",
+      "limit": 1
+    },
+    {
+      "type": "buy_buttons",
+      "name": "Buy buttons",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "checkbox",
+          "id": "show_wishlist",
+          "label": "Show wishlist button",
+          "default": true
+        },
+        {
+          "type": "checkbox",
+          "id": "show_cod",
+          "label": "Show Cash on Delivery button",
+          "default": true
+        },
+        {
+          "type": "text",
+          "id": "cod_text",
+          "label": "COD button text",
+          "default": "ক্যাশ অন ডেলিভারিতে অর্ডার করুন"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_dynamic_checkout",
+          "label": "Show dynamic checkout (Buy it now) button",
+          "info": "Uses Shopify accelerated checkout.",
+          "default": false
+        }
+      ]
+    },
+    {
+      "type": "description_accordion",
+      "name": "Description accordion",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "default": "Description"
+        }
+      ]
+    },
+    {
+      "type": "collapsible_tab",
+      "name": "Collapsible tab",
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "default": "Refund and Replacement Policy"
+        },
+        {
+          "type": "richtext",
+          "id": "content",
+          "label": "Content"
+        },
+        {
+          "type": "page",
+          "id": "page",
+          "label": "Content from page"
+        }
+      ]
+    },
+    {
+      "type": "custom_liquid",
+      "name": "Custom Liquid",
+      "settings": [
+        {
+          "type": "liquid",
+          "id": "custom_liquid",
+          "label": "Liquid code"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
