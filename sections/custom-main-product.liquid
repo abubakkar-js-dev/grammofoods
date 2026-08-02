@@ -267,6 +267,9 @@
           {%- when 'custom_liquid' -%}
             <div {{ block.shopify_attributes }}>{{ block.settings.custom_liquid }}</div>
 
+          {%- when '@app' -%}
+            {% render block %}
+
         {%- endcase -%}
       {%- endfor -%}
     </div>
@@ -575,6 +578,9 @@
           "label": "Liquid code"
         }
       ]
+    },
+    {
+      "type": "@app"
     }
   ],
   "presets": [
