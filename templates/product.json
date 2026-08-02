@@ -10,15 +10,8 @@
 {
   "sections": {
     "main": {
-      "type": "main-product",
+      "type": "custom-main-product",
       "blocks": {
-        "vendor": {
-          "type": "text",
-          "settings": {
-            "text": "{{ product.vendor }}",
-            "text_style": "uppercase"
-          }
-        },
         "title": {
           "type": "title",
           "settings": {}
@@ -27,59 +20,55 @@
           "type": "price",
           "settings": {}
         },
-        "variant_picker": {
-          "type": "variant_picker",
+        "short_description": {
+          "type": "short_description",
           "settings": {
-            "picker_type": "button",
-            "swatch_shape": "circle"
+            "words": 30
           }
         },
-        "quantity_selector": {
-          "type": "quantity_selector",
+        "availability": {
+          "type": "availability",
+          "settings": {}
+        },
+        "variant_picker": {
+          "type": "variant_picker",
           "settings": {}
         },
         "buy_buttons": {
           "type": "buy_buttons",
           "settings": {
-            "show_dynamic_checkout": true,
-            "show_gift_card_recipient": true
+            "show_wishlist": true,
+            "show_cod": true,
+            "cod_text": "ক্যাশ অন ডেলিভারিতে অর্ডার করুন",
+            "show_dynamic_checkout": true
           }
         },
-        "description": {
-          "type": "description",
-          "settings": {}
-        },
-        "share": {
-          "type": "share",
+        "description_accordion": {
+          "type": "description_accordion",
           "settings": {
-            "share_label": "Share"
+            "heading": "Description"
+          }
+        },
+        "collapsible_tab": {
+          "type": "collapsible_tab",
+          "settings": {
+            "heading": "Refund and Replacement Policy"
           }
         }
       },
       "block_order": [
-        "vendor",
         "title",
         "price",
+        "short_description",
+        "availability",
         "variant_picker",
-        "quantity_selector",
         "buy_buttons",
-        "description",
-        "share"
+        "description_accordion",
+        "collapsible_tab"
       ],
       "settings": {
-        "enable_sticky_info": true,
-        "color_scheme": "scheme-f6669edd-8300-491f-a8b5-3f8efbf0f33a",
-        "media_size": "medium",
-        "constrain_to_viewport": true,
-        "media_fit": "contain",
-        "gallery_layout": "thumbnail",
-        "mobile_thumbnails": "hide",
-        "media_position": "left",
-        "image_zoom": "lightbox",
-        "hide_variants": true,
-        "enable_video_looping": false,
-        "padding_top": 36,
-        "padding_bottom": 12
+        "accent_color": "#17a953",
+        "enable_sticky_atc": true
       }
     },
     "disclosures": {
@@ -110,11 +99,20 @@
         "padding_top": 36,
         "padding_bottom": 28
       }
+    },
+    "recently-viewed": {
+      "type": "recently-viewed",
+      "settings": {
+        "heading": "Recently viewed products",
+        "products_to_show": 8,
+        "accent_color": "#17a953"
+      }
     }
   },
   "order": [
     "main",
     "disclosures",
-    "related-products"
+    "related-products",
+    "recently-viewed"
   ]
 }

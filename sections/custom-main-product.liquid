@@ -67,7 +67,7 @@
                   {% if forloop.first %}fetchpriority="high"{% else %}loading="lazy"{% endif %}
                   data-gp-zoom="{{ media | image_url: width: 1600 }}">
               {%- else -%}
-                <img src="{{ media.preview_image | image_url: width: 900 }}" alt="{{ media.alt | escape }}" loading="lazy" data-gp-zoom="{{ media.preview_image | image_url: width: 1600 }}">
+                <img src="{{ media.preview_image | image_url: width: 900 }}" alt="{{ media.alt | escape }}" width="{{ media.preview_image.width }}" height="{{ media.preview_image.height }}" loading="lazy" data-gp-zoom="{{ media.preview_image | image_url: width: 1600 }}">
               {%- endif -%}
             </div>
           {%- endfor -%}
@@ -264,7 +264,7 @@
   {%- comment -%} ---------- LIGHTBOX ---------- {%- endcomment -%}
   <div class="gp-lightbox" data-gp-lightbox>
     <button type="button" class="gp-lightbox__close" data-gp-lb-close aria-label="Close">&times;</button>
-    <img data-gp-lb-img src="" alt="{{ product.title | escape }}">
+    <img data-gp-lb-img alt="{{ product.title | escape }}" width="1400" height="1400">
   </div>
 
   <div class="gp-toast" data-gp-toast role="status"></div>
@@ -439,6 +439,11 @@
           "label": "Liquid code"
         }
       ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Grammo product page"
     }
   ]
 }
