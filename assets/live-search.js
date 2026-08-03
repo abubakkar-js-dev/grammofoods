@@ -342,7 +342,20 @@ class LiveSearch {
       }
 
       const variants = p.variants || [];
-      const prices = variants.map((v) => parseFloat(v.price)).filter((n) => !isNaN(n));
+      let prices = variants.map((v) => parseFloat(v.price)).filter((n) => !isNaN(n));
+
+      // suggest.json returns price at the product level (no variants array)
+      if (!prices.length) {
+        const top =
+          parseFloat(p.price) ||
+          parseFloat(p.price_min) ||
+          parseFloat(p.price_max) ||
+          (p.presentment_prices && p.presentment_prices[0]
+            ? parseFloat(p.presentment_prices[0].price.amount)
+            : 0);
+        if (top) prices = [top];
+      }
+
       const priceMin = prices.length ? Math.min(...prices) : 0;
       const priceMax = prices.length ? Math.max(...prices) : 0;
       const hasRange = priceMax > priceMin;
