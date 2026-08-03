@@ -136,7 +136,7 @@
   font-size: var(--gp-title-size);
   font-weight: 600;
   color: var(--gp-dark);
-  margin: 0 0 12px;
+  margin: 0 0 4px;
   line-height: 1.3;
 }
 .grammo-product .gp-price {
